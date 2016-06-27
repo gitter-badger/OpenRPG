@@ -1,0 +1,9 @@
+{
+    "games": [
+        {
+            "title":"Example Game",
+            "playableCharacters":[],
+            "firstLevel":null
+        }
+    ]
+}

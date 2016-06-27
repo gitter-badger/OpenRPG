@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            /* Styling for game canvas */
+            #defaultCanvas0 {
+                margin-right: auto;
+                margin-left: auto;
+                display: block;
+            }
+        </style>
+    </head>
+
+    <body>
+        <script src="./src/lib/jquery.min.js"></script>
+        <script src="./src/lib/p5.min.js"></script>
+        <script src="./src/Game.js"></script>
+        <script src="./src/Level.js"></script>
+        <script src="./src/GameStateManager.js"></script>
+        <script>
+            "use strict";
+
+            // Constants
+            var CANVAS_WIDTH = 640;
+            var CANVAS_HEIGHT = 480;
+            var FRAME_RATE = 60;
+
+            function setup() {
+                createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+                frameRate(FRAME_RATE);
+            };
+
+            var stateManager = new GameStateManager();
+
+            function draw() {
+                stateManager.step();
+            };
+        </script>
+    </body>
+</html>
