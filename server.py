@@ -6,7 +6,7 @@
 
 from os import listdir
 import os.path
-from flask import Flask, request, send_from_directory, render_template
+from flask import Flask, request, send_from_directory, render_template, url_for, redirect
 import json
 
 app = Flask(__name__)
@@ -34,7 +34,6 @@ def loadTilesetConfigData():
     return config
 
 def writeTilesetConfigData(config):
-    print config
     filePath = TILESET_DIRECTORY + "/" + "config.json"
     try:
         f = open(filePath, 'w')
@@ -104,15 +103,24 @@ def editTileset(fileName):
                 tilesetDirectory=TILESET_DIRECTORY,
                 tileset=tilesets[i])
 
-@app.route('/tilesets/<fileName>/update')
+@app.route('/tilesets/<fileName>/update', methods=['POST'])
 def updateTileset(fileName):
     config = loadTilesetConfigData()
     if config is None:
         print "Error: Failed to load tileset config data"
+    if not fileName in config:
+        config[fileName] = dict()
+
+
+    config[fileName]["size"] = request.form["size"]
+    config[fileName]["xoff"] = request.form["xoff"]
+    config[fileName]["yoff"] = request.form["yoff"]
+
+    writeTilesetConfigData(config)
     
-    return render_template('/tilesets/' + fileName + '/edit')
-
-
+    dest = '/tilesets/' + fileName + '/edit'
+    print dest
+    return redirect(url_for("editTileset", fileName=fileName))
 
 if __name__ == '__main__':
     app.run(debug=True)

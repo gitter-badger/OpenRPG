@@ -4,16 +4,39 @@
     </head>
     <body>
         <h1>{{tileset.fileName}}</h1>
-        <img style="display:none;" id="tilesetImage" src=""/>
+        <script>
+            "use strict";
+            var xoff, yoff, tileSize;
+
+            function updateValues() {
+                tileSize = parseInt(document.querySelector("#size").value);
+                xoff = parseInt(document.querySelector("#xoff").value);
+                yoff = parseInt(document.querySelector("#yoff").value);
+            }
+        </script>
+        <form method="post" action='/tilesets/{{tileset.fileName}}/update'>
+            Tile size:<br>
+            <input id="size" type="text" name="size" onchange="updateValues();"><br>
+            X offset:<br>
+            <input id="xoff" type="text" name="xoff" onchange="updateValues();"><br>
+            Y offset:<br>
+            <input id="yoff" type="text" name="yoff" onchange="updateValues();"><br>
+            <input type="submit" value="Submit">
+        </form>
+
         <script src="/src/lib/p5.min.js"></script>
         <script>
             "use strict";
 
             var url = "/{{tilesetDirectory}}/{{tileset.fileName}}";
             var img;
-            var tileSize = {{tileset.size}};
-            var xoff = {{tileset.xoff}};
-            var yoff = {{tileset.yoff}};
+            tileSize = {{tileset.size}};
+            document.querySelector("#size").value = tileSize;
+            xoff = {{tileset.xoff}};
+            document.querySelector("#xoff").value = xoff;
+            yoff = {{tileset.yoff}};
+            document.querySelector("#yoff").value = yoff;
+
             function setup() {
                 img = loadImage(url);
                 createCanvas(1000, 1000);
@@ -23,8 +46,7 @@
                 background(255);
                 image(img, 0, 0);
 
-                stroke(0);
-                fill(0);
+                stroke(0, 0, 0, 100);
                 for (var i = xoff; i <= img.width; i += tileSize) {
                     line(i, yoff, i, img.height);
                 }
@@ -33,13 +55,5 @@
                 }
             }
         </script>
-        <form>
-            Tile size:<br>
-            <intput type="text" name="size"><br>
-            X offset:<br>
-            <intput type="text" name="xoff"><br>
-            Y offset:<br>
-            <intput type="text" name="yoff"><br>
-        </form>
     </body>
 </html>
