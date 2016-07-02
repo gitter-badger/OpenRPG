@@ -4,6 +4,42 @@
     </head>
     <body>
         <h1>{{tileset.fileName}}</h1>
-        <img src="/{{tilesetDirectory}}/{{tileset.fileName}}" />
+        <img style="display:none;" id="tilesetImage" src=""/>
+        <script src="/src/lib/p5.min.js"></script>
+        <script>
+            "use strict";
+
+            var url = "/{{tilesetDirectory}}/{{tileset.fileName}}";
+            var img;
+            var tileSize = {{tileset.size}};
+            var xoff = {{tileset.xoff}};
+            var yoff = {{tileset.yoff}};
+            function setup() {
+                img = loadImage(url);
+                createCanvas(1000, 1000);
+            }
+
+            function draw() {
+                background(255);
+                image(img, 0, 0);
+
+                stroke(0);
+                fill(0);
+                for (var i = xoff; i <= img.width; i += tileSize) {
+                    line(i, yoff, i, img.height);
+                }
+                for (var i = yoff; i <= img.height; i += tileSize) {
+                    line(xoff, i, img.width, i);
+                }
+            }
+        </script>
+        <form>
+            Tile size:<br>
+            <intput type="text" name="size"><br>
+            X offset:<br>
+            <intput type="text" name="xoff"><br>
+            Y offset:<br>
+            <intput type="text" name="yoff"><br>
+        </form>
     </body>
 </html>

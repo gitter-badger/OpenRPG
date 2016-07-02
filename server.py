@@ -7,6 +7,7 @@
 from os import listdir
 import os.path
 from flask import Flask, request, send_from_directory, render_template
+import json
 
 app = Flask(__name__)
 
@@ -19,13 +20,53 @@ class Tileset():
         self.xoff = xoff
         self.yoff = yoff
 
+def loadTilesetConfigData():
+    filePath = TILESET_DIRECTORY + "/" + "config.json"
+    try:
+        f = open(filePath)
+        s = f.read().replace('\n', '')
+        f.close()
+        config = json.loads(s)
+    except Exception as e:
+        print e
+        return None
+
+    return config
+
+def writeTilesetConfigData(config):
+    print config
+    filePath = TILESET_DIRECTORY + "/" + "config.json"
+    try:
+        f = open(filePath, 'w')
+        f.write(json.dumps(config, sort_keys=True, indent=3))
+        f.close()
+    except Exception as e:
+        print e
+
 def getAllTilesets():
+    config = loadTilesetConfigData()
+    if config is None:
+        print "Error: Failed to load tileset config data"
+        config = dict()
+
     tilesets = []
 
     files = listdir(TILESET_DIRECTORY)
     for file in files:
         if file.endswith(".png"):
-            tilesets.append(Tileset(file))
+            if not file in config:
+                config[file] = dict()
+                config[file]["size"] = 32
+                config[file]["xoff"] = 0
+                config[file]["yoff"] = 0
+            size = config[file]["size"]
+            xoff = config[file]["xoff"]
+            yoff = config[file]["yoff"]
+
+            tilesets.append(Tileset(file, size, xoff, yoff))
+
+    # Save config data
+    writeTilesetConfigData(config)
 
     return tilesets
 
@@ -62,6 +103,16 @@ def editTileset(fileName):
             return render_template("tileset_editor.html",
                 tilesetDirectory=TILESET_DIRECTORY,
                 tileset=tilesets[i])
+
+@app.route('/tilesets/<fileName>/update')
+def updateTileset(fileName):
+    config = loadTilesetConfigData()
+    if config is None:
+        print "Error: Failed to load tileset config data"
+    
+    return render_template('/tilesets/' + fileName + '/edit')
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
