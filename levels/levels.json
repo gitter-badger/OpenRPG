@@ -3,8 +3,10 @@
         {
             "name":"New Level",
             "npcs":[],
-            "tilesets":[],
-            "tileImages":[]
+            "tilesets":["mountain_landscape.png"],
+            "tileImages":[],
+            "width":640,
+            "height":480
         }
     ]
 }

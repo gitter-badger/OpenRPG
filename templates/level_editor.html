@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <h1>{{level.name}}</h1>
+        <a href="/levels">Back</a>
+
+        <!-- Level settings form -->
+        <form action="" method="post">
+            Name:<br>
+            <input value="{{level.name}}" name="name" type="text"><br>
+            Width:<br>
+            <input value="{{level.width}}" name="width" type="text"><br>
+            Height:<br>
+            <input value="{{level.height}}" name="height" type="text"><br>
+            <input type="submit" value="Update">
+        </form>
+        
+
+        <script src="/src/lib/p5.min.js"></script>
+        <script>
+            "use strict";
+            var tilesetCanvas;
+            var tilesets = [];
+            var tileSelectionX = 0;
+            var tileSelectionY = 0;
+            var img = null;
+            {% for tileset in level.tilesets %}
+                tilesets.push("{{tileset}}");
+            {% endfor %}
+
+            function loadTileset(name) {
+                var url = "/{{tilesetDirectory}}/" + name;
+                img = loadImage(url);
+                var element = document.querySelector("#tilesetCanvas");
+                element.style.display = "block";
+                element.style.width = img.width;
+                element.style.height = img.height;
+            }
+
+            function setup() {
+                createCanvas({{level.width}}, {{level.height}});
+                tilesetCanvas = createGraphics(1000, 1000);
+                tilesetCanvas.id("tilesetCanvas");
+                if (tilesets.length > 0) {
+                    loadTileset(tilesets[0]);
+                }
+            }
+
+            function draw() {
+                if (img !== null) {
+                    tilesetCanvas.background(255);
+                    tilesetCanvas.image(img, 0, 0);
+                }
+            }
+        </script>
+    </body>
+</html>

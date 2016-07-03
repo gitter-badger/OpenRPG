@@ -19,15 +19,19 @@ LEVELS_CONFIG_FILE = "levels/levels.json"
 class Tileset():
     def __init__(self, fileName, size=32, xoff=0, yoff=0):
         self.fileName = fileName
-        self.size = size
-        self.xoff = xoff
-        self.yoff = yoff
+        self.size = int(size)
+        self.xoff = int(xoff)
+        self.yoff = int(yoff)
 
 class Level():
-    def __init__(self, ID, name, npcs=[], tilesets=[], tileImages=[]):
+    def __init__(self, ID, name, width, height, npcs=[], tilesets=[], tileImages=[]):
         self.ID = ID
         self.name = name
+        self.width = int(width)
+        self.height = int(height)
         self.npcs = npcs
+        for i in xrange(len(tilesets)):
+            print tilesets[i]
         self.tilesets = tilesets
         self.tileImages = tileImages
 
@@ -76,10 +80,12 @@ def getAllLevels():
     for i in xrange(len(levelData)):
         datum = levelData[i]
         name = datum["name"]
+        width = datum["width"]
+        height = datum["height"]
         npcs = datum["npcs"]
         tilesets = datum["tilesets"]
         tileImages = datum["tileImages"]
-        levels.append(Level(i, name, npcs, tilesets, tileImages))
+        levels.append(Level(i, name, width, height, npcs, tilesets, tileImages))
 
 
     return levels
@@ -118,6 +124,10 @@ def showHomepage():
 @app.route("/game.html")
 def showGame():
     return send_from_directory(".", "game.html")
+
+@app.route("/img/<path:path>")
+def sendImg(path):
+    return send_from_directory("img", path)
 
 @app.route("/src/<path:path>")
 def sendCode(path):
@@ -178,6 +188,14 @@ def editTileset(fileName):
             return render_template("tileset_editor.html",
                 tilesetDirectory=TILESET_DIRECTORY,
                 tileset=tilesets[i])
+
+@app.route('/levels/<int:i>/edit')
+def editLevel(i):
+    levels = getAllLevels()
+
+    return render_template("level_editor.html",
+        tilesetDirectory=TILESET_DIRECTORY,
+        level=levels[i])
 
 @app.route('/tilesets/<fileName>/update', methods=['POST'])
 def updateTileset(fileName):
