@@ -12,6 +12,9 @@ import json
 app = Flask(__name__)
 
 TILESET_DIRECTORY = "img/tiles"
+GAMES_DIRECTORY = "games"
+GAMES_CONFIG_FILE = "games/games.json"
+LEVELS_CONFIG_FILE = "levels/levels.json"
 
 class Tileset():
     def __init__(self, fileName, size=32, xoff=0, yoff=0):
@@ -19,6 +22,27 @@ class Tileset():
         self.size = size
         self.xoff = xoff
         self.yoff = yoff
+
+class Level():
+    def __init__(self, ID, name, npcs=[], tilesets=[], tileImages=[]):
+        self.ID = ID
+        self.name = name
+        self.npcs = npcs
+        self.tilesets = tilesets
+        self.tileImages = tileImages
+
+def loadLevelData():
+    filePath = LEVELS_CONFIG_FILE
+    try:
+        f = open(filePath)
+        s = f.read().replace('\n', '')
+        f.close()
+        config = json.loads(s)
+    except Exception as e:
+        print e
+        return None
+
+    return config
 
 def loadTilesetConfigData():
     filePath = TILESET_DIRECTORY + "/" + "config.json"
@@ -41,6 +65,24 @@ def writeTilesetConfigData(config):
         f.close()
     except Exception as e:
         print e
+
+def getAllLevels():
+    levelData = loadLevelData()["levels"]
+    if levelData is None:
+        print "Error: Failed to load tileset config data"
+        return []
+
+    levels = []
+    for i in xrange(len(levelData)):
+        datum = levelData[i]
+        name = datum["name"]
+        npcs = datum["npcs"]
+        tilesets = datum["tilesets"]
+        tileImages = datum["tileImages"]
+        levels.append(Level(i, name, npcs, tilesets, tileImages))
+
+
+    return levels
 
 def getAllTilesets():
     config = loadTilesetConfigData()
@@ -89,10 +131,44 @@ def sendGamesFile(path):
 def sendTileset(path):
     return send_from_directory(TILESET_DIRECTORY, path)
 
+class Game:
+    def __init__(self, ID, config):
+        self.ID = ID
+        self.title = config["title"]
+        self.playableCharacters = config["playableCharacters"]
+        self.firstLevel = config["firstLevel"]
+
+def getAllGames():
+    try:
+        f = open(GAMES_CONFIG_FILE)
+        s = f.read().replace('\n', '')
+        f.close()
+        config = json.loads(s)
+    except Exception as e:
+        print e
+        return []
+
+    games = []
+    for i in xrange(len(config["games"])):
+        gameConfig = config["games"][i]
+        games.append(Game(i, gameConfig))
+
+    return games
+
+@app.route('/games')
+def showGames():
+    return render_template("games.html",
+        games=getAllGames())
+
 @app.route('/tilesets')
 def showTilesets():
     return render_template("tilesets.html",
         tilesets=getAllTilesets())
+
+@app.route('/levels')
+def showLevels():
+    return render_template("levels.html",
+        levels=getAllLevels())
 
 @app.route('/tilesets/<fileName>/edit')
 def editTileset(fileName):

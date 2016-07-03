@@ -1,0 +1,10 @@
+{
+    "levels":[
+        {
+            "name":"New Level",
+            "npcs":[],
+            "tilesets":[],
+            "tileImages":[]
+        }
+    ]
+}

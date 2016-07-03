@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <h1>Games</h1>
+        <a href="/">Back</a>
+        <p></p>
+        <ul>
+        {% for game in games %}
+            <li><a href="/games/{{game.ID}}/edit">{{game.title}}</a></li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>

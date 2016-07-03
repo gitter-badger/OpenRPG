@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <h1>Levels</h1>
+        <a href="/">Back</a>
+        <p></p>
+        <ul>
+        {% for level in levels %}
+            <li><a href="/levels/{{level.ID}}/edit">{{level.name}}</a></li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>

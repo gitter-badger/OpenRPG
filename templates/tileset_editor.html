@@ -4,16 +4,23 @@
     </head>
     <body>
         <h1>{{tileset.fileName}}</h1>
+        <a href="/tilesets">Back</a>
+        
         <script>
             "use strict";
             var xoff, yoff, tileSize;
 
             function updateValues() {
+                /**
+                    Update variables when the form is changed
+                **/
                 tileSize = parseInt(document.querySelector("#size").value);
                 xoff = parseInt(document.querySelector("#xoff").value);
                 yoff = parseInt(document.querySelector("#yoff").value);
             }
         </script>
+
+        <!-- Config values form -->
         <form method="post" action='/tilesets/{{tileset.fileName}}/update'>
             Tile size:<br>
             <input id="size" type="text" name="size" onchange="updateValues();"><br>
