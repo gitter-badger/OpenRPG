@@ -30,8 +30,6 @@ class Level():
         self.width = int(width)
         self.height = int(height)
         self.npcs = npcs
-        for i in xrange(len(tilesets)):
-            print tilesets[i]
         self.tilesets = tilesets
         self.tileImages = tileImages
 
@@ -193,8 +191,10 @@ def editTileset(fileName):
 def editLevel(i):
     levels = getAllLevels()
 
+    # TODO: Load only required tilesets
     return render_template("level_editor.html",
         tilesetDirectory=TILESET_DIRECTORY,
+        tilesets=getAllTilesets(),
         level=levels[i])
 
 @app.route('/tilesets/<fileName>/update', methods=['POST'])

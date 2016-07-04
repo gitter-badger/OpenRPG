@@ -17,41 +17,90 @@
             <input type="submit" value="Update">
         </form>
         
-
         <script src="/src/lib/p5.min.js"></script>
+        <script src="/src/lib/jquery.min.js"></script>
         <script>
             "use strict";
-            var tilesetCanvas;
+            var tilesetCanvas = null;
+            var tilesetCanvasElement = null;
             var tilesets = [];
             var tileSelectionX = 0;
             var tileSelectionY = 0;
+            var tileSize = null;
             var img = null;
-            {% for tileset in level.tilesets %}
-                tilesets.push("{{tileset}}");
+
+            function Tileset(name, size, xoff, yoff){
+                this.name = name;
+                this.size = parseInt(size);
+                this.xoff = parseInt(xoff);
+                this.yoff = parseInt(yoff);
+            } 
+            {% for tileset in tilesets %}
+                tilesets.push(new Tileset(
+                    "{{tileset.fileName}}",
+                    {{tileset.size}},
+                    {{tileset.xoff}},
+                    {{tileset.yoff}}
+                    ));
             {% endfor %}
 
-            function loadTileset(name) {
-                var url = "/{{tilesetDirectory}}/" + name;
+            function loadTileset(tileset) {
+                var url = "/{{tilesetDirectory}}/" + tileset.name;
                 img = loadImage(url);
-                var element = document.querySelector("#tilesetCanvas");
-                element.style.display = "block";
-                element.style.width = img.width;
-                element.style.height = img.height;
+                tileSelectionX = tileset.xoff;
+                tileSelectionY = tileset.yoff;
+                tileSize = tileset.size;
+            }
+
+            function resizeTilesetCanvas(img) {
+                var context = tilesetCanvasElement.getContext('2d');
+                context.canvas.height = img.height;
+                context.canvas.width = img.width;
+                tilesetCanvasElement.style = "display:block";
+            }
+
+            function setTileSelection(evt) {
+                var offset = $("#tilesetCanvas").offset()
+                tileSelectionX = Math.floor((evt.pageX - offset.left) / tileSize) * tileSize;
+                tileSelectionY = Math.floor((evt.pageY - offset.top) / tileSize) * tileSize;
             }
 
             function setup() {
                 createCanvas({{level.width}}, {{level.height}});
-                tilesetCanvas = createGraphics(1000, 1000);
-                tilesetCanvas.id("tilesetCanvas");
                 if (tilesets.length > 0) {
                     loadTileset(tilesets[0]);
+                    tilesetCanvas = createGraphics(100, 100);
+                    tilesetCanvas.id("tilesetCanvas");
+                    tilesetCanvasElement = document.querySelector("#tilesetCanvas");
+                    tilesetCanvasElement.style.display = "block";
+                    tilesetCanvasElement.addEventListener("click", setTileSelection, false);
                 }
             }
 
+
             function draw() {
+                background(0);
                 if (img !== null) {
-                    tilesetCanvas.background(255);
+                    tilesetCanvas.fill(255);
+                    tilesetCanvas.noStroke();
+                    tilesetCanvas.rect(0, 0, img.width, img.height);
+
+                    // Fit canvas size to image size
+                    if (img.width != tilesetCanvasElement.width) {
+                        resizeTilesetCanvas(img);
+                    }
+
+                    // Draw tileset
                     tilesetCanvas.image(img, 0, 0);
+
+                    // Draw tile selection
+                    if (tileSize !== null) {
+                        tilesetCanvas.noFill();
+                        tilesetCanvas.stroke(255, 0, 0);
+                        tilesetCanvas.rect(tileSelectionX, tileSelectionY, tileSize, tileSize);
+                    }
+                    
+
                 }
             }
         </script>
