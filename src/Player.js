@@ -13,6 +13,9 @@ function Player(x, z, camera, img) {
 	mesh.position.x = x || 0;
 	mesh.position.z = z || 0;
 
+	var gravity = -0.01;
+	var vy = 0;
+
 	this.getMesh = function() {
 		return mesh;
 	};
@@ -21,6 +24,19 @@ function Player(x, z, camera, img) {
 		mesh.position.x += dx;
 		mesh.position.z += dz;
 		this.aimCamera();
+	};
+
+	this.update = function() {
+		vy += gravity;
+		mesh.position.y += vy;
+		if (mesh.position.y < 0) {
+			mesh.position.y = 0;
+			vy = 0;
+		}
+	};
+
+	this.jump = function() {
+		vy = 0.2;
 	};
 
 	this.aimCamera = function() {

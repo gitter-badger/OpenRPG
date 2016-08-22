@@ -51,10 +51,12 @@
             var resourceManager = new ResourceManager();
             resourceManager.loadAll();
 
+            // TODO: remove me
             var testProp = new Prop(1, 1);
             level.addProp(testProp);
             level.addProp(player);
 
+            // Main game loop
             function render() {
                 if (keysDown[A_KEY]) {
                     player.move(-0.02, 0);
@@ -68,7 +70,11 @@
                 if (keysDown[S_KEY]) {
                     player.move(0, 0.02);
                 }
+                if (keysDown[SPACE]) {
+                    player.jump();
+                }
                 requestAnimationFrame(render);
+                player.update();
                 level.render();
             }
 

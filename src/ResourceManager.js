@@ -1,4 +1,5 @@
 function ResourceManager() {
+	var propTextures = {};
 
 	this.loadAll = function() {
 		/**
@@ -6,12 +7,14 @@ function ResourceManager() {
 		**/
 	
 		// Load things
+		var loader = new THREE.TextureLoader();
+
 
 		// Start the game
 		render();
 	};
 
 	this.getPropTextures = function() {
-
+		return propTextures;
 	};
 }
