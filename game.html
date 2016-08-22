@@ -20,6 +20,7 @@
         <script src="./src/Player.js"></script>
         <script src="./src/Game.js"></script>
         <script src="./src/Level.js"></script>
+        <script src="./src/ResourceManager.js"></script>
         <script src="./src/GameStateManager.js"></script>
         <script>
             "use strict";
@@ -36,24 +37,23 @@
             renderer.setSize(VIEWPORT_WIDTH,VIEWPORT_HEIGHT);
             document.body.appendChild(renderer.domElement);
 
-            var player = new Player();
+            var camera = new THREE.PerspectiveCamera(
+                FOV, VIEWPORT_WIDTH / VIEWPORT_HEIGHT, 0.1, 1000
+            );
+
+            var player = new Player(0, 0, camera, null);
 
             var level = new Level({
                 renderer: renderer
             });
 
-            var camera = new THREE.PerspectiveCamera(
-                FOV, VIEWPORT_WIDTH / VIEWPORT_HEIGHT, 0.1, 1000
-            );
-
             var stateManager = new GameStateManager();
+            var resourceManager = new ResourceManager();
+            resourceManager.loadAll();
 
             var testProp = new Prop(1, 1);
             level.addProp(testProp);
             level.addProp(player);
-
-            camera.position.z = 5;
-            camera.position.y = 1;
 
             function render() {
                 if (keysDown[A_KEY]) {
@@ -71,7 +71,6 @@
                 requestAnimationFrame(render);
                 level.render();
             }
-            render();
 
             // Event Listeners
             document.onkeydown = function(e) {

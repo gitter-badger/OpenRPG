@@ -1,8 +1,9 @@
-function Player(x, z, img) {
+function Player(x, z, camera, img) {
 	/**
 		
 	**/
 
+	var camera = camera;
 	var geometry = new THREE.PlaneBufferGeometry(1, 1);
 	var material = new THREE.MeshBasicMaterial(
 		{color: 0x000088}
@@ -19,5 +20,16 @@ function Player(x, z, img) {
 	this.move = function(dx, dz) {
 		mesh.position.x += dx;
 		mesh.position.z += dz;
+		this.aimCamera();
 	};
+
+	this.aimCamera = function() {
+		/**
+			Aim the camera at the player
+		**/
+		camera.position.z = mesh.position.z + 5;
+		camera.position.x = mesh.position.x;
+		camera.position.y = 2;
+	};
+	this.aimCamera();
 }

@@ -25,11 +25,3 @@ function Prop(x, z, texture) {
 		return mesh;
 	};
 }
-
-Prop.loadAll = function() {
-	/**
-		Pre-load all prop images
-		Return a dict of image names mapped to textures
-		Can take a long time, should be used with caution
-	**/
-};
