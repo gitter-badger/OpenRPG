@@ -7,7 +7,7 @@ function GameStateManager() {
         CHARACTER_SELECT:2,
         PLAY_GAME:3
     };
-    var mode = MODES.GAME_SELECT;
+    var mode = MODES.PLAY_GAME;
     var games = null;
     var currentGame = null;
     var currentLevel = null;

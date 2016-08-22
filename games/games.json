@@ -3,17 +3,10 @@
         {
             "title":"Example Game",
             "playableCharacters":[],
-            "firstLevel":null
-        },
-        {
-            "title":"Example Game 2",
-            "playableCharacters":[],
-            "firstLevel":null
-        },
-        {
-            "title":"Example Game 3",
-            "playableCharacters":[],
-            "firstLevel":null
+            "firstLevel": {
+                "groundImg": "img/tiles/future-joy-tilee.png",
+                "name": "Example Level 1"
+            }
         }
     ]
 }

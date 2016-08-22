@@ -13,7 +13,9 @@
 
     <body>
         <script src="./src/lib/jquery.min.js"></script>
-        <script src="./src/lib/p5.min.js"></script>
+        <!-- <script src="./src/lib/p5.min.js"></script> -->
+        <script src="./src/lib/three.min.js"></script>
+        <script src="./src/Prop.js"></script>
         <script src="./src/Game.js"></script>
         <script src="./src/Level.js"></script>
         <script src="./src/GameStateManager.js"></script>
@@ -21,20 +23,38 @@
             "use strict";
 
             // Constants
-            var CANVAS_WIDTH = 640;
-            var CANVAS_HEIGHT = 480;
+            var VIEWPORT_WIDTH = 640;
+            var VIEWPORT_HEIGHT = 480;
             var FRAME_RATE = 60;
+            var FOV = 75;
 
-            function setup() {
-                createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-                frameRate(FRAME_RATE);
-            };
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(VIEWPORT_WIDTH,VIEWPORT_HEIGHT);
+            document.body.appendChild(renderer.domElement);
+
+            var level = new Level({
+                renderer: renderer
+            });
+
+            var camera = new THREE.PerspectiveCamera(
+                FOV, VIEWPORT_WIDTH / VIEWPORT_HEIGHT, 0.1, 1000
+            );
 
             var stateManager = new GameStateManager();
 
-            function draw() {
-                stateManager.step();
-            };
+            var testProp = new Prop();
+            level.addProp(testProp);
+
+            camera.position.z = 5;
+            camera.position.y = 1;
+
+            function render() {
+                requestAnimationFrame( render );
+                level.render();
+            }
+            render();
+
+
         </script>
     </body>
 </html>
