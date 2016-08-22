@@ -9,7 +9,7 @@ function Level(config) {
         name = "level_" + Level.currentLevelIndex;
         Level.currentLevelIndex++;
     }
-    
+
     var scene = new THREE.Scene();
     var renderer = config.renderer;
 
@@ -25,11 +25,7 @@ function Level(config) {
 	scene.add(ground);
 
     var npcs = config.npcs || null;
-    var exits = config.exits || null;    
-
-    var isVisible = function(image) {
-
-    };
+    var exits = config.exits || null;
 
     this.render = function() {
     	renderer.render(scene, camera);

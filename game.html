@@ -15,7 +15,9 @@
         <script src="./src/lib/jquery.min.js"></script>
         <!-- <script src="./src/lib/p5.min.js"></script> -->
         <script src="./src/lib/three.min.js"></script>
+        <script src="./src/Keys.js"></script>
         <script src="./src/Prop.js"></script>
+        <script src="./src/Player.js"></script>
         <script src="./src/Game.js"></script>
         <script src="./src/Level.js"></script>
         <script src="./src/GameStateManager.js"></script>
@@ -28,9 +30,13 @@
             var FRAME_RATE = 60;
             var FOV = 75;
 
+            var keysDown = {};
+
             var renderer = new THREE.WebGLRenderer();
             renderer.setSize(VIEWPORT_WIDTH,VIEWPORT_HEIGHT);
             document.body.appendChild(renderer.domElement);
+
+            var player = new Player();
 
             var level = new Level({
                 renderer: renderer
@@ -42,19 +48,39 @@
 
             var stateManager = new GameStateManager();
 
-            var testProp = new Prop();
+            var testProp = new Prop(1, 1);
             level.addProp(testProp);
+            level.addProp(player);
 
             camera.position.z = 5;
             camera.position.y = 1;
 
             function render() {
-                requestAnimationFrame( render );
+                if (keysDown[A_KEY]) {
+                    player.move(-0.02, 0);
+                }
+                if (keysDown[D_KEY]) {
+                    player.move(0.02, 0);
+                }
+                if (keysDown[W_KEY]) {
+                    player.move(0, -0.02);
+                }
+                if (keysDown[S_KEY]) {
+                    player.move(0, 0.02);
+                }
+                requestAnimationFrame(render);
                 level.render();
             }
             render();
 
+            // Event Listeners
+            document.onkeydown = function(e) {
+                keysDown[e.keyCode] = true;
+            };
 
+            document.onkeyup = function(e) {
+                keysDown[e.keyCode] = false;
+            };
         </script>
     </body>
 </html>

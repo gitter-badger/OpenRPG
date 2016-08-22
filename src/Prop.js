@@ -1,12 +1,21 @@
-function Prop(scene, x, z, img) {
+function Prop(x, z, texture) {
 	/**
 		A vertical prop
 	**/
 
 	var geometry = new THREE.PlaneBufferGeometry(1, 1);
-	var material = new THREE.MeshBasicMaterial(
-		{color: 0x880000}
-	);
+	var material;
+	if (texture){
+		material = new THREE.MeshBasicMaterial(
+			{map: texture}
+		);
+	}
+	else {
+		material = new THREE.MeshBasicMaterial(
+			{color: 0xff0000}
+		);
+	} 
+
 	var mesh = new THREE.Mesh(geometry, material);
 	mesh.position.y = 1;
 	mesh.position.x = x || 0;
@@ -15,8 +24,12 @@ function Prop(scene, x, z, img) {
 	this.getMesh = function() {
 		return mesh;
 	};
-
-	this.draw = function() {
-
-	};
 }
+
+Prop.loadAll = function() {
+	/**
+		Pre-load all prop images
+		Return a dict of image names mapped to textures
+		Can take a long time, should be used with caution
+	**/
+};
