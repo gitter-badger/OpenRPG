@@ -36,7 +36,9 @@ function Player(x, z, camera, img) {
 	};
 
 	this.jump = function() {
-		vy = 0.2;
+		if (vy === 0) {
+			vy = 0.2;
+		}
 	};
 
 	this.aimCamera = function() {

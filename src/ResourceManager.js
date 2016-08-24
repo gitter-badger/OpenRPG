@@ -1,20 +1,21 @@
-function ResourceManager() {
-	var propTextures = {};
+/**
+ *  This class handles all resource pre-loading
+ **/
+class ResourceManager {
 
-	this.loadAll = function() {
-		/**
-			Load all the resources
-		**/
-	
-		// Load things
-		var loader = new THREE.TextureLoader();
+    constructor() {
+        const resources = {};
+    }
 
+    preloadLevelResources(level) {
 
-		// Start the game
-		render();
-	};
+    }
 
-	this.getPropTextures = function() {
-		return propTextures;
-	};
+    hasResource(key) {
+        return key in this.resources;
+    }
+
+    getResource(key) {
+        return resources[key];
+    }
 }

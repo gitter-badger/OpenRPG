@@ -6,14 +6,15 @@
 
 from os import listdir
 import os.path
-from flask import Flask, request, send_from_directory, render_template, url_for, redirect
-import json
+from flask import Flask, request, send_from_directory, render_template, url_for, redirect, flash
+from games import *
+import random, string
 
 app = Flask(__name__)
+app.secret_key = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(64))
+app.register_blueprint(GAMES_PATH_BLUEPRINT)
 
 TILESET_DIRECTORY = "img/tiles"
-GAMES_DIRECTORY = "games"
-GAMES_CONFIG_FILE = "games/games.json"
 LEVELS_CONFIG_FILE = "levels/levels.json"
 
 class Tileset():
@@ -131,42 +132,10 @@ def sendImg(path):
 def sendCode(path):
     return send_from_directory("src", path)
 
-@app.route('/games/<path:path>')
-def sendGamesFile(path):
-    return send_from_directory("games", path)
 
 @app.route('/'  + TILESET_DIRECTORY + '/<path:path>')
 def sendTileset(path):
     return send_from_directory(TILESET_DIRECTORY, path)
-
-class Game:
-    def __init__(self, ID, config):
-        self.ID = ID
-        self.title = config["title"]
-        self.playableCharacters = config["playableCharacters"]
-        self.firstLevel = config["firstLevel"]
-
-def getAllGames():
-    try:
-        f = open(GAMES_CONFIG_FILE)
-        s = f.read().replace('\n', '')
-        f.close()
-        config = json.loads(s)
-    except Exception as e:
-        print e
-        return []
-
-    games = []
-    for i in xrange(len(config["games"])):
-        gameConfig = config["games"][i]
-        games.append(Game(i, gameConfig))
-
-    return games
-
-@app.route('/games')
-def showGames():
-    return render_template("games.html",
-        games=getAllGames())
 
 @app.route('/tilesets')
 def showTilesets():

@@ -12,6 +12,7 @@ function Level(config) {
 
     var scene = new THREE.Scene();
     var renderer = config.renderer;
+    var requiredResources = [];
 
     // Ground
     var groundImg = config.groundImg || null;

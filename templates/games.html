@@ -3,13 +3,20 @@
     <head>
     </head>
     <body>
+        {% include "messages.html" %}
         <h1>Games</h1>
         <a href="/">Back</a>
-        <p></p>
+        <h2>Existing games:</h2>
         <ul>
         {% for game in games %}
             <li><a href="/games/{{game.ID}}/edit">{{game.title}}</a></li>
         {% endfor %}
         </ul>
+        <h2>Create a new game:</h2>
+        <form action="games/new">
+            Title of the game:<br>
+            <input type="text" name="gameTitle"><br>
+            <input type="submit" value="Create!">
+        </form>
     </body>
 </html>

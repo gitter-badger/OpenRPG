@@ -30,6 +30,7 @@
             var VIEWPORT_HEIGHT = 480;
             var FRAME_RATE = 60;
             var FOV = 75;
+            var SERVER_URL = "http://127.0.0.1:5000"
 
             var keysDown = {};
 
@@ -49,7 +50,8 @@
 
             var stateManager = new GameStateManager();
             var resourceManager = new ResourceManager();
-            resourceManager.loadAll();
+            resourceManager.preloadLevelResources(level);
+            render();
 
             // TODO: remove me
             var testProp = new Prop(1, 1);
