@@ -1,8 +1,15 @@
 # Open RPG
-This is a simple HTML5 role-playing game framework. It will include tools for building RPGs.
+This is an HTML5 web app for creating (and sharing) RPGs
+
+## Features
+* 2.5d gameplay
+* Dynamic resource handling
+* Tileset creation tool (TODO)
+* Level-building tool (TODO)
+* NPC dialog tool (TODO)
 
 ##  Installation
-All dependencies are included. Simply clone the repository or download and extract the zip.
+`$ pip install -r requirements.txt`
 
 ## Use
-`$ python server.py`
+`$ make server`
