@@ -7,11 +7,22 @@
         <h1>Games</h1>
         <a href="/">Back</a>
         <h2>Existing games:</h2>
-        <ul>
-        {% for game in games %}
-            <li><a href="/games/{{game.ID}}/edit">{{game.title}}</a></li>
-        {% endfor %}
-        </ul>
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            {% for game in games %}
+                <tr>
+                    <td>{{game.ID}}</td>
+                    <td>{{game.title}}</td>
+                    <td><a href="/games/{{game.ID}}/edit">Edit</a></td>
+                    <td><a href="/games/{{game.ID}}/delete">DELETE</a></td>
+                </tr>
+            {% endfor %}
+        </table>
         <h2>Create a new game:</h2>
         <form action="games/new" method="POST">
             Title of the game:<br>

@@ -10,13 +10,17 @@ GAMES_PATH_BLUEPRINT = Blueprint('GAMES_PATH_BLUEPRINT', __name__, template_fold
 GAMES_DIRECTORY = "games"
 GAMES_CONFIG_FILE = "games/games.json"
 
+GamesList = None
+
 class Game:
     '''
         This class represents a Game
         It handles all saving and loading of data about the game
     '''
-    def __init__(self, title="New Game"):
+
+    def __init__(self, title="New Game", ID=None):
         self.title = title
+        self.ID = ID
 
     def getDir(self):
         return os.path.join(GAMES_DIRECTORY, self.title.strip().replace(' ', ''))
@@ -34,35 +38,69 @@ class Game:
         directory = self.getDir()
         try:
             f = open(os.path.join(directory, 'data.json'), 'w')
-            f.write(json.dumps(self.__dict__))
+            f.write(json.dumps(self.__dict__, indent=3))
             f.close()
         except IOError as e:
             print e
 
-    def load(self):
+    def setID(self, ID):
+        if self.ID is not None:
+            return
+
+        self.ID = ID
+        self.save()
+
+    @staticmethod
+    def load(directory):
         '''
-            Load metadata from JSON
+            Load metadata from a directory
         '''
-        directory = self.getDir()
         try:
             f = open(os.path.join(directory, 'data.json'), 'r')
-            self.__dict__ = json.load(f)
+            game = Game()
+            game.__dict__ = json.load(f)
             f.close()
+
+            return game
         except IOError as e:
             print e
 
-def getAllGames():
+class GamesList:
     '''
-        Returns a list of Games
+        Manages the list of games and ensures unique IDs
     '''
-    gamesDirectories = [x for x in os.listdir(GAMES_DIRECTORY)]
+    currentID = 0
+    gamesDirectories = [os.path.join(GAMES_DIRECTORY, x) for x in os.listdir(GAMES_DIRECTORY)]
     games = []
 
-    for directory in gamesDirectories:
-    	games.append(Game(directory))
-        games[-1].load()
+    @staticmethod
+    def getID():
+        result = GamesList.currentID
+        GamesList.currentID += 1
 
-    return games
+        return result
+
+    @staticmethod
+    def init():
+        for directory in GamesList.gamesDirectories:
+            GamesList.addGame(Game.load(directory))
+
+    @staticmethod
+    def addGame(game):
+        if game.ID is None:
+            game.setID(GamesList.getID())
+        else:
+            GamesList.currentID = max(game.ID, GamesList.currentID)
+        GamesList.games.append(game)
+
+    @staticmethod
+    def getAllGames():
+        '''
+            Returns a list of Games
+        '''
+        return GamesList.games
+
+GamesList.init()
 
 '''
     Views
@@ -72,7 +110,7 @@ def getAllGames():
 @GAMES_PATH_BLUEPRINT.route('/games')
 def showAllGames():
     return render_template("games.html",
-        games=getAllGames())
+        games=GamesList.getAllGames())
 
 # Create a new game
 @GAMES_PATH_BLUEPRINT.route('/games/new', methods=['POST'])
@@ -90,6 +128,9 @@ def createGame():
 
     # Save metadata
     newGame.save()
+
+    # Add the game to the list
+    GamesList.addGame(newGame)
 
     # Create the directories for the game's images
     os.makedirs(newGame.getImgDir())
