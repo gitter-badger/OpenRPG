@@ -5,6 +5,7 @@ from flask import Flask, request, send_from_directory, render_template, url_for,
 import json
 import os
 import shutil
+from level import Level
 
 GAMES_PATH_BLUEPRINT = Blueprint('GAMES_PATH_BLUEPRINT', __name__, template_folder='templates')
 
@@ -37,21 +38,57 @@ class Tileset:
     def save(self):
         try:
             f = open(self.configPath, 'w')
-            f.write(json.dumps(self.__dict__, indent=3))
+            f.write(json.dumps(self.__dict__, indent=3), sort_keys=True)
             f.close()
         except IOError as e:
             print e
+
+class DictEncoder(json.JSONEncoder):
+    def default(self, o):
+        return o.__dict__
+
+def dirExists(path):
+    return os.path.exists(path) and os.path.isdir(path)
 
 class Game:
     '''
         This class represents a Game
         It handles all saving and loading of data about the game
     '''
+    # TODO: loading of levels by dict is broken, restructure
 
-    def __init__(self, title="New Game", ID=None):
+    def __init__(self, title="New Game"):
         self.title = title
-        self.ID = ID
+        self.ID = None
+        self.levels = []
 
+    def addLevel(self):
+        self.levels.append(Level("New Level"))
+        self.save()
+
+    def initFiles(self):
+        os.makedirs(self.getDir())
+
+        # Save metadata
+        self.save()
+
+        # Create folders if they do not exist
+        directories = [
+            os.path.join(self.getDir(), 'levels'), # TODO: remove
+            self.getImgDir(),
+            os.path.join(self.getImgDir(), 'characters'),
+            os.path.join(self.getImgDir(), 'floors'),
+            os.path.join(self.getImgDir(), 'props'),
+            os.path.join(self.getImgDir(), 'tiles'),
+            self.getAudioDir(),
+            os.path.join(self.getAudioDir(), 'music'),
+            os.path.join(self.getAudioDir(), 'sfx'),
+        ]
+
+        for directory in directories:
+            if not dirExists(directory):
+                os.makedirs(directory)
+        
     def getDir(self):
         return os.path.join(GAMES_DIRECTORY, self.title.strip().replace(' ', '_'))
 
@@ -71,7 +108,7 @@ class Game:
         directory = self.getDir()
         try:
             f = open(os.path.join(directory, 'data.json'), 'w')
-            f.write(json.dumps(self.__dict__, indent=3))
+            f.write(json.dumps(self, indent=3, cls=DictEncoder, sort_keys=True))
             f.close()
         except IOError as e:
             print e
@@ -93,6 +130,9 @@ class Game:
 
         return tilesets
 
+    def getAllLevels(self):
+        return self.levels
+
     @staticmethod
     def load(directory):
         '''
@@ -101,8 +141,17 @@ class Game:
         try:
             f = open(os.path.join(directory, 'data.json'), 'r')
             game = Game()
-            game.__dict__ = json.load(f)
+            values = json.load(f)
+            mustSave = False
+            for key in game.__dict__:
+                if not key in values:
+                    mustSave = True
+            for key in values:
+                game.__dict__[key] = values[key] 
             f.close()
+
+            if mustSave:
+                game.save()
 
             return game
         except IOError as e:
@@ -192,29 +241,8 @@ def createGame():
         flash("Failed to create game. Directory already exists!")
         return redirect(url_for('GAMES_PATH_BLUEPRINT.showAllGames'))
 
-    # TODO: Refactor this file-level logic into Game
-    # ===
-    # Create the directory for the game
-    os.makedirs(newGame.getDir())
-
-    # Save metadata
-    newGame.save()
-
-    # Add the game to the list
+    newGame.initFiles()
     GamesList.addGame(newGame)
-
-    # Create the directories for the game's images
-    os.makedirs(newGame.getImgDir())
-    os.makedirs(os.path.join(newGame.getImgDir(), 'characters'))
-    os.makedirs(os.path.join(newGame.getImgDir(), 'floors'))
-    os.makedirs(os.path.join(newGame.getImgDir(), 'props'))
-    os.makedirs(os.path.join(newGame.getImgDir(), 'tiles'))
-
-    # Create the directories for the game's audio
-    os.makedirs(newGame.getAudioDir())
-    os.makedirs(os.path.join(newGame.getAudioDir(), 'music'))
-    os.makedirs(os.path.join(newGame.getAudioDir(), 'sfx'))
-    # ===
 
     flash("Created new game: " + gameTitle)
 
@@ -238,7 +266,8 @@ def editGame(gameID):
 
     return render_template("editGame.html",
         game=game,
-        tilesets=game.getAllTilesets())
+        tilesets=game.getAllTilesets(),
+        levels=game.getAllLevels())
 
 # Send a file from the games directory
 @GAMES_PATH_BLUEPRINT.route('/games/<path:path>')
@@ -280,3 +309,11 @@ def updateTileset(gameID, name):
     return redirect(url_for('GAMES_PATH_BLUEPRINT.editTileset',
         gameID=gameID,
         name=name))
+
+# Create a new level
+@GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/new', methods=['POST'])
+def createLeve(gameID):
+    GamesList.getByID(gameID).addLevel()
+
+    return redirect(url_for('GAMES_PATH_BLUEPRINT.editGame',
+        gameID=gameID))

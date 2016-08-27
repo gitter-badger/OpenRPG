@@ -21,25 +21,39 @@
 
     <h2>Tilesets</h2>
     <!-- Show a list of tilesets with an option to edit -->
-    <ul>
-      {% for tileset in tilesets %}
-        <li>
-          <a href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
-            <img src="/{{tileset.path}}" width="128"></img>
-          </a>
-        </li>
-      {% endfor %}
-      <form action="" method="POST">
-        <!-- TODO: -->
-        <input type="file">
-        <input type="submit" value="Add">
-      </form>
-    </ul>
+    {% for tileset in tilesets %}
+      <a href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
+        <img src="/{{tileset.path}}" width="128"></img>
+      </a>
+    {% endfor %}
+    <form action="" method="POST">
+      <!-- TODO: -->
+      <input type="file">
+      <input type="submit" value="Add">
+    </form>
 
     <h2>Levels</h2>
     <!-- Show a list of levels with an overview -->
-    <ul>
-      <form action="" method="POST">
+    <table border="1">
+      <!-- Header -->
+      <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Floorplan</th>
+          <th>Heightmap</th>
+          <th>Delete</th>
+      </tr>
+      {% for level in levels %}
+        <tr>
+          <td>{{level.ID}}</td>
+          <td>{{level.name}}</td>
+          <td><a href="">Edit</a></td>
+          <td><a href="">Edit</a></td>
+          <td></td>
+      </tr>
+      {% endfor %}
+    </table>
+      <form action="/games/{{game.ID}}/levels/new" method="POST">
         <!-- TODO: Level creator -->
         <input type="submit" value="Add">
       </form>
