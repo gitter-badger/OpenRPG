@@ -17,13 +17,6 @@ app.register_blueprint(GAMES_PATH_BLUEPRINT)
 TILESET_DIRECTORY = "img/tiles"
 LEVELS_CONFIG_FILE = "levels/levels.json"
 
-class Tileset():
-    def __init__(self, fileName, size=32, xoff=0, yoff=0):
-        self.fileName = fileName
-        self.size = int(size)
-        self.xoff = int(xoff)
-        self.yoff = int(yoff)
-
 class Level():
     def __init__(self, ID, name, width, height, npcs=[], tilesets=[], tileImages=[]):
         self.ID = ID
@@ -89,33 +82,6 @@ def getAllLevels():
 
     return levels
 
-def getAllTilesets():
-    config = loadTilesetConfigData()
-    if config is None:
-        print "Error: Failed to load tileset config data"
-        config = dict()
-
-    tilesets = []
-
-    files = listdir(TILESET_DIRECTORY)
-    for file in files:
-        if file.endswith(".png"):
-            if not file in config:
-                config[file] = dict()
-                config[file]["size"] = 32
-                config[file]["xoff"] = 0
-                config[file]["yoff"] = 0
-            size = config[file]["size"]
-            xoff = config[file]["xoff"]
-            yoff = config[file]["yoff"]
-
-            tilesets.append(Tileset(file, size, xoff, yoff))
-
-    # Save config data
-    writeTilesetConfigData(config)
-
-    return tilesets
-
 @app.route("/")
 def showHomepage():
     return send_from_directory(".", "index.html")
@@ -124,23 +90,9 @@ def showHomepage():
 def showGame():
     return send_from_directory(".", "game.html")
 
-@app.route("/img/<path:path>")
-def sendImg(path):
-    return send_from_directory("img", path)
-
 @app.route("/src/<path:path>")
 def sendCode(path):
     return send_from_directory("src", path)
-
-
-@app.route('/'  + TILESET_DIRECTORY + '/<path:path>')
-def sendTileset(path):
-    return send_from_directory(TILESET_DIRECTORY, path)
-
-@app.route('/tilesets')
-def showTilesets():
-    return render_template("tilesets.html",
-        tilesets=getAllTilesets())
 
 @app.route('/levels')
 def showLevels():

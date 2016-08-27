@@ -4,7 +4,7 @@
     </head>
     <body>
         <h1>{{tileset.fileName}}</h1>
-        <a href="/tilesets">Back</a>
+        <a href="/games/{{game.ID}}/edit">Back</a>
         
         <script>
             "use strict";
@@ -14,20 +14,20 @@
                 /**
                     Update variables when the form is changed
                 **/
-                tileSize = parseInt(document.querySelector("#size").value);
+                tileSize = max(parseInt(document.querySelector("#size").value), 1);
                 xoff = parseInt(document.querySelector("#xoff").value);
                 yoff = parseInt(document.querySelector("#yoff").value);
             }
         </script>
 
         <!-- Config values form -->
-        <form method="post" action='/tilesets/{{tileset.fileName}}/update'>
+        <form method="POST" action="/games/{{game.ID}}/tilesets/{{tileset.name}}/update">
             Tile size:<br>
-            <input id="size" type="text" name="size" onchange="updateValues();"><br>
+            <input value="{{tileset.tileSize}}" id="size" type="text" name="size" onchange="updateValues();"><br>
             X offset:<br>
-            <input id="xoff" type="text" name="xoff" onchange="updateValues();"><br>
+            <input value="{{tileset.xoff}}" id="xoff" type="text" name="xoff" onchange="updateValues();"><br>
             Y offset:<br>
-            <input id="yoff" type="text" name="yoff" onchange="updateValues();"><br>
+            <input value="{{tileset.yoff}}" id="yoff" type="text" name="yoff" onchange="updateValues();"><br>
             <input type="submit" value="Submit">
         </form>
 
@@ -35,9 +35,9 @@
         <script>
             "use strict";
 
-            var url = "/{{tilesetDirectory}}/{{tileset.fileName}}";
+            var url = "/{{tileset.path}}";
             var img;
-            tileSize = {{tileset.size}};
+            tileSize = {{tileset.tileSize}};
             document.querySelector("#size").value = tileSize;
             xoff = {{tileset.xoff}};
             document.querySelector("#xoff").value = xoff;
@@ -49,6 +49,7 @@
                 createCanvas(1000, 1000);
             }
 
+            
             function draw() {
                 background(255);
                 image(img, 0, 0);

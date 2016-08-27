@@ -10,6 +10,15 @@ GAMES_PATH_BLUEPRINT = Blueprint('GAMES_PATH_BLUEPRINT', __name__, template_fold
 
 GAMES_DIRECTORY = "games"
 
+class Tileset:
+    def __init__(self, path, thumbnail=None):
+        self.name = path.split(os.sep)[-1]
+        self.path = path
+        self.thumbnail = thumbnail
+        self.tileSize = 32
+        self.xoff = 0
+        self.yoff = 0
+
 class Game:
     '''
         This class represents a Game
@@ -29,6 +38,9 @@ class Game:
     def getAudioDir(self):
         return os.path.join(self.getDir(), 'audio')
 
+    def getTileDir(self):
+        return os.path.join(self.getImgDir(), "tiles")
+
     def save(self):
         '''
             Save JSON metadata
@@ -47,6 +59,16 @@ class Game:
 
         self.ID = ID
         self.save()
+
+    def getAllTilesets(self):
+        tilesets = []
+        tileDir = self.getTileDir()
+
+        for path in os.listdir(self.getTileDir()):
+            if path.endswith(".png"):
+                tilesets.append(Tileset(os.path.join(tileDir, path)))
+
+        return tilesets
 
     @staticmethod
     def load(directory):
@@ -189,9 +211,28 @@ def deleteGame(gameID):
 # Edit a game
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/edit')
 def editGame(gameID):
-    return render_template("editGame.html", game=GamesList.getByID(gameID))
+    game = GamesList.getByID(gameID)
+
+    return render_template("editGame.html",
+        game=game,
+        tilesets=game.getAllTilesets())
 
 # Send a file from the games directory
 @GAMES_PATH_BLUEPRINT.route('/games/<path:path>')
 def sendGamesFile(path):
     return send_from_directory("games", path)
+
+# Edit a tileset
+@GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/tilesets/<string:name>/edit')
+def editTileset(gameID, name):
+    game = GamesList.getByID(gameID)
+    tileset = None
+
+    for t in game.getAllTilesets():
+        if t.name == name:
+            tileset = t
+            break
+
+    return render_template('editTileset.html',
+        game=game,
+        tileset=tileset)
