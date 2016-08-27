@@ -5,13 +5,19 @@
   <body>
     {% include "messages.html" %}
 
+    <script>
+        function confirmDeletion(title) {
+            return confirm("Are you sure you want to delete " + title + "?");
+        }
+    </script>
+
     <h1>{{game.title}}</h1>
     <a href="/games">Back</a>
 
     <h2>Title</h2>
     <form action="/games/{{game.ID}}/setTitle" method="POST">
-      <input type="text" name="gameTitle" value="{{game.title}}">
-      <input type="submit" value="Update">
+        <input type="text" name="gameTitle" value="{{game.title}}">
+        <input type="submit" value="Update">
     </form>
 
     <h2>Characters</h2>
@@ -22,37 +28,44 @@
     <h2>Tilesets</h2>
     <!-- Show a list of tilesets with an option to edit -->
     {% for tileset in tilesets %}
-      <a href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
-        <img src="/{{tileset.path}}" width="128"></img>
-      </a>
+        <a href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
+            <img src="/{{tileset.path}}" width="128"></img>
+        </a>
     {% endfor %}
     <form action="" method="POST">
-      <!-- TODO: -->
-      <input type="file">
-      <input type="submit" value="Add">
+        <!-- TODO: -->
+        <input type="file">
+        <input type="submit" value="Add">
     </form>
 
     <h2>Levels</h2>
     <!-- Show a list of levels with an overview -->
     <table border="1">
-      <!-- Header -->
-      <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Floorplan</th>
-          <th>Heightmap</th>
-          <th>Delete</th>
-      </tr>
-      {% for level in levels %}
+        <!-- Header -->
         <tr>
-          <td>{{level.ID}}</td>
-          <td>{{level.name}}</td>
-          <td><a href="">Edit</a></td>
-          <td><a href="">Edit</a></td>
-          <td></td>
-      </tr>
-      {% endfor %}
-    </table>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Floorplan</th>
+            <th>Heightmap</th>
+            <th>Delete</th>
+        </tr>
+        {% for level in levels %}
+            <tr>
+                <td>{{level.ID}}</td>
+                <td>{{level.name}}</td>
+                <td><a href="">Edit</a></td>
+                <td><a href="">Edit</a></td>
+                <td>
+                <form
+                    method="POST"
+                    action="/games/{{game.ID}}/levels/{{level.ID}}/delete"
+                    onsubmit="return confirmDeletion('{{level.name}}');">
+                    <input type="submit" value="DELETE">
+                </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
       <form action="/games/{{game.ID}}/levels/new" method="POST">
         <input type="text" name="name" value="New Level">
         <input type="submit" value="Add">

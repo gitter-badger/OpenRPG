@@ -18,6 +18,9 @@ class Level:
         self.configPath = os.path.join(self.directory, 'config.json')
         self.ID = None
 
+    def delete(self):
+        shutil.rmtree(self.getDir())
+
     def initFiles(self):
         self.ID = Level.getID()
         os.makedirs(self.directory)

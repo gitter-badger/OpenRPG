@@ -129,6 +129,14 @@ class Game:
         else:
             flash("Could not create level, directory already exists")
 
+    def deleteLevel(self, levelID):
+        levels = self.getAllLevels()
+
+        for i in xrange(len(levels)):
+            if levels[i].ID == levelID:
+                levels[i].delete()
+                break
+
     def getAllLevels(self):
         levels = []
 
@@ -319,8 +327,18 @@ def updateTileset(gameID, name):
 
 # Create a new level
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/new', methods=['POST'])
-def createLeve(gameID):
+def createLevel(gameID):
     GamesList.getByID(gameID).addLevel(request.form['name'])
+
+    return redirect(url_for('GAMES_PATH_BLUEPRINT.editGame',
+        gameID=gameID))
+
+# Delete a level
+@GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/<int:levelID>/delete', methods=['POST'])
+def deleteLevel(gameID, levelID):
+    GamesList.getByID(gameID).deleteLevel(levelID)
+
+    flash("Level deleted")
 
     return redirect(url_for('GAMES_PATH_BLUEPRINT.editGame',
         gameID=gameID))
