@@ -54,7 +54,7 @@
       {% endfor %}
     </table>
       <form action="/games/{{game.ID}}/levels/new" method="POST">
-        <!-- TODO: Level creator -->
+        <input type="text" name="name" value="New Level">
         <input type="submit" value="Add">
       </form>
     </ul>

@@ -6,11 +6,11 @@ import json
 import os
 import shutil
 from level import Level
+from util import *
 
 GAMES_PATH_BLUEPRINT = Blueprint('GAMES_PATH_BLUEPRINT', __name__, template_folder='templates')
 
-GAMES_DIRECTORY = "games"
-
+GAMES_DIRECTORY = 'games'
 class Tileset:
     def __init__(self, path):
         self.name = path.split(os.sep)[-1]
@@ -43,28 +43,15 @@ class Tileset:
         except IOError as e:
             print e
 
-class DictEncoder(json.JSONEncoder):
-    def default(self, o):
-        return o.__dict__
-
-def dirExists(path):
-    return os.path.exists(path) and os.path.isdir(path)
-
 class Game:
     '''
         This class represents a Game
         It handles all saving and loading of data about the game
     '''
-    # TODO: loading of levels by dict is broken, restructure
 
     def __init__(self, title="New Game"):
         self.title = title
         self.ID = None
-        self.levels = []
-
-    def addLevel(self):
-        self.levels.append(Level("New Level"))
-        self.save()
 
     def initFiles(self):
         os.makedirs(self.getDir())
@@ -74,7 +61,7 @@ class Game:
 
         # Create folders if they do not exist
         directories = [
-            os.path.join(self.getDir(), 'levels'), # TODO: remove
+            self.getLevelsDir(),
             self.getImgDir(),
             os.path.join(self.getImgDir(), 'characters'),
             os.path.join(self.getImgDir(), 'floors'),
@@ -91,6 +78,9 @@ class Game:
         
     def getDir(self):
         return os.path.join(GAMES_DIRECTORY, self.title.strip().replace(' ', '_'))
+
+    def getLevelsDir(self):
+        return os.path.join(self.getDir(), 'levels')
 
     def getImgDir(self):
         return os.path.join(self.getDir(), 'img')
@@ -130,8 +120,25 @@ class Game:
 
         return tilesets
 
+    def addLevel(self, name):
+        level = Level(name, self.getLevelsDir())
+        
+        if not dirExists(level.getDir()):
+            level.initFiles()
+            flash("New level created: " + name)
+        else:
+            flash("Could not create level, directory already exists")
+
     def getAllLevels(self):
-        return self.levels
+        levels = []
+
+        for path in os.listdir(self.getLevelsDir()):
+            level = Level(path, self.getLevelsDir())
+            print level.directory
+            level.load()
+            levels.append(level)
+
+        return levels
 
     @staticmethod
     def load(directory):
@@ -313,7 +320,7 @@ def updateTileset(gameID, name):
 # Create a new level
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/new', methods=['POST'])
 def createLeve(gameID):
-    GamesList.getByID(gameID).addLevel()
+    GamesList.getByID(gameID).addLevel(request.form['name'])
 
     return redirect(url_for('GAMES_PATH_BLUEPRINT.editGame',
         gameID=gameID))
