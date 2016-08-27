@@ -12,4 +12,4 @@ This is an HTML5 web app for creating (and sharing) RPGs
 `$ pip install -r requirements.txt`
 
 ## Use
-`$ make server`
+`$ ./run.sh`
