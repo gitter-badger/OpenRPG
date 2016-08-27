@@ -11,13 +11,36 @@ GAMES_PATH_BLUEPRINT = Blueprint('GAMES_PATH_BLUEPRINT', __name__, template_fold
 GAMES_DIRECTORY = "games"
 
 class Tileset:
-    def __init__(self, path, thumbnail=None):
+    def __init__(self, path):
         self.name = path.split(os.sep)[-1]
+        self.directory = os.sep.join(path.split(os.sep)[:-1])
         self.path = path
-        self.thumbnail = thumbnail
+        self.configPath = os.path.join(self.directory, self.name.replace('.png', '.json'))
         self.tileSize = 32
         self.xoff = 0
         self.yoff = 0
+
+        if os.path.exists(self.configPath):
+            self.load()
+        else:
+            self.save()
+
+    def load(self):
+        try:
+            f = open(self.configPath, 'r')
+            self.__dict__ = json.load(f)
+            f.close()
+
+        except IOError as e:
+            print e
+
+    def save(self):
+        try:
+            f = open(self.configPath, 'w')
+            f.write(json.dumps(self.__dict__, indent=3))
+            f.close()
+        except IOError as e:
+            print e
 
 class Game:
     '''
@@ -236,3 +259,24 @@ def editTileset(gameID, name):
     return render_template('editTileset.html',
         game=game,
         tileset=tileset)
+
+# Update a tileset
+@GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/tilesets/<string:name>/update', methods=['POST'])
+def updateTileset(gameID, name):
+    game = GamesList.getByID(gameID)
+    tileset = None
+
+    for t in game.getAllTilesets():
+        if t.name == name:
+            tileset = t
+            break
+
+    # Write values and save
+    tileset.tileSize = max(int(request.form['tileSize']), 1)
+    tileset.xoff = int(request.form['xoff'])
+    tileset.yoff = int(request.form['yoff'])
+    tileset.save()
+
+    return redirect(url_for('GAMES_PATH_BLUEPRINT.editTileset',
+        gameID=gameID,
+        name=name))

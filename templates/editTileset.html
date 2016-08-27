@@ -14,7 +14,7 @@
                 /**
                     Update variables when the form is changed
                 **/
-                tileSize = max(parseInt(document.querySelector("#size").value), 1);
+                tileSize = Math.max(parseInt(document.querySelector("#tileSize").value), 1);
                 xoff = parseInt(document.querySelector("#xoff").value);
                 yoff = parseInt(document.querySelector("#yoff").value);
             }
@@ -23,7 +23,7 @@
         <!-- Config values form -->
         <form method="POST" action="/games/{{game.ID}}/tilesets/{{tileset.name}}/update">
             Tile size:<br>
-            <input value="{{tileset.tileSize}}" id="size" type="text" name="size" onchange="updateValues();"><br>
+            <input value="{{tileset.tileSize}}" id="tileSize" type="text" name="tileSize" onchange="updateValues();"><br>
             X offset:<br>
             <input value="{{tileset.xoff}}" id="xoff" type="text" name="xoff" onchange="updateValues();"><br>
             Y offset:<br>
@@ -37,8 +37,8 @@
 
             var url = "/{{tileset.path}}";
             var img;
-            tileSize = {{tileset.tileSize}};
-            document.querySelector("#size").value = tileSize;
+            tileSize = Math.max({{tileset.tileSize}}, 1);
+            document.querySelector("#tileSize").value = tileSize;
             xoff = {{tileset.xoff}};
             document.querySelector("#xoff").value = xoff;
             yoff = {{tileset.yoff}};
