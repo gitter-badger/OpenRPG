@@ -4,6 +4,13 @@
     </head>
     <body>
         {% include "messages.html" %}
+
+        <script>
+            function confirmDeletion(id) {
+                return confirm("Are you sure you want to delete " + id + "?");
+            }
+        </script>
+
         <h1>Games</h1>
         <a href="/">Back</a>
         <h2>Existing games:</h2>
@@ -19,7 +26,14 @@
                     <td>{{game.ID}}</td>
                     <td>{{game.title}}</td>
                     <td><a href="/games/{{game.ID}}/edit">Edit</a></td>
-                    <td><a href="/games/{{game.ID}}/delete">DELETE</a></td>
+                    <td>
+                        <form
+                            method="POST"
+                            action="games/{{game.ID}}/delete"
+                            onsubmit="return confirmDeletion('{{game.title}}');">
+                            <input type="submit" value="DELETE">
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </table>

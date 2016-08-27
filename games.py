@@ -8,9 +8,6 @@ import os
 GAMES_PATH_BLUEPRINT = Blueprint('GAMES_PATH_BLUEPRINT', __name__, template_folder='templates')
 
 GAMES_DIRECTORY = "games"
-GAMES_CONFIG_FILE = "games/games.json"
-
-GamesList = None
 
 class Game:
     '''
@@ -23,7 +20,7 @@ class Game:
         self.ID = ID
 
     def getDir(self):
-        return os.path.join(GAMES_DIRECTORY, self.title.strip().replace(' ', ''))
+        return os.path.join(GAMES_DIRECTORY, self.title.strip().replace(' ', '_'))
 
     def getImgDir(self):
         return os.path.join(self.getDir(), 'img')
@@ -90,7 +87,8 @@ class GamesList:
         if game.ID is None:
             game.setID(GamesList.getID())
         else:
-            GamesList.currentID = max(game.ID, GamesList.currentID)
+            if game.ID >= GamesList.currentID:
+                GamesList.currentID = game.ID + 1
         GamesList.games.append(game)
 
     @staticmethod
@@ -146,6 +144,12 @@ def createGame():
 
 
     flash("Created new game: " + gameTitle)
+    return redirect(url_for('GAMES_PATH_BLUEPRINT.showAllGames'))
+
+# Delete a game
+@GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/delete', methods=['POST'])
+def deleteGame(gameID):
+    flash("Deleted Game")
     return redirect(url_for('GAMES_PATH_BLUEPRINT.showAllGames'))
 
 # Send a file from the games directory
