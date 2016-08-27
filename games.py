@@ -4,6 +4,7 @@
 from flask import Flask, request, send_from_directory, render_template, url_for, redirect, flash, Blueprint
 import json
 import os
+import shutil
 
 GAMES_PATH_BLUEPRINT = Blueprint('GAMES_PATH_BLUEPRINT', __name__, template_folder='templates')
 
@@ -92,6 +93,30 @@ class GamesList:
         GamesList.games.append(game)
 
     @staticmethod
+    def getByID(gameID):
+        # TODO: use a hash map to index games
+        for i in xrange(len(GamesList.games)):
+            game = GamesList.games[i]
+            if game.ID == gameID:
+                return game
+
+        return None
+
+    @staticmethod
+    def removeGame(gameID):
+        '''
+            Removes a game from the list and deletes it
+            Throws: IOError
+        '''
+        for i in xrange(len(GamesList.games)):
+            game = GamesList.games[i]
+            if game.ID == gameID:
+                shutil.rmtree(game.getDir())
+                del GamesList.games[i]
+                flash("Deleted Game " + game.title)
+                break
+
+    @staticmethod
     def getAllGames():
         '''
             Returns a list of Games
@@ -121,6 +146,9 @@ def createGame():
     if os.path.isdir(newGame.getDir()):
         flash("Failed to create game. Directory already exists!")
         return redirect(url_for('GAMES_PATH_BLUEPRINT.showAllGames'))
+
+    # TODO: Refactor this file-level logic into Game
+    # ===
     # Create the directory for the game
     os.makedirs(newGame.getDir())
 
@@ -141,16 +169,27 @@ def createGame():
     os.makedirs(newGame.getAudioDir())
     os.makedirs(os.path.join(newGame.getAudioDir(), 'music'))
     os.makedirs(os.path.join(newGame.getAudioDir(), 'sfx'))
-
+    # ===
 
     flash("Created new game: " + gameTitle)
+
     return redirect(url_for('GAMES_PATH_BLUEPRINT.showAllGames'))
 
 # Delete a game
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/delete', methods=['POST'])
 def deleteGame(gameID):
-    flash("Deleted Game")
+    try:
+        GamesList.removeGame(gameID)
+    except IOError as e:
+        print e
+        flash("Something went wrong!")
+    
     return redirect(url_for('GAMES_PATH_BLUEPRINT.showAllGames'))
+
+# Edit a game
+@GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/edit')
+def editGame(gameID):
+    return render_template("editGame.html", game=GamesList.getByID(gameID))
 
 # Send a file from the games directory
 @GAMES_PATH_BLUEPRINT.route('/games/<path:path>')

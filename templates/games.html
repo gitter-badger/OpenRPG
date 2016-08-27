@@ -6,21 +6,25 @@
         {% include "messages.html" %}
 
         <script>
-            function confirmDeletion(id) {
-                return confirm("Are you sure you want to delete " + id + "?");
+            function confirmDeletion(title) {
+                return confirm("Are you sure you want to delete " + title + "?");
             }
         </script>
 
         <h1>Games</h1>
         <a href="/">Back</a>
+
         <h2>Existing games:</h2>
         <table border="1">
+            <!-- Header -->
             <tr>
                 <th>ID</th>
                 <th>Title</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
+
+            <!-- Rows -->
             {% for game in games %}
                 <tr>
                     <td>{{game.ID}}</td>
@@ -37,6 +41,7 @@
                 </tr>
             {% endfor %}
         </table>
+
         <h2>Create a new game:</h2>
         <form action="games/new" method="POST">
             Title of the game:<br>
