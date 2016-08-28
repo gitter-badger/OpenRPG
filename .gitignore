@@ -3,3 +3,4 @@ env
 *.pyc
 *.pyo
 games/*
+documentation
