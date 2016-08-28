@@ -26,6 +26,9 @@ class Tileset(Saveable):
         else:
             self.save()
 
+    def getSaveFilePath(self):
+        return os.path.join(self.directory, self.name.replace('.png', '_config.json'))
+
 class Game(Saveable):
     '''
         This class represents a Game
