@@ -9,7 +9,7 @@ from util import *
 
 LEVELS_PATH_BLUEPRINT = Blueprint('LEVELS_PATH_BLUEPRINT', __name__, template_folder='templates')
 
-class Level:
+class Level(Saveable):
     currentID = -1
 
     def __init__(self, name, directory):
@@ -25,26 +25,6 @@ class Level:
         self.ID = Level.getID()
         os.makedirs(self.directory)
         self.save()
-
-    def load(self):
-        try:
-            f = open(self.configPath, 'r')
-            self.__dict__ = json.load(f)
-            f.close()
-
-            if self.ID > Level.currentID:
-                Level.currentID = self.ID
-
-        except IOError as e:
-            print e
-
-    def save(self):
-        try:
-            f = open(self.configPath, 'w')
-            f.write(json.dumps(self, cls=DictEncoder, indent=3, sort_keys=True))
-            f.close()
-        except IOError as e:
-            print e
 
     def getDir(self):
         return self.directory

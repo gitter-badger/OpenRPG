@@ -11,6 +11,7 @@ from util import *
 GAMES_PATH_BLUEPRINT = Blueprint('GAMES_PATH_BLUEPRINT', __name__, template_folder='templates')
 
 GAMES_DIRECTORY = 'games'
+
 class Tileset:
     def __init__(self, path):
         self.name = path.split(os.sep)[-1]
@@ -43,7 +44,7 @@ class Tileset:
         except IOError as e:
             print e
 
-class Game:
+class Game(Saveable):
     '''
         This class represents a Game
         It handles all saving and loading of data about the game
@@ -52,6 +53,7 @@ class Game:
     def __init__(self, title="New Game"):
         self.title = title
         self.ID = None
+        self.directory = os.path.join(GAMES_DIRECTORY, self.title.strip().replace(' ', '_'))
 
     def initFiles(self):
         os.makedirs(self.getDir())
@@ -77,7 +79,7 @@ class Game:
                 os.makedirs(directory)
         
     def getDir(self):
-        return os.path.join(GAMES_DIRECTORY, self.title.strip().replace(' ', '_'))
+        return self.directory
 
     def getLevelsDir(self):
         return os.path.join(self.getDir(), 'levels')
@@ -90,18 +92,6 @@ class Game:
 
     def getTileDir(self):
         return os.path.join(self.getImgDir(), "tiles")
-
-    def save(self):
-        '''
-            Save JSON metadata
-        '''
-        directory = self.getDir()
-        try:
-            f = open(os.path.join(directory, 'data.json'), 'w')
-            f.write(json.dumps(self, indent=3, cls=DictEncoder, sort_keys=True))
-            f.close()
-        except IOError as e:
-            print e
 
     def setID(self, ID):
         if self.ID is not None:
@@ -148,30 +138,6 @@ class Game:
 
         return levels
 
-    @staticmethod
-    def load(directory):
-        '''
-            Load metadata from a directory
-        '''
-        try:
-            f = open(os.path.join(directory, 'data.json'), 'r')
-            game = Game()
-            values = json.load(f)
-            mustSave = False
-            for key in game.__dict__:
-                if not key in values:
-                    mustSave = True
-            for key in values:
-                game.__dict__[key] = values[key] 
-            f.close()
-
-            if mustSave:
-                game.save()
-
-            return game
-        except IOError as e:
-            print e
-
 class GamesList:
     '''
         Manages the list of games and ensures unique IDs
@@ -188,9 +154,17 @@ class GamesList:
         return result
 
     @staticmethod
+    def load(directory):
+        result = Game()
+        result.directory = directory
+        result.load()
+
+        return result
+
+    @staticmethod
     def init():
         for directory in GamesList.gamesDirectories:
-            GamesList.addGame(Game.load(directory))
+            GamesList.addGame(GamesList.load(directory))
 
     @staticmethod
     def addGame(game):
