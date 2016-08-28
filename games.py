@@ -127,6 +127,12 @@ class Game(Saveable):
 
         return levels
 
+    def getLevelByID(self, levelID):
+        for level in self.getAllLevels():
+            if level.ID == levelID:
+                return level
+        flash("Error: No such level")
+
 class GamesList:
     '''
         Manages the list of games and ensures unique IDs
@@ -336,3 +342,13 @@ def deleteLevel(gameID, levelID):
 
     return redirect(url_for('GAMES_PATH_BLUEPRINT.editGame',
         gameID=gameID))
+
+@GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/<int:levelID>/floorplan/edit')
+def editLevelFloorplan(gameID, levelID):
+    game = GamesList.getByID(gameID)
+    level = game.getLevelByID(levelID)
+
+    return render_template('editLevelFloorplan.html',
+        game=game,
+        level=level,
+        tilesets=game.getAllTilesets())

@@ -1,21 +1,25 @@
 '''
-    This file contains all code related to the games/{{gameID}}/levels directory
+    
 '''
-from flask import Flask, request, send_from_directory, render_template, url_for, redirect, flash, Blueprint
+
 import json
 import os
 import shutil
 from util import *
 
-LEVELS_PATH_BLUEPRINT = Blueprint('LEVELS_PATH_BLUEPRINT', __name__, template_folder='templates')
-
-class Level(Saveable):
+class Level(Saveable, object):
     currentID = -1
 
     def __init__(self, name, directory):
         self.name = name
         self.directory = os.path.join(directory, self.name.replace(' ', '_'))
         self.ID = None
+
+    def load(self):
+        super(self.__class__, self).load()
+
+        if self.ID > Level.currentID:
+            Level.currentID = self.ID
 
     def delete(self):
         shutil.rmtree(self.getDir())

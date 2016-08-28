@@ -1,6 +1,6 @@
 import os, json
 
-class Saveable:
+class Saveable(object):
     '''
         Enables derived classes to save their __dict__s as JSON
         Important for git compatibility

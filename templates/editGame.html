@@ -60,15 +60,15 @@
             <tr>
                 <td>{{level.ID}}</td>
                 <td>{{level.name}}</td>
-                <td><a href="">Edit</a></td>
+                <td><a href="/games/{{game.ID}}/levels/{{level.ID}}/floorplan/edit">Edit</a></td>
                 <td><a href="">Edit</a></td>
                 <td>
-                <form
-                    method="POST"
-                    action="/games/{{game.ID}}/levels/{{level.ID}}/delete"
-                    onsubmit="return confirmDeletion('{{level.name}}');">
-                    <input type="submit" value="DELETE">
-                </form>
+                    <form
+                        method="POST"
+                        action="/games/{{game.ID}}/levels/{{level.ID}}/delete"
+                        onsubmit="return confirmDeletion('{{level.name}}');">
+                        <input type="submit" value="DELETE">
+                    </form>
                 </td>
             </tr>
         {% endfor %}
