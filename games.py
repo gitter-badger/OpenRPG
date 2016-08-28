@@ -85,6 +85,10 @@ class Game(Saveable):
         self.ID = ID
         self.save()
 
+    def setTitle(self, title):
+        self.title = title
+        self.save()
+
     def getAllTilesets(self):
         tilesets = []
         tileDir = self.getTileDir()
@@ -237,6 +241,19 @@ def deleteGame(gameID):
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/edit')
 def editGame(gameID):
     game = GamesList.getByID(gameID)
+
+    return render_template("editGame.html",
+        game=game,
+        tilesets=game.getAllTilesets(),
+        levels=game.getAllLevels())
+
+@GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/setTitle', methods=['POST'])
+def setGameTitle(gameID):
+    '''
+        Sets a game's title
+    '''
+    game = GamesList.getByID(gameID)
+    game.setTitle(request.form['gameTitle'])
 
     return render_template("editGame.html",
         game=game,
