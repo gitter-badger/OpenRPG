@@ -5,13 +5,15 @@ class Saveable:
         Enables derived classes to save their __dict__s as JSON
         Important for git compatibility
     '''
+    def getSaveFilePath(self):
+        return os.path.join(self.directory, 'config.json')
+
     def save(self):
         '''
             Save JSON metadata
         '''
-        directory = self.getDir()
         try:
-            f = open(os.path.join(directory, 'config.json'), 'w')
+            f = open(self.getSaveFilePath(), 'w')
             f.write(json.dumps(self, indent=3, cls=DictEncoder, sort_keys=True))
             f.close()
         except IOError as e:
@@ -22,7 +24,7 @@ class Saveable:
             Load metadata from self.directory
         '''
         try:
-            f = open(os.path.join(self.directory, 'config.json'), 'r')
+            f = open(self.getSaveFilePath(), 'r')
             values = json.load(f)
             mustSave = False
 

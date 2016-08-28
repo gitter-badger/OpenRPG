@@ -21,7 +21,7 @@ class Tileset(Saveable):
         self.xoff = 0
         self.yoff = 0
 
-        if dirExists(self.directory):
+        if os.path.exists(self.getSaveFilePath()):
             self.load()
         else:
             self.save()
