@@ -15,7 +15,6 @@ class Level(Saveable):
     def __init__(self, name, directory):
         self.name = name
         self.directory = os.path.join(directory, self.name.replace(' ', '_'))
-        self.configPath = os.path.join(self.directory, 'config.json')
         self.ID = None
 
     def delete(self):

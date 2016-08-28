@@ -1,6 +1,10 @@
 import os, json
 
 class Saveable:
+    '''
+        Enables derived classes to save their __dict__s as JSON
+        Important for git compatibility
+    '''
     def save(self):
         '''
             Save JSON metadata
@@ -24,6 +28,8 @@ class Saveable:
 
             for key in self.__dict__:
                 if not key in values:
+                    # A new key has been added
+                    # Save to bring legacy data up to date
                     mustSave = True
 
             for key in values:
@@ -38,8 +44,14 @@ class Saveable:
             print e
 
 class DictEncoder(json.JSONEncoder):
+    '''
+        Enables the encoding of arbitrary Python objects to JSON
+    '''
     def default(self, o):
         return o.__dict__
 
 def dirExists(path):
+    '''
+        Returns true if a directory exists
+    '''
     return os.path.exists(path) and os.path.isdir(path)

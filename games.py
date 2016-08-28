@@ -12,37 +12,19 @@ GAMES_PATH_BLUEPRINT = Blueprint('GAMES_PATH_BLUEPRINT', __name__, template_fold
 
 GAMES_DIRECTORY = 'games'
 
-class Tileset:
+class Tileset(Saveable):
     def __init__(self, path):
         self.name = path.split(os.sep)[-1]
         self.directory = os.sep.join(path.split(os.sep)[:-1])
         self.path = path
-        self.configPath = os.path.join(self.directory, self.name.replace('.png', '.json'))
         self.tileSize = 32
         self.xoff = 0
         self.yoff = 0
 
-        if os.path.exists(self.configPath):
+        if dirExists(self.directory):
             self.load()
         else:
             self.save()
-
-    def load(self):
-        try:
-            f = open(self.configPath, 'r')
-            self.__dict__ = json.load(f)
-            f.close()
-
-        except IOError as e:
-            print e
-
-    def save(self):
-        try:
-            f = open(self.configPath, 'w')
-            f.write(json.dumps(self.__dict__, indent=3), sort_keys=True)
-            f.close()
-        except IOError as e:
-            print e
 
 class Game(Saveable):
     '''
@@ -262,6 +244,24 @@ def editGame(gameID):
 @GAMES_PATH_BLUEPRINT.route('/games/<path:path>')
 def sendGamesFile(path):
     return send_from_directory("games", path)
+
+# Create a tileset
+@GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/tilesets/add', methods=['POST'])
+def addTileset(gameID):
+    # TODO: Check if file exists
+    # TODO: Make docstrings consistent: ''' '''
+    file = request.files['file']
+    if file.filename == '':
+        flash('No file selected')
+    elif not file.filename.endswith('.png'):
+        flash('Upload failed: file type must be .png')
+    else:
+        directory = GamesList.getByID(gameID).getTileDir()
+        destination = os.path.join(directory, file.filename)
+        file.save(destination)
+
+    return redirect(url_for('GAMES_PATH_BLUEPRINT.editGame',
+        gameID=gameID))
 
 # Edit a tileset
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/tilesets/<string:name>/edit')

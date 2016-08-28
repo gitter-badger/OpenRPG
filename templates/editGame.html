@@ -32,9 +32,13 @@
             <img src="/{{tileset.path}}" width="128"></img>
         </a>
     {% endfor %}
-    <form action="" method="POST">
-        <!-- TODO: -->
-        <input type="file">
+
+    <!-- Tileset adder -->
+    <form
+        enctype=multipart/form-data
+        action="/games/{{game.ID}}/tilesets/add"
+        method="POST">
+        <input type="file" name="file">
         <input type="submit" value="Add">
     </form>
 
@@ -49,6 +53,7 @@
             <th>Heightmap</th>
             <th>Delete</th>
         </tr>
+        <!-- Level list -->
         {% for level in levels %}
             <tr>
                 <td>{{level.ID}}</td>
@@ -66,10 +71,11 @@
             </tr>
         {% endfor %}
         </table>
-      <form action="/games/{{game.ID}}/levels/new" method="POST">
+
+    <!-- Level creator -->
+    <form action="/games/{{game.ID}}/levels/new" method="POST">
         <input type="text" name="name" value="New Level">
         <input type="submit" value="Add">
-      </form>
-    </ul>
+    </form>
   </body>
 </html>
