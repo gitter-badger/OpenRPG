@@ -18,9 +18,44 @@
         </form>
 
         <!-- Level overview -->
-        
+
         <!-- Tileset/tile selector -->
-        
+        <button onclick="prevImage();">◀ Prev</button>
+        <button onclick="nextImage();">Next ▶</button>
+        <br>
+        <img id="tilesetImage" />
+        <script>
+            let tilesetIndex = 0;
+            const tilesetImage = document.querySelector("#tilesetImage");
+            const tilesetURLs = [];
+            {% for tileset in tilesets %}
+                tilesetURLs.push('/{{tileset.path}}');
+            {% endfor %}
+
+            function updateImage() {
+                tilesetImage.src = tilesetURLs[tilesetIndex];
+            }
+            updateImage();
+
+            function prevImage() {
+                tilesetIndex--;
+                if (tilesetIndex < 0) {
+                    tilesetIndex = tilesetURLs.length - 1;
+                }
+                updateImage();
+            }
+
+            function nextImage() {
+                tilesetIndex++;
+                if (tilesetIndex > tilesetURLs.length - 1) {
+                    tilesetIndex = 0;
+                }
+                updateImage();
+            }
+
+
+        </script>
+
         <script src="/src/lib/p5.min.js"></script>
         <script src="/src/lib/jquery.min.js"></script>
         <script>
