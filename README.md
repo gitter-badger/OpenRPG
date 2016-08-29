@@ -8,8 +8,11 @@ This is an HTML5 web app for creating (and sharing) RPGs
 * Level-building tool (TODO)
 * NPC dialog tool (TODO)
 
-##  Installation
+##  To install
 `$ pip install -r requirements.txt`
 
-## Use
-`$ ./run.sh`
+## To run
+`$ make`
+
+## To generate documentation
+`$ make documentation`
