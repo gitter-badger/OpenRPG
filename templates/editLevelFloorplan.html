@@ -7,6 +7,7 @@
         <a href="/games/{{game.ID}}/edit">Back</a>
 
         <!-- Level settings form -->
+        <!-- TODO -->
         <form action="" method="post">
             Name:<br>
             <input value="{{level.name}}" name="name" type="text"><br>
@@ -17,21 +18,25 @@
             <input type="submit" value="Update">
         </form>
 
+        <img style="display:none" id="tilesetImage" onload="updateTileSelectionCanvas();"/>
+
         <!-- Level overview -->
-        <canvas id="levelOverviewCanvas"></canvas><br>
+        <canvas style="border:1px solid black;" id="levelOverviewCanvas" width="{{level.width}}" height="{{level.height}}"></canvas>
 
         <!-- Tileset/tile selector -->
-        <button onclick="prevImage();">◀ Prev</button>
-        <button onclick="nextImage();">Next ▶</button>
-        <br>
-        <img style="display:none" id="tilesetImage" onload="updateTileSelectionCanvas();"/>
-        <div id="container" style="position:relative;">
-            <canvas style="position:absolute; left:0; top:0; z-index:2;" id="overlayCanvas">
-            </canvas>
-            <canvas style="position:absolute; left:0; top:0; z-index:1;" id="tileSelectionCanvas">
-            </canvas>
+        <div style="float:right;">
+            <button onclick="prevImage();">◀ Prev</button>
+            <button onclick="nextImage();">Next ▶</button>
+            <div id="container" style="position:relative;">
+                <canvas style="position:absolute; right:0; top:0; z-index:2;" id="overlayCanvas">
+                </canvas>
+                <canvas style="position:absolute; right:0; top:0; z-index:1;" id="tileSelectionCanvas">
+                </canvas>
+            </div>
         </div>
-       <script>
+
+        <script src="/src/Keys.js"></script>
+        <script>
             "use strict;"
 
             let selectionX = 0;
@@ -57,8 +62,15 @@
                 const dy = snapToGrid(e.pageY - this.offsetTop, tileSize);
                 const context = levelOverviewCanvas.getContext("2d");
 
-                context.drawImage(tileSelectionCanvas, selectionX, selectionY, tileSize,
+                context.beginPath();
+                if (keysDown[CTRL]) {
+                    context.clearRect(dx, dy, tileSize, tileSize);
+                }
+                else {
+                    context.drawImage(tileSelectionCanvas, selectionX, selectionY, tileSize,
                     tileSize, dx, dy, tileSize, tileSize);
+                }
+                context.stroke();
             }
 
             function drawSelection() {
@@ -72,8 +84,8 @@
             }
 
             overlayCanvas.onclick = function setSelection(e) {
-                selectionX = snapToGrid(e.pageX - container.offsetLeft, tileSize);
-                selectionY = snapToGrid(e.pageY - container.offsetTop, tileSize);
+                selectionX = snapToGrid(e.pageX - container.offsetLeft - this.offsetLeft, tileSize);
+                selectionY = snapToGrid(e.pageY - container.offsetTop - this.offsetTop, tileSize);
                 drawSelection();
             }
 
@@ -85,7 +97,7 @@
                 tileSelectionCanvas.height = tilesetImage.height;
                 overlayCanvas.width = tileSelectionCanvas.width;
                 overlayCanvas.height = tileSelectionCanvas.height;
-                
+
 
                 context.beginPath();
                 context.drawImage(tilesetImage, 0, 0);
@@ -113,12 +125,6 @@
                 }
                 updateImage();
             }
-        </script>
-
-        <script src="/src/lib/p5.min.js"></script>
-        <script src="/src/lib/jquery.min.js"></script>
-        <script>
-
         </script>
     </body>
 </html>

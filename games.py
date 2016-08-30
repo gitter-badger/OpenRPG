@@ -345,6 +345,9 @@ def deleteLevel(gameID, levelID):
 
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/<int:levelID>/floorplan/edit')
 def editLevelFloorplan(gameID, levelID):
+    '''
+        Edit the floorplan of a level
+    '''
     game = GamesList.getByID(gameID)
     level = game.getLevelByID(levelID)
 

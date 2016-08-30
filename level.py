@@ -14,6 +14,8 @@ class Level(Saveable, object):
         self.name = name
         self.directory = os.path.join(directory, self.name.replace(' ', '_'))
         self.ID = None
+        self.width = 640
+        self.height = 480
 
     def load(self):
         super(self.__class__, self).load()

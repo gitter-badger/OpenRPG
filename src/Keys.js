@@ -1,5 +1,15 @@
-var W_KEY = 87;
-var A_KEY = 65;
-var S_KEY = 83;
-var D_KEY = 68;
-var SPACE = 32;
+const W_KEY = 87;
+const A_KEY = 65;
+const S_KEY = 83;
+const D_KEY = 68;
+const SPACE = 32;
+const CTRL = 17;
+const keysDown = {};
+
+document.onkeydown = function(e) {
+    keysDown[e.keyCode] = true;
+};
+
+document.onkeyup = function(e) {
+    keysDown[e.keyCode] = false;
+};
