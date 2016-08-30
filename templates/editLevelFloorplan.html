@@ -18,21 +18,82 @@
         </form>
 
         <!-- Level overview -->
+        <canvas id="levelOverviewCanvas"></canvas><br>
 
         <!-- Tileset/tile selector -->
         <button onclick="prevImage();">◀ Prev</button>
         <button onclick="nextImage();">Next ▶</button>
         <br>
-        <img id="tilesetImage" />
-        <script>
+        <img style="display:none" id="tilesetImage" onload="updateTileSelectionCanvas();"/>
+        <div id="container" style="position:relative;">
+            <canvas style="position:absolute; left:0; top:0; z-index:2;" id="overlayCanvas">
+            </canvas>
+            <canvas style="position:absolute; left:0; top:0; z-index:1;" id="tileSelectionCanvas">
+            </canvas>
+        </div>
+       <script>
+            "use strict;"
+
+            let selectionX = 0;
+            let selectionY = 0;
             let tilesetIndex = 0;
+            let tileSize = 32;
             const tilesetImage = document.querySelector("#tilesetImage");
+            const tileSelectionCanvas = document.querySelector("#tileSelectionCanvas");
+            const levelOverviewCanvas = document.querySelector("#levelOverviewCanvas");
+            const overlayCanvas = document.querySelector("#overlayCanvas");
+            const container = document.querySelector("#container");
             const tilesetURLs = [];
             {% for tileset in tilesets %}
                 tilesetURLs.push('/{{tileset.path}}');
             {% endfor %}
 
+            function snapToGrid(value, gridSize) {
+                return Math.floor(value / gridSize) * gridSize;
+            }
+
+            levelOverviewCanvas.onclick = function drawTile(e) {
+                const dx = snapToGrid(e.pageX - this.offsetLeft, tileSize);
+                const dy = snapToGrid(e.pageY - this.offsetTop, tileSize);
+                const context = levelOverviewCanvas.getContext("2d");
+
+                context.drawImage(tileSelectionCanvas, selectionX, selectionY, tileSize,
+                    tileSize, dx, dy, tileSize, tileSize);
+            }
+
+            function drawSelection() {
+                const context = overlayCanvas.getContext("2d");
+
+                context.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+                context.strokeStyle="red";
+                context.beginPath();
+                context.rect(selectionX, selectionY, tileSize, tileSize);
+                context.stroke();
+            }
+
+            overlayCanvas.onclick = function setSelection(e) {
+                selectionX = snapToGrid(e.pageX - container.offsetLeft, tileSize);
+                selectionY = snapToGrid(e.pageY - container.offsetTop, tileSize);
+                drawSelection();
+            }
+
+            function updateTileSelectionCanvas() {
+                // Resizes the tile selection canvas
+                const context = tileSelectionCanvas.getContext("2d");
+
+                tileSelectionCanvas.width = tilesetImage.width;
+                tileSelectionCanvas.height = tilesetImage.height;
+                overlayCanvas.width = tileSelectionCanvas.width;
+                overlayCanvas.height = tileSelectionCanvas.height;
+                
+
+                context.beginPath();
+                context.drawImage(tilesetImage, 0, 0);
+                context.stroke();
+            }
+
             function updateImage() {
+                // Displays a new image
                 tilesetImage.src = tilesetURLs[tilesetIndex];
             }
             updateImage();
@@ -52,8 +113,6 @@
                 }
                 updateImage();
             }
-
-
         </script>
 
         <script src="/src/lib/p5.min.js"></script>
