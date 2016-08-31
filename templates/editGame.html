@@ -20,6 +20,41 @@
         <input type="submit" value="Update">
     </form>
 
+    <h2>Levels</h2>
+    <!-- Show a list of levels with an overview -->
+    <table border="1">
+        <!-- Header -->
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Floorplan</th>
+            <th>Level Editor</th>
+            <th>Delete</th>
+        </tr>
+        <!-- Level list -->
+        {% for level in levels %}
+            <tr>
+                <td>{{level.ID}}</td>
+                <td>{{level.name}}</td>
+                <td><a href="/games/{{game.ID}}/levels/{{level.ID}}/floorplan/edit">Edit</a></td>
+                <td><a href="/games/{{game.ID}}/levels/{{level.ID}}/edit">Launch</a></td>
+                <td>
+                    <form
+                        method="POST"
+                        action="/games/{{game.ID}}/levels/{{level.ID}}/delete"
+                        onsubmit="return confirmDeletion('{{level.name}}');">
+                        <input type="submit" value="DELETE">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <!-- Level creator -->
+    <form action="/games/{{game.ID}}/levels/new" method="POST">
+        <input type="text" name="name" value="New Level">
+        <input type="submit" value="Add">
+    </form>
+
     <h2>Tilesets</h2>
     <!-- Show a list of tilesets with an option to edit -->
     <table border="1">
@@ -50,43 +85,5 @@
     <!-- Show the name of each character and an animation -->
     <ul>
     </ul>
-
-    <h2>Levels</h2>
-    <!-- Show a list of levels with an overview -->
-    <table border="1">
-        <!-- Header -->
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Floorplan</th>
-            <th>Prop Placement</th>
-            <th>Character Placement</th>
-            <th>Delete</th>
-        </tr>
-        <!-- Level list -->
-        {% for level in levels %}
-            <tr>
-                <td>{{level.ID}}</td>
-                <td>{{level.name}}</td>
-                <td><a href="/games/{{game.ID}}/levels/{{level.ID}}/floorplan/edit">Edit</a></td>
-                <td><a href="">Edit</a></td>
-                <td><a href="">Edit</a></td>
-                <td>
-                    <form
-                        method="POST"
-                        action="/games/{{game.ID}}/levels/{{level.ID}}/delete"
-                        onsubmit="return confirmDeletion('{{level.name}}');">
-                        <input type="submit" value="DELETE">
-                    </form>
-                </td>
-            </tr>
-        {% endfor %}
-        </table>
-
-    <!-- Level creator -->
-    <form action="/games/{{game.ID}}/levels/new" method="POST">
-        <input type="text" name="name" value="New Level">
-        <input type="submit" value="Add">
-    </form>
   </body>
 </html>

@@ -34,6 +34,9 @@ class Level(Saveable, object):
     def getDir(self):
         return self.directory
 
+    def getFloorplanPath(self):
+        return os.path.join(self.getDir(), 'floorplan.png')
+
     @staticmethod
     def getID():
         Level.currentID += 1

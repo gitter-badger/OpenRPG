@@ -42,9 +42,11 @@
         </div>
 
         <!-- Save Button -->
+        <br>
         <button onclick="saveFloorplanImage();">Save Floorplan</button>
 
         <script src="/src/Keys.js"></script>
+        <script src="/src/lib/jquery.min.js"></script>
         <script>
             "use strict;"
 
@@ -64,6 +66,14 @@
 
             function saveFloorplanImage() {
                 const dataURL = levelOverviewCanvas.toDataURL();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/games/{{game.ID}}/levels/{{level.ID}}/floorplan/save',
+                    data: {
+                        imgBase64: dataURL
+                    }
+                })
             }
 
             function snapToGrid(value, gridSize) {
