@@ -20,19 +20,18 @@
         <input type="submit" value="Update">
     </form>
 
-    <h2>Characters</h2>
-    <!-- Show the name of each character and an animation -->
-    <ul>
-    </ul>
-
     <h2>Tilesets</h2>
     <!-- Show a list of tilesets with an option to edit -->
     <table border="1">
-    {% for tileset in tilesets %}
-        <a href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
-            <img src="/{{tileset.path}}" width="128"></img>
-        </a>
-    {% endfor %}
+    <ul>
+        {% for tileset in tilesets %}
+            <li>
+                <a href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
+                    {{tileset.name}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
 
     <!-- Tileset adder -->
     <br>
@@ -44,6 +43,14 @@
         <input type="submit" value="Add">
     </form>
 
+    <h2>Props</h2>
+    <!-- Show a list of all props -->
+
+    <h2>Characters</h2>
+    <!-- Show the name of each character and an animation -->
+    <ul>
+    </ul>
+
     <h2>Levels</h2>
     <!-- Show a list of levels with an overview -->
     <table border="1">
@@ -52,7 +59,8 @@
             <th>ID</th>
             <th>Name</th>
             <th>Floorplan</th>
-            <th>Heightmap</th>
+            <th>Prop Placement</th>
+            <th>Character Placement</th>
             <th>Delete</th>
         </tr>
         <!-- Level list -->
@@ -61,6 +69,7 @@
                 <td>{{level.ID}}</td>
                 <td>{{level.name}}</td>
                 <td><a href="/games/{{game.ID}}/levels/{{level.ID}}/floorplan/edit">Edit</a></td>
+                <td><a href="">Edit</a></td>
                 <td><a href="">Edit</a></td>
                 <td>
                     <form

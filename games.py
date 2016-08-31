@@ -133,6 +133,9 @@ class Game(Saveable):
                 return level
         flash("Error: No such level")
 
+    def getAllProps(self):
+        pass
+
 class GamesList:
     '''
         Manages the list of games and ensures unique IDs

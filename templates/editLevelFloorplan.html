@@ -4,17 +4,22 @@
     </head>
     <body>
         <h1>{{level.name}}</h1>
-        <a href="/games/{{game.ID}}/edit">Back</a>
 
         <!-- Level settings form -->
         <!-- TODO -->
-        <form action="" method="post">
-            Name:<br>
-            <input value="{{level.name}}" name="name" type="text"><br>
-            Width:<br>
-            <input value="{{level.width}}" name="width" type="text"><br>
-            Height:<br>
-            <input value="{{level.height}}" name="height" type="text"><br>
+        <form action="" method="POST">
+            <table border="1">
+                <tr>
+                    <th>Name</th>
+                    <th>Width</th>
+                    <th>Height</th>
+                </tr>
+                <tr>
+                    <td><input value="{{level.name}}" name="name" type="text"></td>
+                    <td><input value="{{level.width}}" name="width" type="text"></td>
+                    <td><input value="{{level.height}}" name="height" type="text"></td>
+                </tr>
+            </table>
             <input type="submit" value="Update">
         </form>
 
@@ -25,8 +30,9 @@
 
         <!-- Tileset/tile selector -->
         <div style="float:right;">
-            <button onclick="prevImage();">◀ Prev</button>
-            <button onclick="nextImage();">Next ▶</button>
+            <button onclick="prevImage();">◀ Prev</button><br>
+            <button onclick="nextImage();">Next ▶</button><br>
+            <button onclick="fillWithTile();">Fill</button>
             <div id="container" style="position:relative;">
                 <canvas style="position:absolute; right:0; top:0; z-index:2;" id="overlayCanvas">
                 </canvas>
@@ -34,6 +40,9 @@
                 </canvas>
             </div>
         </div>
+
+        <!-- Save Button -->
+        <button onclick="saveFloorplanImage();">Save Floorplan</button>
 
         <script src="/src/Keys.js"></script>
         <script>
@@ -53,13 +62,24 @@
                 tilesetURLs.push('/{{tileset.path}}');
             {% endfor %}
 
+            function saveFloorplanImage() {
+                const dataURL = levelOverviewCanvas.toDataURL();
+            }
+
             function snapToGrid(value, gridSize) {
                 return Math.floor(value / gridSize) * gridSize;
             }
 
-            levelOverviewCanvas.onclick = function drawTile(e) {
-                const dx = snapToGrid(e.pageX - this.offsetLeft, tileSize);
-                const dy = snapToGrid(e.pageY - this.offsetTop, tileSize);
+            levelOverviewCanvas.onclick = function drawTile(e, x, y) {
+                let dx, dy;
+                if (e) {
+                    dx = snapToGrid(e.pageX - this.offsetLeft, tileSize);
+                    dy = snapToGrid(e.pageY - this.offsetTop, tileSize);
+                }
+                else {
+                    dx = x;
+                    dy = y;
+                }
                 const context = levelOverviewCanvas.getContext("2d");
 
                 context.beginPath();
@@ -81,6 +101,14 @@
                 context.beginPath();
                 context.rect(selectionX, selectionY, tileSize, tileSize);
                 context.stroke();
+            }
+
+            function fillWithTile() {
+                for (let i = 0; i < levelOverviewCanvas.width; i += tileSize) {
+                    for (let j = 0; j < levelOverviewCanvas.height; j += tileSize) {
+                        levelOverviewCanvas.onclick(null, i, j);
+                    }
+                }
             }
 
             overlayCanvas.onclick = function setSelection(e) {
