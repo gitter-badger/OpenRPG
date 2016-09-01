@@ -26,5 +26,9 @@ def showGame():
 def sendCode(path):
     return send_from_directory("src", path)
 
+@app.route("/img/<path:path>")
+def sendImage(path):
+    return send_from_directory("img", path)
+
 if __name__ == '__main__':
     app.run(debug=True)

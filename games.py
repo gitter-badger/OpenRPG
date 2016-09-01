@@ -120,7 +120,6 @@ class Game(Saveable):
 
         for path in os.listdir(self.getLevelsDir()):
             level = Level(path, self.getLevelsDir())
-            print level.directory
             level.load()
             levels.append(level)
 
@@ -377,5 +376,16 @@ def saveLevelFloorplan(gameID, levelID):
 
     return render_template('editLevelFloorplan.html',
         game=game,
-        level=level,
-        tilesets=game.getAllTilesets())
+        level=level)
+
+@GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/<int:levelID>/edit')
+def editLevel(gameID, levelID):
+    '''
+        Edit a level
+    '''
+    game = GamesList.getByID(gameID)
+    level = game.getLevelByID(levelID)
+
+    return render_template('levelEditor.html',
+        game=game,
+        level=level)
