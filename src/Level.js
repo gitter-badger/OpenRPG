@@ -6,7 +6,7 @@ class Level {
         this.renderer = config.renderer;
 
         // Load all required resources, then call init()
-        const requiredResources = ['/img/floors/download.png'];
+        const requiredResources = config.requiredResources || {};
         let resourcesLoaded = 0;
         const resources = {};
         const self = this;
@@ -16,9 +16,9 @@ class Level {
             loader.load(requiredResources[i],
                 function(texture) {
                     texture.minFilter = THREE.LinearFilter;
-                    resources[requiredResources[i]] = texture;
+                    resources[i] = texture;
                     resourcesLoaded++;
-                    if (resourcesLoaded === requiredResources.length) {
+                    if (resourcesLoaded === Object.keys(requiredResources).length) {
                         self.init();
                     }
                 }
@@ -30,7 +30,7 @@ class Level {
     init() {
         // Ground
         const groundGeometry = new THREE.PlaneBufferGeometry(640, 480, 32);
-        const groundTexture = this.resources['/img/floors/download.png'];
+        const groundTexture = this.resources['floorplan'];
         const groundMaterial = new THREE.MeshBasicMaterial(
             {map: groundTexture}
         );

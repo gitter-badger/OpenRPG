@@ -32,7 +32,7 @@ class Level(Saveable, object):
         self.save()
 
     def getDir(self):
-        return self.directory
+        return os.path.sep + self.directory
 
     def getFloorplanPath(self):
         return os.path.join(self.getDir(), 'floorplan.png')
