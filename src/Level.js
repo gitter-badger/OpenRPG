@@ -52,4 +52,8 @@ class Level {
         **/
         this.scene.add(prop.getMesh());
     }
+
+    addToScene(obj) {
+        this.scene.add(obj);
+    }
 };
