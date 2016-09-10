@@ -6,7 +6,7 @@
         <!-- Toolbar -->
 
         <!-- Level -->
-         <script src="/src/lib/jquery.min.js"></script>
+        <script src="/src/lib/jquery.min.js"></script>
         <script src="/src/lib/three.min.js"></script>
         <script src="/src/Keys.js"></script>
         <script src="/src/Prop.js"></script>
@@ -15,6 +15,7 @@
         <script src="/src/Level.js"></script>
         <script src="/src/ResourceManager.js"></script>
         <script src="/src/GameStateManager.js"></script>
+        <script src="/src/CameraController.js"></script>
         <script>
             "use strict";
 
@@ -25,7 +26,7 @@
             var FOV = 75;
             var SERVER_URL = "http://127.0.0.1:5000"
 
-            var renderer = new THREE.WebGLRenderer({ alpha: true } );
+            var renderer = new THREE.WebGLRenderer( { alpha: true } );
             renderer.setSize(VIEWPORT_WIDTH,VIEWPORT_HEIGHT);
             document.body.appendChild(renderer.domElement);
 
@@ -34,15 +35,18 @@
             );
             camera.position.z = 5;
             camera.position.y = 50;
+            var cameraController = new CameraController(camera);
 
             var level= new Level({
-                    renderer: renderer
-                });
+                renderer: renderer
+            });
 
             var stateManager = new GameStateManager();
 
             // Main game loop
             function render() {
+                cameraController.update();
+
                 requestAnimationFrame(render);
                 level.render();
             }
