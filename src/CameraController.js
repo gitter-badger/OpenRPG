@@ -14,16 +14,16 @@ class CameraController {
 
     update() {
         if (keysDown[W_KEY]) {
-            this._yawObject.position.z--;
+            this._yawObject.translateZ(-1);
         }
         if (keysDown[S_KEY]) {
-            this._yawObject.position.z++;
+            this._yawObject.translateZ(1);
         }
         if (keysDown[A_KEY]) {
-            this._yawObject.position.x--;
+            this._yawObject.translateX(-1);
         }
         if (keysDown[D_KEY]) {
-            this._yawObject.position.x++;
+            this._yawObject.translateX(1)
         }
         if (keysDown[SHIFT]) {
             this._yawObject.position.y++;
