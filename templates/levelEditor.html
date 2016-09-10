@@ -25,7 +25,7 @@
             var FOV = 75;
             var SERVER_URL = "http://127.0.0.1:5000"
 
-            var renderer = new THREE.WebGLRenderer();
+            var renderer = new THREE.WebGLRenderer({ alpha: true } );
             renderer.setSize(VIEWPORT_WIDTH,VIEWPORT_HEIGHT);
             document.body.appendChild(renderer.domElement);
 

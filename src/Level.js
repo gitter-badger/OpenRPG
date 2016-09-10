@@ -2,15 +2,6 @@
 
 class Level {
     constructor(config) {
-        var name;
-        if (config.name) {
-            name = config.name;
-        }
-        else {
-            name = "level_" + Level.currentLevelIndex;
-            Level.currentLevelIndex++;
-        }
-
         this.scene = new THREE.Scene();
         this.renderer = config.renderer;
 
@@ -24,6 +15,7 @@ class Level {
         for (let i in requiredResources) {
             loader.load(requiredResources[i],
                 function(texture) {
+                    texture.minFilter = THREE.LinearFilter;
                     resources[requiredResources[i]] = texture;
                     resourcesLoaded++;
                     if (resourcesLoaded === requiredResources.length) {
@@ -46,9 +38,6 @@ class Level {
         ground.position.y = 0;
         ground.rotation.x = -Math.PI * 0.5;
         this.scene.add(ground);
-
-        //this.npcs = config.npcs || null;
-        //this.exits = config.exits || null;
 
         render();
     }
