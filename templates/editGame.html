@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  </head>
+    <head>
+        <link rel="stylesheet" href="/static/style.css">
+    </head>
   <body>
     {% include "messages.html" %}
 
@@ -57,16 +58,14 @@
 
     <h2>Tilesets</h2>
     <!-- Show a list of tilesets with an option to edit -->
-    <table border="1">
-    <ul>
-        {% for tileset in tilesets %}
-            <li>
-                <a href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
-                    {{tileset.name}}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+    {% for tileset in tilesets %}
+        <a href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
+            <div class="PreviewThumbnail">
+                <img src="/{{tileset.path}}" />
+            </div>
+        </a>
+    {% endfor %}
+    <img src="/static/img/addButton.png" />
 
     <!-- Tileset adder -->
     <br>
@@ -80,13 +79,15 @@
 
     <h2>Props</h2>
     <!-- Show a list of all props -->
-    <div>
-        <ul>
-            {% for prop in game.getAllProps() %}
-            <li>{{prop.name}}</li>
-            {% endfor %}
-        </ul>
-    </div>
+    {% for prop in game.getAllProps() %}
+        <a href="/games/{{game.ID}}/props{{prop.name}}/edit">
+            <div class="PreviewThumbnail">
+                <img src="/{{prop.path}}" />
+            </div>
+        </a>
+    {% endfor %}
+    <img src="/static/img/addButton.png" />
+
     <!-- Upload prop from file -->
     <form
         enctype=multipart/form-data

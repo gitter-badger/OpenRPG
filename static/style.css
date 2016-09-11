@@ -1,0 +1,6 @@
+.PreviewThumbnail {
+    width: 128px;
+    height: 128px;
+    overflow: hidden;
+    display: inline-block;
+}

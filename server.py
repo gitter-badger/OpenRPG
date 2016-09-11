@@ -18,6 +18,10 @@ app.register_blueprint(GAMES_PATH_BLUEPRINT)
 def showHomepage():
     return render_template("index.html")
 
+@app.route("/static/<path:path>")
+def sendFromStatic(path):
+    return send_from_directory(".", path)
+
 @app.route("/game.html")
 def showGame():
     return send_from_directory(".", "game.html")
@@ -29,6 +33,10 @@ def sendCode(path):
 @app.route("/img/<path:path>")
 def sendImage(path):
     return send_from_directory("img", path)
+
+@app.route("/games/<path:path>")
+def sendFromGames(path):
+    return send_from_directory("games", path)
 
 if __name__ == '__main__':
     app.run(debug=True)
