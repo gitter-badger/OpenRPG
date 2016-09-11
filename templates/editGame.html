@@ -75,7 +75,7 @@
     <h2>Tilesets</h2>
     <!-- Show a list of tilesets with an option to edit -->
     {% for tileset in tilesets %}
-        <a href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
+        <a class="InvisibleLink" href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
             <div class="PreviewThumbnail">
                 <img src="/{{tileset.path}}" />
             </div>
@@ -96,7 +96,7 @@
     <h2>Props</h2>
     <!-- Show a list of all props -->
     {% for prop in game.getAllProps() %}
-        <a href="/games/{{game.ID}}/props{{prop.name}}/edit">
+        <a class="InvisibleLink" href="/games/{{game.ID}}/props{{prop.name}}/edit">
             <div class="PreviewThumbnail">
                 <img src="/{{prop.path}}" />
             </div>

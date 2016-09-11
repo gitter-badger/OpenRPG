@@ -12,23 +12,27 @@ from util import *
 GAMES_PATH_BLUEPRINT = Blueprint('GAMES_PATH_BLUEPRINT', __name__, template_folder='templates')
 
 '''
-    Views
+    Games
 '''
 
-# List all games
 @GAMES_PATH_BLUEPRINT.route('/games')
 def showAllGames():
+    '''
+        List all games
+    '''
     return render_template("games.html",
         games=GamesList.getAllGames())
 
-# Create a new game
 @GAMES_PATH_BLUEPRINT.route('/games/new', methods=['POST'])
 def createGame():
+    '''
+        Create a new game
+    '''
     gameTitle = request.form['gameTitle']
     newGame = Game(gameTitle)
     
     # Set up the directory structure for the game
-    # If the folder exists already, exit with an error
+    # If the folder exists already, exit with an error message
     if os.path.isdir(newGame.getDir()):
         flash("Failed to create game. Directory already exists!")
         return redirect(url_for('GAMES_PATH_BLUEPRINT.showAllGames'))
@@ -40,9 +44,11 @@ def createGame():
 
     return redirect(url_for('GAMES_PATH_BLUEPRINT.showAllGames'))
 
-# Delete a game
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/delete', methods=['POST'])
 def deleteGame(gameID):
+    '''
+        Delete a game
+    '''
     try:
         GamesList.removeGame(gameID)
     except IOError as e:
@@ -51,9 +57,11 @@ def deleteGame(gameID):
     
     return redirect(url_for('GAMES_PATH_BLUEPRINT.showAllGames'))
 
-# Edit a game
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/edit')
 def editGame(gameID):
+    '''
+        Edit a game
+    '''
     game = GamesList.getByID(gameID)
 
     return render_template("editGame.html",
@@ -74,16 +82,22 @@ def setGameTitle(gameID):
         tilesets=game.getAllTilesets(),
         levels=game.getAllLevels())
 
-# Send a file from the games directory
 @GAMES_PATH_BLUEPRINT.route('/games/<path:path>')
 def sendGamesFile(path):
-    return send_from_directory("games", path)
+    '''
+        Send a file from the games directory
+    '''
+    return send_from_directory('../games', path)
 
-# Create a tileset
+'''
+    Tilesets
+'''
+
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/tilesets/add', methods=['POST'])
 def addTileset(gameID):
-    # TODO: Check if file exists
-    # TODO: Make docstrings consistent: ''' '''
+    '''
+        Create a tileset
+    '''
     file = request.files['file']
     if file.filename == '':
         flash('No file selected')
@@ -97,9 +111,11 @@ def addTileset(gameID):
     return redirect(url_for('GAMES_PATH_BLUEPRINT.editGame',
         gameID=gameID))
 
-# Edit a tileset
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/tilesets/<string:name>/edit')
 def editTileset(gameID, name):
+    '''
+        Edit a tileset
+    '''
     game = GamesList.getByID(gameID)
     tileset = None
 
@@ -112,9 +128,11 @@ def editTileset(gameID, name):
         game=game,
         tileset=tileset)
 
-# Update a tileset
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/tilesets/<string:name>/update', methods=['POST'])
 def updateTileset(gameID, name):
+    '''
+        Update a tileset
+    '''
     game = GamesList.getByID(gameID)
     tileset = None
 
@@ -133,17 +151,25 @@ def updateTileset(gameID, name):
         gameID=gameID,
         name=name))
 
-# Create a new level
+'''
+    Levels
+'''
+
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/new', methods=['POST'])
 def createLevel(gameID):
+    '''
+        Create a new level
+    '''
     GamesList.getByID(gameID).addLevel(request.form['name'])
 
     return redirect(url_for('GAMES_PATH_BLUEPRINT.editGame',
         gameID=gameID))
 
-# Delete a level
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/<int:levelID>/delete', methods=['POST'])
 def deleteLevel(gameID, levelID):
+    '''
+        Delete a level
+    '''
     GamesList.getByID(gameID).deleteLevel(levelID)
 
     flash("Level deleted")
@@ -202,6 +228,7 @@ def editLevel(gameID, levelID):
 '''
     Props
 '''
+
 @GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/props/add', methods=['POST'])
 def addProp(gameID):
     '''

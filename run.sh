@@ -1,4 +1,4 @@
 #!/bin/bash
-python -OO server.py
-rm *.pyc
-rm *.pyo
+python -OO OpenRPG/server.py
+rm -f OpenRPG/*.pyc
+rm -f OpenRPG/*.pyo

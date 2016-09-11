@@ -1,3 +1,7 @@
+.InvisibleLink {
+    text-decoration: none;
+}
+
 .PreviewThumbnail {
     width: 128px;
     height: 128px;

@@ -10,7 +10,12 @@ from flask import Flask, request, send_from_directory, render_template, url_for,
 from games import *
 import random, string
 
-app = Flask(__name__)
+TEMPLATE_FOLDER = '../templates'
+STATIC_FOLDER = '../static'
+
+app = Flask(__name__,
+    template_folder=TEMPLATE_FOLDER,
+    static_folder=STATIC_FOLDER)
 app.secret_key = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(64))
 app.register_blueprint(GAMES_PATH_BLUEPRINT)
 
@@ -18,25 +23,21 @@ app.register_blueprint(GAMES_PATH_BLUEPRINT)
 def showHomepage():
     return render_template("index.html")
 
-@app.route("/static/<path:path>")
-def sendFromStatic(path):
-    return send_from_directory(".", path)
-
 @app.route("/game.html")
 def showGame():
-    return send_from_directory(".", "game.html")
+    return send_from_directory(TEMPLATE_FOLDER, "game.html")
 
 @app.route("/src/<path:path>")
 def sendCode(path):
-    return send_from_directory("src", path)
+    return send_from_directory("../src", path)
 
 @app.route("/img/<path:path>")
 def sendImage(path):
-    return send_from_directory("img", path)
+    return send_from_directory("../img", path)
 
 @app.route("/games/<path:path>")
 def sendFromGames(path):
-    return send_from_directory("games", path)
+    return send_from_directory("../games", path)
 
 if __name__ == '__main__':
     app.run(debug=True)

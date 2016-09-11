@@ -1,3 +1,4 @@
+from flask import flash
 from util import *
 from Level import *
 from Tileset import *
