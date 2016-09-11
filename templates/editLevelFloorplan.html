@@ -23,6 +23,13 @@
             <input type="submit" value="Update">
         </form>
 
+        <script>
+            function drawFloorplan() {
+                const floorplanImage = document.querySelector("#floorplanImage");
+                const context = levelOverviewCanvas.getContext("2d");
+                context.drawImage(floorplanImage, 0, 0);
+            }
+        </script>
         <img src="{{level.getFloorplanPath()}}" style="display:none" id="floorplanImage" onload="drawFloorplan();" />
         <img style="display:none" id="tilesetImage" onload="updateTileSelectionCanvas();"/>
 
@@ -79,12 +86,6 @@
 
             function snapToGrid(value, gridSize) {
                 return Math.floor(value / gridSize) * gridSize;
-            }
-
-            function drawFloorplan() {
-                const floorplanImage = document.querySelector("#floorplanImage");
-                const context = levelOverviewCanvas.getContext("2d");
-                context.drawImage(floorplanImage, 0, 0);
             }
 
             levelOverviewCanvas.onclick = function drawTile(e, x, y) {
