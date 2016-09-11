@@ -57,3 +57,16 @@ def dirExists(path):
         Returns true if a directory exists
     '''
     return os.path.exists(path) and os.path.isdir(path)
+
+def getAllImagesInDir(dirPath):
+    '''
+        Given a path to a directory,
+        Returns a list of paths to all the images in that directory (non-recursive)
+    '''
+    paths = []
+
+    for path in os.listdir(dirPath):
+        if path.endswith(".png"):
+            paths.append(os.path.join(dirPath, path))
+
+    return paths

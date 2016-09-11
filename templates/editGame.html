@@ -82,12 +82,19 @@
     <!-- Show a list of all props -->
     <div>
         <ul>
-            {% for prop in game.getProps() %}
-            <li></li>
+            {% for prop in game.getAllProps() %}
+            <li>{{prop.name}}</li>
             {% endfor %}
         </ul>
     </div>
     <!-- Upload prop from file -->
+    <form
+        enctype=multipart/form-data
+        action="/games/{{game.ID}}/props/add"
+        method="POST">
+        <input type="file" name="file">
+        <input type="submit" value="Add">
+    </form>
     <!-- New blank prop -->
     <!-- Edit prop -->
 

@@ -198,3 +198,25 @@ def editLevel(gameID, levelID):
     return render_template('levelEditor.html',
         game=game,
         level=level)
+
+'''
+    Props
+'''
+@GAMES_PATH_BLUEPRINT.route('/games/<int:gameID>/props/add', methods=['POST'])
+def addProp(gameID):
+    '''
+        Upload a prop image
+    '''
+    file = request.files['file']
+    if file.filename == '':
+        flash('No file selected')
+    elif not file.filename.endswith('.png'):
+        flash('Upload failed: file type must be .png')
+    else:
+        directory = GamesList.getByID(gameID).getPropDir()
+        destination = os.path.join(directory, file.filename)
+        file.save(destination)
+        flash('Prop added successfully')
+
+    return redirect(url_for('GAMES_PATH_BLUEPRINT.editGame',
+        gameID=gameID))

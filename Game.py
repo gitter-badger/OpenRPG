@@ -1,12 +1,13 @@
 from util import *
+from Level import *
 from Tileset import *
+from Prop import *
 
 GAMES_DIRECTORY = 'games'
 
 class Game(Saveable):
     '''
         This class represents a Game
-        It handles all saving and loading of data about the game
     '''
 
     def __init__(self, title="New Game"):
@@ -51,6 +52,9 @@ class Game(Saveable):
     def getTileDir(self):
         return os.path.join(self.getImgDir(), "tiles")
 
+    def getPropDir(self):
+        return os.path.join(self.getImgDir(), "props")
+
     def setID(self, ID):
         if self.ID is not None:
             return
@@ -63,12 +67,11 @@ class Game(Saveable):
         self.save()
 
     def getAllTilesets(self):
+        tilesetPaths = getAllImagesInDir(self.getTileDir())
         tilesets = []
-        tileDir = self.getTileDir()
 
-        for path in os.listdir(self.getTileDir()):
-            if path.endswith(".png"):
-                tilesets.append(Tileset(os.path.join(tileDir, path)))
+        for path in tilesetPaths:
+            tilesets.append(Tileset(path))
 
         return tilesets
 
@@ -103,10 +106,17 @@ class Game(Saveable):
         for level in self.getAllLevels():
             if level.ID == levelID:
                 return level
+
         flash("Error: No such level")
 
     def getAllProps(self):
-        pass
+        propPaths = getAllImagesInDir(self.getPropDir())
+        props = []
+
+        for path in propPaths:
+            props.append(Prop(path))
+
+        return props
 
 class GamesList:
     '''
