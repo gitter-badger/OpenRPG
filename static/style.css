@@ -4,3 +4,7 @@
     overflow: hidden;
     display: inline-block;
 }
+
+.Clickable {
+    cursor: pointer;
+}
