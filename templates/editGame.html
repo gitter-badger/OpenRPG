@@ -89,7 +89,12 @@
         action="/games/{{game.ID}}/tilesets/add"
         method="POST"
         style="display:none;">
-        <input id="tilesetFile" style="display:none;" type="file" name="file" onchange="uploadTilesetFile();">
+        <input
+            id="tilesetFile"
+            style="display:none;"
+            type="file"
+            name="file" 
+            onchange="uploadTilesetFile();">
     </form>
     <img class="Clickable" src="/static/img/addButton.png" onclick="selectTilesetFile();"/>
 
@@ -110,11 +115,15 @@
         action="/games/{{game.ID}}/props/add"
         method="POST"
         style="display:none;">
-        <input id="propFile" style="display:none;" type="file" name="file" onchange="uploadPropFile();">
+        <input
+            id="propFile"
+            style="display:none;"
+            type="file"
+            name="file"
+            onchange="uploadPropFile();">
     </form>
     <img class="Clickable" src="/static/img/addButton.png" onclick="selectPropFile();"/>
     
-    <!-- New blank prop -->
     <!-- Edit prop -->
 
     <h2>Characters</h2>

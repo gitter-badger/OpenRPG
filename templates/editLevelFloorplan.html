@@ -30,7 +30,7 @@
                 context.drawImage(floorplanImage, 0, 0);
             }
         </script>
-        <img src="{{level.getFloorplanPath()}}" style="display:none" id="floorplanImage" onload="drawFloorplan();" />
+        <img src="/{{level.getFloorplanPath()}}" style="display:none" id="floorplanImage" onload="drawFloorplan();" />
         <img style="display:none" id="tilesetImage" onload="updateTileSelectionCanvas();"/>
 
         <!-- Level overview -->
