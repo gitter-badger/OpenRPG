@@ -1,3 +1,5 @@
+TEST_FILES=test/*
+
 default:
 	./run.sh
 docs:
@@ -6,3 +8,5 @@ docs:
 	pydoc -w ./ > documentation.log.txt
 	mv *.html documentation
 	rm *.pyc
+unittest:
+	./test.sh

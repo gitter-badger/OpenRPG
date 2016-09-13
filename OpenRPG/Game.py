@@ -26,12 +26,12 @@ class Game(Saveable):
         directories = [
             self.getLevelsDir(),
             self.getImgDir(),
-            os.path.join(self.getImgDir(), 'characters'),
-            os.path.join(self.getImgDir(), 'props'),
-            os.path.join(self.getImgDir(), 'tiles'),
+            self.getCharactersDir(),
+            self.getPropsDir(),
+            self.getTileDir(),
             self.getAudioDir(),
-            os.path.join(self.getAudioDir(), 'music'),
-            os.path.join(self.getAudioDir(), 'sfx'),
+            self.getMusicDir(),
+            self.getSfxDir(),
         ]
 
         for directory in directories:
@@ -47,14 +47,26 @@ class Game(Saveable):
     def getImgDir(self):
         return os.path.join(self.getDir(), 'img')
 
+    def getCharactersDir(self):
+        return os.path.join(self.getImgDir(), 'characters')
+
+    def getPropsDir(self):
+        return os.path.join(self.getImgDir(), 'props')
+
+    def getTileDir(self):
+        return os.path.join(self.getImgDir(), 'tiles')
+
+    def getPropDir(self):
+        return os.path.join(self.getImgDir(), 'props')
+
     def getAudioDir(self):
         return os.path.join(self.getDir(), 'audio')
 
-    def getTileDir(self):
-        return os.path.join(self.getImgDir(), "tiles")
+    def getMusicDir(self):
+        return os.path.join(self.getAudioDir(), 'music')
 
-    def getPropDir(self):
-        return os.path.join(self.getImgDir(), "props")
+    def getSfxDir(self):
+        return os.path.join(self.getAudioDir(), 'sfx')
 
     def setID(self, ID):
         if self.ID is not None:
@@ -119,6 +131,9 @@ class Game(Saveable):
 
         return props
 
+    def delete(self):
+        shutil.rmtree(self.getDir())
+
 class GamesList:
     '''
         Manages the list of games and ensures unique IDs
@@ -175,7 +190,7 @@ class GamesList:
         for i in xrange(len(GamesList.games)):
             game = GamesList.games[i]
             if game.ID == gameID:
-                shutil.rmtree(game.getDir())
+                game.delete()
                 del GamesList.games[i]
                 flash("Deleted Game " + game.title)
                 break
