@@ -7,7 +7,7 @@ sys.path.insert(0, '../OpenRPG')
 from OpenRPG.Game import Game
 from OpenRPG.util import dirExists
 
-GAMES_DIRECTORY = './tmp'
+Game.GAMES_DIRECTORY = './tmp'
 
 class test_Game(unittest.TestCase):
     def test_initFiles(self):
@@ -42,8 +42,19 @@ class test_Game(unittest.TestCase):
 
         game2.delete()
 
+    def test_setTitle(self):
+        game = Game('_testGame')
+        game.initFiles()
+
+        game.setTitle('_testGame2')
+
+        self.assertEqual(game.getDir(), os.path.join(Game.GAMES_DIRECTORY, '_testGame2'))
+        self.assertTrue(os.path.exists(game.getDir()))
+
+        game.delete()
+
 if __name__ == '__main__':
-    if not dirExists(GAMES_DIRECTORY):
-        os.mkdir(GAMES_DIRECTORY)
+    if not dirExists(Game.GAMES_DIRECTORY):
+        os.mkdir(Game.GAMES_DIRECTORY)
 
     unittest.main()

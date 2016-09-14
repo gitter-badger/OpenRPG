@@ -4,17 +4,23 @@ from Level import *
 from Tileset import *
 from Prop import *
 
-GAMES_DIRECTORY = 'games'
-
 class Game(Saveable):
     '''
         This class represents a Game
     '''
+    GAMES_DIRECTORY = 'games'
 
     def __init__(self, title="New Game"):
         self.title = title
         self.ID = None
-        self.directory = os.path.join(GAMES_DIRECTORY, self.title.strip().replace(' ', '_'))
+        self.directory = os.path.join(Game.GAMES_DIRECTORY, self.title.strip().replace(' ', '_'))
+
+    def setTitle(self, title):
+        self.title = title
+        oldDirectory = self.directory
+        self.directory = os.path.join(Game.GAMES_DIRECTORY, self.title.strip().replace(' ', '_'))
+        os.rename(oldDirectory, self.directory)
+        self.save()
 
     def initFiles(self):
         os.makedirs(self.getDir())
@@ -73,10 +79,6 @@ class Game(Saveable):
             return
 
         self.ID = ID
-        self.save()
-
-    def setTitle(self, title):
-        self.title = title
         self.save()
 
     def getAllTilesets(self):
@@ -139,7 +141,7 @@ class GamesList:
         Manages the list of games and ensures unique IDs
     '''
     currentID = 0
-    gamesDirectories = [os.path.join(GAMES_DIRECTORY, x) for x in os.listdir(GAMES_DIRECTORY)]
+    gamesDirectories = [os.path.join(Game.GAMES_DIRECTORY, x) for x in os.listdir(Game.GAMES_DIRECTORY)]
     games = []
 
     @staticmethod
