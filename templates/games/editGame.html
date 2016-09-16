@@ -1,134 +1,136 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="/static/style.css">
-    </head>
-  <body>
-    {% include "messages.html" %}
+  <head>
+    <link rel="stylesheet" href="/static/style.css">
+  </head>
 
-    <script>
+  <body>
+    <div class="CenterDiv MainContainer">
+      <h1 class="CenterH">{{game.title}}</h1>
+
+      {% include "messages.html" %}
+
+      <script>
         function confirmDeletion(title) {
-            return confirm("Are you sure you want to delete " + title + "?");
+          return confirm("Are you sure you want to delete " + title + "?");
         }
 
         function selectPropFile() {
-            document.querySelector('#propFile').click();
+          document.querySelector('#propFile').click();
         }
 
         function uploadPropFile() {
-            document.querySelector('#propForm').submit();
+          document.querySelector('#propForm').submit();
         }
 
         function selectTilesetFile() {
-            document.querySelector('#tilesetFile').click();
+          document.querySelector('#tilesetFile').click();
         }
 
         function uploadTilesetFile() {
-            document.querySelector('#tilesetForm').submit();
+          document.querySelector('#tilesetForm').submit();
         }
-    </script>
+      </script>
 
-    <h1>{{game.title}}</h1>
-    <a href="/games">Back</a>
-
-    <h2>Title</h2>
-    <form action="/games/{{game.ID}}/setTitle" method="POST">
+      <h2>Title</h2>
+      <form action="/games/{{game.ID}}/setTitle" method="POST">
         <input type="text" name="gameTitle" value="{{game.title}}">
         <input type="submit" value="Update">
-    </form>
+      </form>
 
-    <h2>Levels</h2>
-    <!-- Show a list of levels with an overview -->
-    <table border="1">
+      <h2>Levels</h2>
+      <!-- Show a list of levels with an overview -->
+      <table border="1">
         <!-- Header -->
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Floorplan</th>
-            <th>Level Editor</th>
-            <th>Delete</th>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Floorplan</th>
+          <th>Level Editor</th>
+          <th>Delete</th>
         </tr>
         <!-- Level list -->
         {% for level in levels %}
-            <tr>
-                <td>{{level.ID}}</td>
-                <td>{{level.name}}</td>
-                <td><a href="/games/{{game.ID}}/levels/{{level.ID}}/floorplan/edit">Edit</a></td>
-                <td><a href="/games/{{game.ID}}/levels/{{level.ID}}/edit">Launch</a></td>
-                <td>
-                    <form
-                        method="POST"
-                        action="/games/{{game.ID}}/levels/{{level.ID}}/delete"
-                        onsubmit="return confirmDeletion('{{level.name}}');">
-                        <input type="submit" value="DELETE">
-                    </form>
-                </td>
-            </tr>
+          <tr>
+            <td>{{level.ID}}</td>
+            <td>{{level.name}}</td>
+            <td><a href="/games/{{game.ID}}/levels/{{level.ID}}/floorplan/edit">Edit</a></td>
+            <td><a href="/games/{{game.ID}}/levels/{{level.ID}}/edit">Launch</a></td>
+            <td>
+              <form
+                method="POST"
+                action="/games/{{game.ID}}/levels/{{level.ID}}/delete"
+                onsubmit="return confirmDeletion('{{level.name}}');">
+                <input type="submit" value="DELETE">
+              </form>
+            </td>
+          </tr>
         {% endfor %}
-    </table>
-    <!-- Level creator -->
-    <form action="/games/{{game.ID}}/levels/new" method="POST">
+      </table>
+      <!-- Level creator -->
+      <form action="/games/{{game.ID}}/levels/new" method="POST">
         <input type="text" name="name" value="New Level">
         <input type="submit" value="Add">
-    </form>
+      </form>
 
-    <h2>Tilesets</h2>
-    <!-- Show a list of tilesets with an option to edit -->
-    {% for tileset in tilesets %}
+      <h2>Tilesets</h2>
+      <!-- Show a list of tilesets with an option to edit -->
+      {% for tileset in tilesets %}
         <a class="InvisibleLink" href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
-            <div class="PreviewThumbnail">
-                <img src="/{{tileset.path}}" />
-            </div>
+          <div class="PreviewThumbnail">
+            <img src="/{{tileset.path}}" />
+          </div>
         </a>
-    {% endfor %}
+      {% endfor %}
 
-    <!-- Upload tileset from file -->
-    <form
+      <!-- Upload tileset from file -->
+      <form
         id="tilesetForm"
         enctype=multipart/form-data
         action="/games/{{game.ID}}/tilesets/add"
         method="POST"
         style="display:none;">
         <input
-            id="tilesetFile"
-            style="display:none;"
-            type="file"
-            name="file" 
-            onchange="uploadTilesetFile();">
-    </form>
-    <img class="Clickable" src="/static/img/addButton.png" onclick="selectTilesetFile();"/>
+          id="tilesetFile"
+          style="display:none;"
+          type="file"
+          name="file" 
+          onchange="uploadTilesetFile();">
+      </form>
+      <img class="Clickable" src="/static/img/addButton.png" onclick="selectTilesetFile();"/>
 
-    <h2>Props</h2>
-    <!-- Show a list of all props -->
-    {% for prop in game.getAllProps() %}
+      <h2>Props</h2>
+      <!-- Show a list of all props -->
+      {% for prop in game.getAllProps() %}
         <a class="InvisibleLink" href="/games/{{game.ID}}/props{{prop.name}}/edit">
-            <div class="PreviewThumbnail">
-                <img src="/{{prop.path}}" />
-            </div>
+          <div class="PreviewThumbnail">
+            <img src="/{{prop.path}}" />
+          </div>
         </a>
-    {% endfor %}
+      {% endfor %}
 
-    <!-- Upload prop from file -->
-    <form
+      <!-- Upload prop from file -->
+      <form
         id="propForm"
         enctype=multipart/form-data
         action="/games/{{game.ID}}/props/add"
         method="POST"
         style="display:none;">
         <input
-            id="propFile"
-            style="display:none;"
-            type="file"
-            name="file"
-            onchange="uploadPropFile();">
-    </form>
-    <img class="Clickable" src="/static/img/addButton.png" onclick="selectPropFile();"/>
-    
-    <!-- Edit prop -->
+          id="propFile"
+          style="display:none;"
+          type="file"
+          name="file"
+          onchange="uploadPropFile();">
+      </form>
+      <img class="Clickable" src="/static/img/addButton.png" onclick="selectPropFile();"/>
+      
+      <!-- Edit prop -->
 
-    <h2>Characters</h2>
-    <!-- Show the name of each character and an animation -->
-    <ul>
-    </ul>
+      <h2>Characters</h2>
+      <!-- Show the name of each character and an animation -->
+      <ul>
+      </ul>
+    </div>
   </body>
 </html>

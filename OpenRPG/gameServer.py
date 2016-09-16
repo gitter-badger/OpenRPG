@@ -16,7 +16,7 @@ def showAllGames():
     '''
         List all games
     '''
-    return render_template("games.html",
+    return render_template("index.html",
         games=GamesList.getAllGames())
 
 @GAMES_PATH_BLUEPRINT.route('/games/new', methods=['POST'])

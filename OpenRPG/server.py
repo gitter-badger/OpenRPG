@@ -24,7 +24,8 @@ app.register_blueprint(LEVELS_PATH_BLUEPRINT)
 
 @app.route("/")
 def showHomepage():
-    return render_template("index.html")
+    return render_template("index.html",
+        games=GamesList.getAllGames())
 
 @app.route("/game.html")
 def showGame():
