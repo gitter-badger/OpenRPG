@@ -10,7 +10,7 @@ class Game(Saveable):
     '''
     GAMES_DIRECTORY = 'games'
 
-    def __init__(self, title="New Game"):
+    def __init__(self, title='New Game'):
         self.title = title
         self.ID = None
         self.directory = os.path.join(Game.GAMES_DIRECTORY, self.title.strip().replace(' ', '_'))
@@ -37,7 +37,7 @@ class Game(Saveable):
             self.getTileDir(),
             self.getAudioDir(),
             self.getMusicDir(),
-            self.getSfxDir(),
+            self.getSfxDir()
         ]
 
         for directory in directories:

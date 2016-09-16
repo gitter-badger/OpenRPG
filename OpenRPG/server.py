@@ -7,17 +7,20 @@
 from os import listdir
 import os.path
 from flask import Flask, request, send_from_directory, render_template, url_for, redirect, flash
-from games import *
+from gameServer import *
+from levelServer import *
 import random, string
 
 TEMPLATE_FOLDER = '../templates'
 STATIC_FOLDER = '../static'
 
+# App setup
 app = Flask(__name__,
     template_folder=TEMPLATE_FOLDER,
     static_folder=STATIC_FOLDER)
 app.secret_key = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(64))
 app.register_blueprint(GAMES_PATH_BLUEPRINT)
+app.register_blueprint(LEVELS_PATH_BLUEPRINT)
 
 @app.route("/")
 def showHomepage():
@@ -25,7 +28,7 @@ def showHomepage():
 
 @app.route("/game.html")
 def showGame():
-    return send_from_directory(TEMPLATE_FOLDER, "game.html")
+    return render_template("game.html")
 
 @app.route("/src/<path:path>")
 def sendCode(path):
