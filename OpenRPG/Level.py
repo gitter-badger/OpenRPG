@@ -15,6 +15,10 @@ class Level(Saveable, object):
     def nameToDir(name):
         return name.replace(' ', '_')
 
+    @staticmethod
+    def getUniqueLevelName():
+        return 'New Level ' + str(Level.currentID + 1)
+
     def __init__(self, name, directory):
         self.name = name
         self.setDirectory(directory)

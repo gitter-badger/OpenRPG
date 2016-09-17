@@ -17,7 +17,8 @@ def createLevel(gameID):
     '''
         Create a new level
     '''
-    GamesList.getByID(gameID).addLevel(request.form['name'])
+    levelName = Level.getUniqueLevelName()
+    GamesList.getByID(gameID).addLevel(levelName)
 
     return redirect(url_for('GAMES_PATH_BLUEPRINT.editGame',
         gameID=gameID))
