@@ -152,6 +152,10 @@ class GamesList:
         return result
 
     @staticmethod
+    def getUniqueGameTitle():
+        return "New Game " + str(GamesList.currentID)
+
+    @staticmethod
     def load(directory):
         result = Game()
         result.directory = directory

@@ -8,6 +8,7 @@ import shutil
 from Level import Level
 from Game import *
 from util import *
+import glob
 
 GAMES_PATH_BLUEPRINT = Blueprint('GAMES_PATH_BLUEPRINT', __name__, template_folder='../templates/games')
 
@@ -24,7 +25,7 @@ def createGame():
     '''
         Create a new game
     '''
-    gameTitle = request.form['gameTitle']
+    gameTitle = GamesList.getUniqueGameTitle()
     newGame = Game(gameTitle)
     
     # Set up the directory structure for the game

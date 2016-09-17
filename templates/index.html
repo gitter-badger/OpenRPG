@@ -35,22 +35,34 @@
             <td><a href="/games/{{game.ID}}/edit">Edit</a></td>
             <td>
               <form
+                id="deleteGame{{game.ID}}Form"
                 method="POST"
                 action="games/{{game.ID}}/delete"
-                onsubmit="return confirmDeletion('{{game.title}}');">
-                <input type="submit" value="DELETE">
+                style="display:none;"
+                onsubmit="return ;">
               </form>
+              <a onclick="if (confirmDeletion('{{game.title}}')) {
+                document.querySelector('#deleteGame{{game.ID}}Form').submit();
+              }">Delete</a>
             </td>
           </tr>
         {% endfor %}
       </table>
-
-      <h2>Create a new game:</h2>
-      <form action="games/new" method="POST">
-        Title of the game:<br>
-        <input type="text" name="gameTitle" value="New Game"><br>
-        <input type="submit" value="Create!">
+      <form
+        id="newGameForm"
+        enctype=multipart/form-data
+        action="/games/new"
+        method="POST"
+        style="display:none;">
       </form>
+      <center>
+        <img
+          class="Clickable"
+          src="/static/img/addButton.png"
+          width="64"
+          style="margin-top:20px;"
+          onclick="document.querySelector('#newGameForm').submit();"/>
+      </center>
     </div>
   </body>
 </html>
