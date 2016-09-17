@@ -5,6 +5,7 @@
 import json
 import os
 import shutil
+import png
 from util import *
 
 class Level(Saveable, object):
@@ -22,9 +23,13 @@ class Level(Saveable, object):
             self.height = 480
             self.ID = Level.getID()
             os.makedirs(self.directory)
+            self.createEmptyFloorplan()
             self.save()
         else:
             self.load()
+
+    def createEmptyFloorplan(self):
+        png.from_array([[0, 0, 0, 0]], 'RGBA').save(self.getFloorplanPath())
 
     def setDirectory(self, directory):
         self.directory = os.path.join(directory, Level.nameToDir(self.name))

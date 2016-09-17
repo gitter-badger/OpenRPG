@@ -63,12 +63,12 @@ def saveLevelFloorplan(gameID, levelID):
         f = open(destination, 'wb')
         f.write(imgData.decode('base64'))
         f.close()
+        flash('Saved level floorplan')
     except IOError as e:
+        flash('Error: Failed to save floorplan')
         print e
 
-    return render_template('editLevelFloorplan.html',
-        game=game,
-        level=level)
+    return redirect(url_for('LEVELS_PATH_BLUEPRINT.editLevelFloorplan', gameID=gameID, levelID=levelID))
 
 @LEVELS_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/<int:levelID>/edit')
 def editLevel(gameID, levelID):
