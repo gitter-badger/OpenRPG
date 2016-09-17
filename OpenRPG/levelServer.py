@@ -68,7 +68,8 @@ def saveLevelFloorplan(gameID, levelID):
         flash('Error: Failed to save floorplan')
         print e
 
-    return redirect(url_for('LEVELS_PATH_BLUEPRINT.editLevelFloorplan', gameID=gameID, levelID=levelID))
+    return redirect(url_for('GAMES_PATH_BLUEPRINT.editGame',
+        gameID=gameID))
 
 @LEVELS_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/<int:levelID>/edit')
 def editLevel(gameID, levelID):

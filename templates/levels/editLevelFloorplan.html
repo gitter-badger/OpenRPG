@@ -55,7 +55,15 @@
 
       <!-- Save Button -->
       <br>
+      <form
+        id="submitFloorplanForm"
+        action="/games/{{game.ID}}/levels/{{level.ID}}/floorplan/save"
+        method="POST",
+        style="display:none;">
+        <input id="dataURL" name="imgBase64" type="text">
+      </form>
       <button onclick="saveFloorplanImage();">Save Floorplan</button>
+      
     </div>
 
     <script src="/src/Keys.js"></script>
@@ -79,14 +87,11 @@
 
       function saveFloorplanImage() {
         const dataURL = levelOverviewCanvas.toDataURL();
+        const form = document.querySelector("#submitFloorplanForm");
+        const data = document.querySelector("#dataURL");
 
-        $.ajax({
-          type: 'POST',
-          url: '/games/{{game.ID}}/levels/{{level.ID}}/floorplan/save',
-          data: {
-            imgBase64: dataURL
-          }
-        })
+        data.value = dataURL;
+        form.submit();
       }
 
       function snapToGrid(value, gridSize) {
