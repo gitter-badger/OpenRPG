@@ -4,6 +4,23 @@
     <link rel="stylesheet" href="/static/style.css">
   </head>
   <body>
+
+    <!-- Tile selector -->
+    <div id="container" style="position:relative;">
+      <canvas style="position:absolute; right:0; top:26px; z-index:2;" id="overlayCanvas">
+      </canvas>
+      <canvas style="position:absolute; right:0; top:26px; z-index:1;" id="tileSelectionCanvas">
+      </canvas>
+      <!-- Tileset selector -->
+      <table style="float:right;">
+        <tr>
+          <td><button onclick="prevImage();">◀ Prev</button></td>
+          <td><button onclick="nextImage();">Next ▶</button></td>
+          <td><button onclick="fillWithTile();">Fill</button></td>
+        <tr>
+      </table>
+    </div>
+
     <div class="CenterDiv MainContainer">
       <h1>{{level.name}}</h1>
 
@@ -12,19 +29,21 @@
       <!-- Level settings form -->
       <!-- TODO -->
       <form action="" method="POST">
-        <table border="1">
+        <table>
           <tr>
             <th>Name</th>
             <th>Width</th>
             <th>Height</th>
+            <th>Update</th>
           </tr>
           <tr>
             <td><input value="{{level.name}}" name="name" type="text"></td>
             <td><input value="{{level.width}}" name="width" type="text"></td>
             <td><input value="{{level.height}}" name="height" type="text"></td>
+            <td><a href="">Update</a></td>
           </tr>
         </table>
-        <input type="submit" value="Update">
+        
       </form>
 
       <script>
@@ -39,19 +58,6 @@
 
       <!-- Level overview -->
       <canvas style="border:1px solid black;" id="levelOverviewCanvas" width="{{level.width}}" height="{{level.height}}"></canvas>
-
-      <!-- Tileset/tile selector -->
-      <div style="float:right;">
-        <button onclick="prevImage();">◀ Prev</button><br>
-        <button onclick="nextImage();">Next ▶</button><br>
-        <button onclick="fillWithTile();">Fill</button>
-        <div id="container" style="position:relative;">
-          <canvas style="position:absolute; right:0; top:0; z-index:2;" id="overlayCanvas">
-          </canvas>
-          <canvas style="position:absolute; right:0; top:0; z-index:1;" id="tileSelectionCanvas">
-          </canvas>
-        </div>
-      </div>
 
       <!-- Save Button -->
       <br>
