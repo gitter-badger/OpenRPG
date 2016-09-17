@@ -19,7 +19,7 @@ def createLevel(gameID):
     '''
     GamesList.getByID(gameID).addLevel(request.form['name'])
 
-    return redirect(url_for('LEVELS_PATH_BLUEPRINT.editGame',
+    return redirect(url_for('GAMES_PATH_BLUEPRINT.editGame',
         gameID=gameID))
 
 @LEVELS_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/<int:levelID>/delete', methods=['POST'])

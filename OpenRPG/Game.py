@@ -22,6 +22,9 @@ class Game(Saveable):
         os.rename(oldDirectory, self.directory)
         self.save()
 
+        for level in self.getAllLevels():
+            level.setDirectory(self.getLevelsDir())
+
     def initFiles(self):
         os.makedirs(self.getDir())
 
@@ -91,13 +94,12 @@ class Game(Saveable):
         return tilesets
 
     def addLevel(self, name):
-        level = Level(name, self.getLevelsDir())
-        
-        if not dirExists(level.getDir()):
-            level.initFiles()
-            flash("New level created: " + name)
-        else:
+        if dirExists(os.path.join(self.getLevelsDir(), Level.nameToDir(name))):
             flash("Could not create level, directory already exists")
+            return
+
+        level = Level(name, self.getLevelsDir())
+        flash("New level created: " + name)
 
     def deleteLevel(self, levelID):
         levels = self.getAllLevels()
@@ -112,7 +114,6 @@ class Game(Saveable):
 
         for path in os.listdir(self.getLevelsDir()):
             level = Level(path, self.getLevelsDir())
-            level.load()
             levels.append(level)
 
         return levels

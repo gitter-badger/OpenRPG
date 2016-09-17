@@ -14,9 +14,9 @@
       
       <h2>Games:</h2>
       <script>
-          function confirmDeletion(title) {
-              return confirm("Are you sure you want to delete " + title + "?");
-          }
+        function confirmDeletion(title) {
+          return confirm("Are you sure you want to delete " + title + "?");
+        }
       </script>
       <table>
         <!-- Header -->
@@ -48,6 +48,8 @@
           </tr>
         {% endfor %}
       </table>
+
+      <!-- Create new game button-->
       <form
         id="newGameForm"
         enctype=multipart/form-data

@@ -60,7 +60,7 @@ def editGame(gameID):
         Edit a game
     '''
     game = GamesList.getByID(gameID)
-
+    
     return render_template("editGame.html",
         game=game,
         tilesets=game.getAllTilesets(),
@@ -73,6 +73,7 @@ def setGameTitle(gameID):
     '''
     game = GamesList.getByID(gameID)
     game.setTitle(request.form['gameTitle'])
+    print game.getDir()
 
     return render_template("editGame.html",
         game=game,
