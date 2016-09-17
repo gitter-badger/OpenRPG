@@ -19,6 +19,11 @@ let dMouseY = null;
 
 document.onkeydown = function(e) {
     keysDown[e.keyCode] = true;
+    if (e.keyCode === S_KEY && e.ctrlKey) {
+        event.preventDefault();
+        return false;
+    }
+    return true;
 };
 
 document.onkeyup = function(e) {
