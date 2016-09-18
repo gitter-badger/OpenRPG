@@ -5,6 +5,23 @@ body {
     background-color: #000;
 }
 
+button {
+    border: none;
+    background-color: #AAA;
+    min-width: 100px;
+    box-shadow: 5px 5px 5px #000;
+    border-radius: 0px;
+}
+
+button:hover {
+    background-color: #DDD;
+}
+
+button:active {
+    margin-left:5px;
+    margin-top:5px;
+}
+
 h1 {
     color: #FFF;
     background-color: #000;
@@ -60,15 +77,7 @@ table td a:hover {
     color: #DDD;
 }
 
-.CenterDiv {
-    margin: auto;
-    padding: 20px;
-}
 
-.CenterH {
-    width: 100%;
-    text-align: center;
-}
 
 .MainContainer {
     min-width: 500px;
@@ -92,6 +101,35 @@ table td a:hover {
     display: inline-block;
 }
 
+.CenterDiv {
+    margin: auto;
+    padding: 20px;
+}
+
+.CenterH {
+    width: 100%;
+    text-align: center;
+}
+
 .Clickable {
     cursor: pointer;
+}
+
+.ContextMenu {
+    position: relative;
+    display: none;
+}
+
+.Tab {
+    display: inline-block;
+    background-color: #AAA;
+    padding-left: 10px;
+    margin-right: 0px;
+    margin-left: 0px;
+    min-width: 150px;
+    box-shadow: 5px 5px 5px #000;
+}
+
+.ActiveTab {
+    background-color: #DDD;
 }

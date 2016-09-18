@@ -9,6 +9,7 @@ import os.path
 from flask import Flask, request, send_from_directory, render_template, url_for, redirect, flash
 from gameServer import *
 from levelServer import *
+from characterServer import *
 import random, string
 from GamesList import GamesList
 
@@ -22,6 +23,7 @@ app = Flask(__name__,
 app.secret_key = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(64))
 app.register_blueprint(GAMES_PATH_BLUEPRINT)
 app.register_blueprint(LEVELS_PATH_BLUEPRINT)
+app.register_blueprint(CHARACTERS_PATH_BLUEPRINT)
 
 @app.route("/")
 def showHomepage():

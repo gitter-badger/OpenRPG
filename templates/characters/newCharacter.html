@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/style.css">
+  </head>
+
+  <body>
+    <div class="CenterDiv MainContainer">
+      <h1 class="CenterH">New Character</h1>
+
+      {% include "messages.html" %}
+      <h2 id="detailsTab" class="Tab ActiveTab" onclick="setActive(event);">Details</h2>
+      <h2 id="animationsTab" class="Tab" onclick="setActive(event);">Animations</h2>
+      <h2 id="dialogTab" class="Tab" onclick="setActive(event);">Dialog</h2>
+      <h2 id="scriptsTab" class="Tab" onclick="setActive(event);">Scripts</h2>
+      <h2 id="playtestTab" class="Tab" onclick="setActive(event);">Playtest</h2>
+      <script>
+        function setActive(e) {
+          const id = e.target.id;
+          const elements = document.getElementsByClassName('Tab');
+          
+          for (let i in elements) {
+            if (!elements[i].id) {
+              continue;
+            }
+            let div = document.querySelector("#" + elements[i].id.replace('Tab', ''));
+            if (elements[i].id === id) {
+              elements[i].className = "Tab ActiveTab";
+              div.style.display = 'block';
+            }
+            else {
+              elements[i].className = "Tab";
+              div.style.display = 'none';
+            }
+          }
+        }
+      </script>
+
+      <div id="details">
+        <form id="detailsForm">
+          <p>Name:</p>
+          <input type="text">
+          <p>Personality:</p>
+          <input type="text">
+          <p>Playable:<input type="checkbox"></p>
+        </form>
+      </div>
+      <div id="animations" style="display:none;">
+        <p>Animations</p>
+      </div>
+      <div id="dialog" style="display:none;">
+        <p>Dialog</p>
+      </div>
+      <div id="scripts" style="display:none;">
+        <p>Scripts</p>
+      </div>
+      <div id="playtest" style="display:none;">
+        <p>Playtest</p>
+      </div>
+
+      <button>Save</button>
+    </div>
+  </body>
+</html>

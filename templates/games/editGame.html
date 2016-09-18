@@ -23,14 +23,28 @@
           document.querySelector('#propForm').submit();
         }
 
-        function selectTilesetFile() {
+        function selectTilesetFile(e) {
           document.querySelector('#tilesetFile').click();
         }
 
         function uploadTilesetFile() {
           document.querySelector('#tilesetForm').submit();
         }
+
+        function showContextMenu(e) {
+          const menu = document.querySelector('#contextMenu');
+          menu.style.display = 'block';
+          return false;
+        }
+        window.oncontextmenu = showContextMenu;
       </script>
+
+      <!-- Context menu -->
+      <div class="ContextMenu" id="contextMenu">
+        <ul>
+          <li>Delete</li>
+        </ul>
+      </div>
 
       <h2>Title</h2>
       <form action="/games/{{game.ID}}/setTitle" method="POST">
@@ -142,6 +156,7 @@
       <!-- Show the name of each character and an animation -->
       <ul>
       </ul>
+      <a href="/games/{{game.ID}}/characters/new"><img src="/static/img/addButton.png" /></a>
     </div>
   </body>
 </html>
