@@ -19,10 +19,10 @@ class Tileset(Saveable):
             self.save()
 
     def getPath(self):
-        return os.path.join(self.getDirectory(), self.name)
+        return os.path.join(self.getDir(), self.name)
 
-    def getDirectory(self):
+    def getDir(self):
         return self._parent.getTileDir()
 
     def getSaveFilePath(self):
-        return os.path.join(self.getDirectory(), self.name.replace('.png', '_config.json'))
+        return os.path.join(self.getDir(), self.name.replace('.png', '_config.json'))

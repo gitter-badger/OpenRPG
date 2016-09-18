@@ -100,7 +100,7 @@ class Game(Saveable):
             flash("Could not create level, directory already exists")
             return
 
-        level = Level(name, self.getLevelsDir())
+        level = Level(name, self)
         flash("New level created: " + name)
 
     def deleteLevel(self, levelID):
@@ -115,7 +115,7 @@ class Game(Saveable):
         levels = []
 
         for path in os.listdir(self.getLevelsDir()):
-            level = Level(path, self.getLevelsDir())
+            level = Level(path, self)
             levels.append(level)
 
         return levels
@@ -132,7 +132,7 @@ class Game(Saveable):
         props = []
 
         for path in propPaths:
-            props.append(Prop(path))
+            props.append(Prop(path.split(os.sep)[-1], self))
 
         return props
 

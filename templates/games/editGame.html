@@ -115,7 +115,7 @@
       {% for prop in game.getAllProps() %}
         <a class="InvisibleLink" href="/games/{{game.ID}}/props{{prop.name}}/edit">
           <div class="PreviewThumbnail">
-            <img src="/{{prop.path}}" />
+            <img src="/{{prop.getPath()}}" />
           </div>
         </a>
       {% endfor %}

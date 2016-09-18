@@ -5,8 +5,11 @@ class Saveable(object):
         Enables derived classes to save their __dict__s as JSON
         Important for git compatibility
     '''
+    def getDir(self):
+        raise NotImplementedError('Savable needs a .getDir() method')
+        
     def getSaveFilePath(self):
-        return os.path.join(self.directory, 'config.json')
+        return os.path.join(self.getDir(), 'config.json')
 
     def save(self):
         '''

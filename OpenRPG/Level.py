@@ -19,14 +19,15 @@ class Level(Saveable, object):
     def getUniqueLevelName():
         return 'New Level ' + str(Level.currentID + 1)
 
-    def __init__(self, name, directory):
+    def __init__(self, name, parent):
         self.name = name
-        self.setDirectory(directory)
-        if not dirExists(self.directory):
+        self._parent = parent
+
+        if not dirExists(self.getDir()):
             self.width = 640
             self.height = 480
             self.ID = Level.getID()
-            os.makedirs(self.directory)
+            os.makedirs(self.getDir())
             self.createEmptyFloorplan()
             self.save()
         else:
@@ -35,8 +36,8 @@ class Level(Saveable, object):
     def createEmptyFloorplan(self):
         png.from_array([[0, 0, 0, 0]], 'RGBA').save(self.getFloorplanPath())
 
-    def setDirectory(self, directory):
-        self.directory = os.path.join(directory, Level.nameToDir(self.name))
+    def getDir(self):
+        return os.path.join(self._parent.getLevelsDir(), Level.nameToDir(self.name))
 
     def load(self):
         super(self.__class__, self).load()
@@ -47,9 +48,6 @@ class Level(Saveable, object):
     def delete(self):
         shutil.rmtree(self.getDir())
         
-    def getDir(self):
-        return self.directory
-
     def getFloorplanPath(self):
         return os.path.join(self.getDir(), 'floorplan.png')
 

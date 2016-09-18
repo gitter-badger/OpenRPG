@@ -88,7 +88,7 @@
       const container = document.querySelector("#container");
       const tilesetURLs = [];
       {% for tileset in tilesets %}
-        tilesetURLs.push('/{{tileset.path}}');
+        tilesetURLs.push('/{{tileset.getPath()}}');
       {% endfor %}
 
       function saveFloorplanImage() {
