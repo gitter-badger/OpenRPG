@@ -10,6 +10,9 @@ This is an HTML5 web app for creating (and sharing) RPGs
 * NPC creator (TODO)
 * Level editor
 
+## Possible future features. . .
+* Multiplayer gameplay
+
 ##  To install
 `$ pip install -r requirements.txt`
 
