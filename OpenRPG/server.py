@@ -10,6 +10,7 @@ from flask import Flask, request, send_from_directory, render_template, url_for,
 from gameServer import *
 from levelServer import *
 import random, string
+from GamesList import GamesList
 
 TEMPLATE_FOLDER = '../templates'
 STATIC_FOLDER = '../static'

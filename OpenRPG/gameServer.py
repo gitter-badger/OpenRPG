@@ -7,6 +7,7 @@ import os
 import shutil
 from Level import Level
 from Game import *
+from GamesList import GamesList
 from util import *
 import glob
 
@@ -71,9 +72,14 @@ def setGameTitle(gameID):
     '''
         Sets a game's title
     '''
+    title = request.form['gameTitle']
     game = GamesList.getByID(gameID)
-    game.setTitle(request.form['gameTitle'])
-    print game.getDir()
+
+    if dirExists(Game.dirFromName(title)):
+        flash('Failed to rename game, directory already exists')
+    else:
+        game.setTitle(title)
+        flash('Successfully renamed game')
 
     return render_template("editGame.html",
         game=game,

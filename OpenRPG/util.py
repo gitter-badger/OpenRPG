@@ -50,7 +50,14 @@ class DictEncoder(json.JSONEncoder):
         Enables the encoding of arbitrary Python objects to JSON
     '''
     def default(self, o):
-        return o.__dict__
+        d = dict()
+
+        # Ignore "private" fields
+        for key in o.__dict__:
+            if key[0] != '_':
+                d[key] = o.__dict__[key]
+
+        return d
 
 def dirExists(path):
     '''

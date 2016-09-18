@@ -1,10 +1,14 @@
+import os
 from util import *
 
 class Tileset(Saveable):
-    def __init__(self, path):
-        self.name = path.split(os.sep)[-1]
-        self.directory = os.sep.join(path.split(os.sep)[:-1])
-        self.path = path
+    @staticmethod
+    def nameToDir(name):
+        return name.replace(' ', '_')
+
+    def __init__(self, name, parent):
+        self.name = name
+        self._parent = parent
         self.tileSize = 32
         self.xoff = 0
         self.yoff = 0
@@ -14,5 +18,11 @@ class Tileset(Saveable):
         else:
             self.save()
 
+    def getPath(self):
+        return os.path.join(self.getDirectory(), self.name)
+
+    def getDirectory(self):
+        return self._parent.getTileDir()
+
     def getSaveFilePath(self):
-        return os.path.join(self.directory, self.name.replace('.png', '_config.json'))
+        return os.path.join(self.getDirectory(), self.name.replace('.png', '_config.json'))

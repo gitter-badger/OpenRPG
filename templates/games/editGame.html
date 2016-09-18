@@ -89,7 +89,7 @@
       {% for tileset in tilesets %}
         <a class="InvisibleLink" href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
           <div class="PreviewThumbnail">
-            <img src="/{{tileset.path}}" />
+            <img src="/{{tileset.getPath()}}" />
           </div>
         </a>
       {% endfor %}

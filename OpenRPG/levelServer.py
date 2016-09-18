@@ -7,6 +7,7 @@ import os
 import shutil
 from Level import Level
 from Game import *
+from GamesList import GamesList
 from util import *
 
 LEVELS_PATH_BLUEPRINT = Blueprint('LEVELS_PATH_BLUEPRINT', __name__, template_folder='../templates/levels')
