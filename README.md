@@ -1,6 +1,8 @@
 # Open RPG
 This is an HTML5 web app for creating (and sharing) RPGs
 
+[Click here](https://github.com/jdsutton/OpenRPG/blob/master/VISION.md) for more info
+
 ## Features
 * Git-friendly development
 * 2.5d gameplay
