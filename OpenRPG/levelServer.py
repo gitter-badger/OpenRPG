@@ -57,6 +57,7 @@ def saveLevelFloorplan(gameID, levelID):
     game = GamesList.getByID(gameID)
     level = game.getLevelByID(levelID)
     destination = level.getFloorplanPath()
+
     if destination.startswith(os.path.sep):
         destination = '.' + destination
     imgData = request.form['imgBase64'].replace('data:image/png;base64,', '')
@@ -65,6 +66,7 @@ def saveLevelFloorplan(gameID, levelID):
         f = open(destination, 'wb')
         f.write(imgData.decode('base64'))
         f.close()
+        level.updateFloorplanImageId()
         flash('Saved level floorplan')
     except IOError as e:
         flash('Error: Failed to save floorplan')

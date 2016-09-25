@@ -53,11 +53,13 @@
           context.drawImage(floorplanImage, 0, 0);
         }
       </script>
-      <img src="/{{level.getFloorplanPath()}}" style="display:none" id="floorplanImage" onload="drawFloorplan();" />
+      <img src="/{{level.getFloorplanURL()}}" style="display:none" id="floorplanImage" onload="drawFloorplan();" />
       <img style="display:none" id="tilesetImage" onload="updateTileSelectionCanvas();"/>
 
       <!-- Level overview -->
-      <canvas style="border:1px solid black;" id="levelOverviewCanvas" width="{{level.width}}" height="{{level.height}}"></canvas>
+      <center>
+        <canvas style="border:1px solid black;" id="levelOverviewCanvas" width="{{level.width}}" height="{{level.height}}"></canvas>
+      </center>
 
       <!-- Save Button -->
       <br>
@@ -75,12 +77,14 @@
     <script src="/src/Keys.js"></script>
     <script src="/src/lib/jquery.min.js"></script>
     <script>
-      "use strict;"
+      "use strict";
 
       let selectionX = 0;
       let selectionY = 0;
       let tilesetIndex = 0;
-      let tileSize = 32;
+      let tileSize = 32; // TODO: get this info from the Tileset
+      // TODO: offsetx
+      // TODO: offsety
       const tilesetImage = document.querySelector("#tilesetImage");
       const tileSelectionCanvas = document.querySelector("#tileSelectionCanvas");
       const levelOverviewCanvas = document.querySelector("#levelOverviewCanvas");
@@ -92,6 +96,9 @@
       {% endfor %}
 
       function saveFloorplanImage() {
+        /*
+            Saves the floorplan image to the server
+        */
         const dataURL = levelOverviewCanvas.toDataURL();
         const form = document.querySelector("#submitFloorplanForm");
         const data = document.querySelector("#dataURL");
@@ -101,24 +108,34 @@
       }
 
       function snapToGrid(value, gridSize) {
+        /*
+            Returns value snapped to a grid
+        */
         return Math.floor(value / gridSize) * gridSize;
       }
 
       function drawTile(t, x, y) {
+        /*
+            Draws the selected tile at x, y
+            If CTRL button is down, clears the tile
+        */
+        // Loop
         requestAnimationFrame(drawTile);
+
         if (!leftMouseButton) {
             return;
         }
-        let dx, dy;
-        dx = x || snapToGrid(mouseX - levelOverviewCanvas.offsetLeft, tileSize);
-        dy = y || snapToGrid(mouseY - levelOverviewCanvas.offsetTop, tileSize);
 
+        // Get tile location and ensure it is in bounds
+        let dx = x || snapToGrid(mouseX - levelOverviewCanvas.offsetLeft, tileSize);
+        let dy = y || snapToGrid(mouseY - levelOverviewCanvas.offsetTop, tileSize);
         if (dx < 0 || dy < 0
             || dx >= levelOverviewCanvas.width || dy >= levelOverviewCanvas.height) {
             return;
         }
+        
+        // Draw the tile on canvas
         const context = levelOverviewCanvas.getContext("2d");
-
         context.beginPath();
         if (keysDown[CTRL]) {
           context.clearRect(dx, dy, tileSize, tileSize);
@@ -132,16 +149,22 @@
       drawTile();
 
       function drawSelection() {
+        /*
+            Draw a canvas overlay to show the selected tile
+        */
         const context = overlayCanvas.getContext("2d");
 
         context.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
-        context.strokeStyle="red";
+        context.strokeStyle = "red";
         context.beginPath();
         context.rect(selectionX, selectionY, tileSize, tileSize);
         context.stroke();
       }
 
       function fillWithTile() {
+        /*
+            Fills the whole canvas with the selected tile
+        */
         for (let i = 0; i < levelOverviewCanvas.width; i += tileSize) {
           for (let j = 0; j < levelOverviewCanvas.height; j += tileSize) {
             levelOverviewCanvas.onclick(null, i, j);
@@ -150,13 +173,18 @@
       }
 
       overlayCanvas.onclick = function setSelection(e) {
+        /*
+            Updates the selected tile
+        */
         selectionX = snapToGrid(e.pageX - container.offsetLeft - this.offsetLeft, tileSize);
         selectionY = snapToGrid(e.pageY - container.offsetTop - this.offsetTop, tileSize);
         drawSelection();
       }
 
       function updateTileSelectionCanvas() {
-        // Resizes the tile selection canvas
+        /*
+            Resizes the tile selection canvas
+        */
         const context = tileSelectionCanvas.getContext("2d");
 
         tileSelectionCanvas.width = tilesetImage.width;
@@ -171,7 +199,9 @@
       }
 
       function updateImage() {
-        // Displays a new image
+        /*
+            Updates the displayed tileset image
+        */
         if (tilesetURLs.length < 1) {
           return;
         }
@@ -180,6 +210,9 @@
       updateImage();
 
       function prevImage() {
+        /*
+            Selects the previous tileset image
+        */
         tilesetIndex--;
         if (tilesetIndex < 0) {
           tilesetIndex = tilesetURLs.length - 1;
@@ -188,6 +221,9 @@
       }
 
       function nextImage() {
+        /*
+            Selects the next tileset image
+        */
         tilesetIndex++;
         if (tilesetIndex > tilesetURLs.length - 1) {
           tilesetIndex = 0;

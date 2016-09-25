@@ -21,6 +21,7 @@ class Level(Saveable, object):
 
     def __init__(self, name, parent):
         self.name = name
+        self.floorplanImageID = getIdentifier()
         self._parent = parent
 
         if not dirExists(self.getDir()):
@@ -32,6 +33,10 @@ class Level(Saveable, object):
             self.save()
         else:
             self.load()
+
+    def updateFloorplanImageId(self):
+        self.floorplanImageID = getIdentifier()
+        self.save()
 
     def createEmptyFloorplan(self):
         png.from_array([[0, 0, 0, 0]], 'RGBA').save(self.getFloorplanPath())
@@ -47,9 +52,12 @@ class Level(Saveable, object):
 
     def delete(self):
         shutil.rmtree(self.getDir())
-        
+
     def getFloorplanPath(self):
         return os.path.join(self.getDir(), 'floorplan.png')
+        
+    def getFloorplanURL(self):
+        return os.path.join(self.getDir(), 'floorplan.png?cacheID=' + self.floorplanImageID)
 
     @staticmethod
     def getID():

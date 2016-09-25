@@ -21,6 +21,9 @@ class Tileset(Saveable):
     def getPath(self):
         return os.path.join(self.getDir(), self.name)
 
+    def getURL(self):
+        return os.path.sep + self.getPath()
+
     def getDir(self):
         return self._parent.getTileDir()
 

@@ -1,4 +1,4 @@
-import os, json
+import os, json, time
 
 class Saveable(object):
     '''
@@ -80,3 +80,9 @@ def getAllImagesInDir(dirPath):
             paths.append(os.path.join(dirPath, path))
 
     return paths
+
+def getIdentifier():
+    '''
+        Returns the current time as a string
+    '''
+    return str(time.time())
