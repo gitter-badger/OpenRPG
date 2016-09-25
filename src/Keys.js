@@ -5,7 +5,7 @@ const D_KEY = 68;
 const SPACE = 32;
 const SHIFT = 16;
 const CTRL = 17;
-const LEFT_MOUSE_BUTTON = 1;
+const LEFT_MOUSE_BUTTON = 0;
 const RIGHT_MOUSE_BUTTON = 2;
 const keysDown = {};
 let leftMouseButton = false;
@@ -31,6 +31,10 @@ document.onkeyup = function(e) {
 };
 
 document.onmousemove = function(e) {
+    pMouseX = mouseX;
+    pMouseY = mouseY;
+    mouseX = e.pageX;
+    mouseY = e.pageY;
     dMouseX = e.movementX;
     dMouseY = e.movementY;
 };

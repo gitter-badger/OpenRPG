@@ -104,15 +104,18 @@
         return Math.floor(value / gridSize) * gridSize;
       }
 
-      levelOverviewCanvas.onclick = function drawTile(e, x, y) {
-        let dx, dy;
-        if (e) {
-          dx = snapToGrid(e.pageX - this.offsetLeft, tileSize);
-          dy = snapToGrid(e.pageY - this.offsetTop, tileSize);
+      function drawTile(t, x, y) {
+        requestAnimationFrame(drawTile);
+        if (!leftMouseButton) {
+            return;
         }
-        else {
-          dx = x;
-          dy = y;
+        let dx, dy;
+        dx = x || snapToGrid(mouseX - levelOverviewCanvas.offsetLeft, tileSize);
+        dy = y || snapToGrid(mouseY - levelOverviewCanvas.offsetTop, tileSize);
+
+        if (dx < 0 || dy < 0
+            || dx >= levelOverviewCanvas.width || dy >= levelOverviewCanvas.height) {
+            return;
         }
         const context = levelOverviewCanvas.getContext("2d");
 
@@ -126,6 +129,7 @@
         }
         context.stroke();
       }
+      drawTile();
 
       function drawSelection() {
         const context = overlayCanvas.getContext("2d");
