@@ -53,7 +53,7 @@
           context.drawImage(floorplanImage, 0, 0);
         }
       </script>
-      <img src="/{{level.getFloorplanURL()}}" style="display:none" id="floorplanImage" onload="drawFloorplan();" />
+      <img src="{{level.getFloorplanURL()}}" style="display:none" id="floorplanImage" onload="drawFloorplan();" />
       <img style="display:none" id="tilesetImage" onload="updateTileSelectionCanvas();"/>
 
       <!-- Level overview -->
@@ -92,7 +92,7 @@
       const container = document.querySelector("#container");
       const tilesetURLs = [];
       {% for tileset in tilesets %}
-        tilesetURLs.push('/{{tileset.getPath()}}');
+        tilesetURLs.push('{{tileset.getURL()}}');
       {% endfor %}
 
       function saveFloorplanImage() {

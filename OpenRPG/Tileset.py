@@ -12,6 +12,7 @@ class Tileset(Saveable):
         self.tileSize = 32
         self.xoff = 0
         self.yoff = 0
+        self.imageID = getIdentifier()
 
         if os.path.exists(self.getSaveFilePath()):
             self.load()
@@ -22,7 +23,7 @@ class Tileset(Saveable):
         return os.path.join(self.getDir(), self.name)
 
     def getURL(self):
-        return os.path.sep + self.getPath()
+        return os.path.sep + self.getPath() + '?cacheID=' + self.imageID
 
     def getDir(self):
         return self._parent.getTileDir()

@@ -57,7 +57,7 @@ class Level(Saveable, object):
         return os.path.join(self.getDir(), 'floorplan.png')
         
     def getFloorplanURL(self):
-        return os.path.join(self.getDir(), 'floorplan.png?cacheID=' + self.floorplanImageID)
+        return os.path.sep + os.path.join(self.getDir(), 'floorplan.png?cacheID=' + self.floorplanImageID)
 
     @staticmethod
     def getID():
