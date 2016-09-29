@@ -4,13 +4,15 @@ This is an HTML5 web app for creating (and sharing) RPGs
 [Click here](https://github.com/jdsutton/OpenRPG/blob/master/VISION.md) for more info
 
 ## Features
-* Git-friendly development
+* Native Linux support
+* Development is user-friendly and git-friendly
 * 2.5d gameplay
-* Dynamic resource pre-loading
+* Dynamic resource handling
 * Tilemap creator
+* Level editor
 * Prop builder (TODO)
 * NPC creator (TODO)
-* Level editor
+* Easy game publishing (TODO)
 
 ## Possible future features. . .
 * Multiplayer gameplay
