@@ -23,5 +23,8 @@ This is an HTML5 web app for creating (and sharing) RPGs
 ## To run
 `$ make`
 
+## To run tests
+`$ make unittest`
+
 ## To generate documentation
 `$ make documentation`
