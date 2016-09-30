@@ -21,7 +21,7 @@ class Level(Saveable, object):
 
     def __init__(self, name, parent):
         self.name = name
-        self.floorplanImageID = getIdentifier()
+        self._floorplanImageID = getIdentifier()
         self._parent = parent
 
         if not dirExists(self.getDir()):
@@ -34,8 +34,8 @@ class Level(Saveable, object):
         else:
             self.load()
 
-    def updateFloorplanImageId(self):
-        self.floorplanImageID = getIdentifier()
+    def updateFloorplanImageID(self):
+        self._floorplanImageID = getIdentifier()
         self.save()
 
     def createEmptyFloorplan(self):
@@ -57,7 +57,7 @@ class Level(Saveable, object):
         return os.path.join(self.getDir(), 'floorplan.png')
         
     def getFloorplanURL(self):
-        return os.path.sep + os.path.join(self.getDir(), 'floorplan.png?cacheID=' + self.floorplanImageID)
+        return os.path.sep + os.path.join(self.getDir(), 'floorplan.png?cacheID=' + self._floorplanImageID)
 
     @staticmethod
     def getID():

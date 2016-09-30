@@ -4,5 +4,7 @@ img
 *.png
 *.pyc
 *.pyo
+*.mp3
+*.wav
 games/*
 documentation

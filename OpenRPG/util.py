@@ -1,9 +1,35 @@
 import os, json, time
 
+class Clock():
+    '''
+        Used for getting the current time.
+        May be deterministically manipulated.
+    '''
+    def __init__(self):
+        self._isMock = False
+        self._time = 0
+
+    def getTime(self):
+        if self._isMock:
+            return self._time
+
+        return time.time()
+
+    def tick(self):
+        self._time += 1
+
+    def setTime(self, t):
+        self._time = t
+
+    def setMock(self, value):
+        self._isMock = value
+
+_clock = Clock()
+
 class Saveable(object):
     '''
-        Enables derived classes to save their __dict__s as JSON
-        Important for git compatibility
+        Enables derived classes to save their __dict__s as JSON.
+        Important for git compatibility.
     '''
     def getDir(self):
         raise NotImplementedError('Savable needs a .getDir() method')
@@ -85,4 +111,4 @@ def getIdentifier():
     '''
         Returns the current time as a string
     '''
-    return str(time.time())
+    return '%.20f' % _clock.getTime()

@@ -4,15 +4,20 @@ import os
 from shutil import rmtree
 
 sys.path.insert(0, '../OpenRPG')
+from OpenRPG.Game import Game
 from OpenRPG.Level import Level
-from OpenRPG.util import dirExists
+from OpenRPG.util import dirExists, _clock
 
 TEMP_DIRECTORY = './tmp'
 
+# Magically make unit tests deterministic
+_clock.setMock(True)
+
 class test_Level(unittest.TestCase):
     def test_init_delete(self):
-        level = Level('_testLevel', TEMP_DIRECTORY)
-        level2 = Level('_testLevel', TEMP_DIRECTORY)
+        parentGame = Game()
+        level = Level('_testLevel', parentGame)
+        level2 = Level('_testLevel', parentGame)
 
         self.assertTrue(os.path.exists(level.getDir()))
         self.assertTrue(os.path.exists(level.getFloorplanPath()))
@@ -26,6 +31,16 @@ class test_Level(unittest.TestCase):
 
         self.assertFalse(os.path.exists(level.getDir()))
         self.assertFalse(os.path.exists(level.getFloorplanPath()))
+
+    def test_updateFloorplanImageId(self):
+        parentGame = Game()
+        level = Level('_testLevel', parentGame)
+
+        oldId = level._floorplanImageID
+        _clock.tick()
+        level.updateFloorplanImageID()
+
+        self.assertNotEqual(oldId, level._floorplanImageID)
 
 
 if __name__ == '__main__':
