@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+    </head>
+    <body>
+        <script src='/src/Keys.js'></script>
+        <script src='/src/lib/p5.min.js'></script>
+        <script>
+            "use strict;"
+
+            const width = 720;
+            const height = 400;
+            const vertices = [];
+            let canvasElement;
+            let mx, my;
+
+            class DraggablePoint {
+                constructor(x, y) {
+                    this.x = x || 0;
+                    this.y = y || 0;
+                    this.dragging = false;
+                }
+
+                draw() {
+                    push();
+                    if (dist(mx, my, this.x, this.y) < 10) {
+                        fill(0, 0, 150);
+                    }
+                    else {
+                        noFill();  
+                    }
+
+                    strokeWeight(1);
+                    stroke(0, 0, 255);
+                    ellipse(this.x, this.y, 10, 10);
+                    pop();
+                }
+
+                update() {
+                    if (!leftMouseButton) {
+                        this.dragging = false;
+                    }
+                    if (this.dragging ||
+                        (leftMouseButton && dist(mx, my, this.x, this.y) < 10)) {
+                        this.x = mx;
+                        this.y = my;
+                        this.dragging = true;                        
+                    }
+                }
+            }
+            const start = new DraggablePoint();
+
+            class CurveVertex {
+                /*
+                    Represents a bezier vertex curve
+                */
+                constructor() {
+                    this._points = [];
+                    for (let i = 1; i <= 3; i++) {
+                        this._points.push(new DraggablePoint(i * 10, i * 10));
+                    }
+                }
+
+                update() {
+                    this._points.forEach((point) => {
+                        point.update();
+                    })
+                }
+
+                draw() {                  
+                    this._points.forEach((point) => {
+                        point.update();
+                        point.draw();
+                    })
+
+                    bezierVertex(
+                        this._points[0].x,
+                        this._points[0].y,
+                        this._points[1].x,
+                        this._points[1].y,
+                        this._points[2].x,
+                        this._points[2].y
+                    );
+                }
+            }
+            vertices.push(new DraggablePoint());
+            vertices.push(new CurveVertex());
+
+            function addVertex() {
+                vertices.push(new CurveVertex());
+            }
+
+            function drawCurves(x, y) {
+                push();
+                fill(247, 216, 195);
+                stroke(0);
+                strokeWeight(3);
+                beginShape();
+                start.update();
+                start.draw();
+                vertex(start.x, start.y);
+                
+                vertices.forEach((v) => {
+                    v.update();
+                    v.draw();
+                })
+                
+                endShape();
+                pop();
+            }
+
+            function setup() {
+                /*
+                    Called once at start.
+                 */
+              const canvas = createCanvas(width, height);
+              canvas.parent('canvasDiv');
+              stroke(255);
+              noFill();
+              background(255);
+              canvasElement = document.getElementById('defaultCanvas0');
+            }
+
+            function draw() {
+                /*
+                    Called every frame.
+                 */
+                mx = mouseX - canvasElement.offsetLeft;
+                my = mouseY - canvasElement.offsetTop;
+                background(255);
+                drawCurves(width/2, height/2);
+            }
+        </script>
+
+        <div class="Toolbar">
+            <button onclick="addVertex();">Add vertex</button>
+        </div>
+
+        <div id="canvasDiv" class="CenterDiv"></div>
+
+        <div class="Toolbar">
+            <button onclick="outputCode();">Get Code</button>
+        </div>
+    </body>
+</html>

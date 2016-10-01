@@ -46,5 +46,9 @@ def sendImage(path):
 def sendFromGames(path):
     return send_from_directory("../games", path)
 
+@app.route("/assets/editor")
+def showAssetEditor():
+    return render_template('assets/bezierEditor.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
