@@ -1,5 +1,7 @@
 # Open RPG
 
+![dice logo](http://i.imgur.com/t0tuxQE.png)
+
 [![Build Status](https://travis-ci.org/jdsutton/OpenRPG.svg?branch=master)](https://travis-ci.org/jdsutton/OpenRPG)
 
 This is an HTML5 web app for creating (and sharing) RPGs
