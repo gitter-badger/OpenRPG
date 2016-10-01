@@ -9,17 +9,17 @@ button {
     border: none;
     background-color: #AAA;
     min-width: 100px;
-    box-shadow: 5px 5px 5px #000;
+    box-shadow: 0px 2px 5px #000;
     border-radius: 0px;
 }
 
 button:hover {
     background-color: #DDD;
+    box-shadow: 0px 5px 5px #000;
 }
 
 button:active {
-    margin-left:5px;
-    margin-top:5px;
+    
 }
 
 canvas {
@@ -90,7 +90,7 @@ table td a:hover {
     background-color: #888;
 
     padding-top: 0px;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .InvisibleLink {
@@ -123,6 +123,18 @@ table td a:hover {
     display: none;
 }
 
+.FlexAlignLeft {
+    margin-right: auto;
+}
+
+.FlexAlignRight {
+    margin-left: auto;
+}
+
+.FlexContainer {
+    display: flex;
+}
+
 .Tab {
     display: inline-block;
     background-color: #AAA;
@@ -136,7 +148,6 @@ table td a:hover {
 .Toolbar {
     width: 100%;
     background-color: #AAA;
-    min-height: 25px;
 }
 
 .ActiveTab {

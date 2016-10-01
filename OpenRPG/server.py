@@ -1,7 +1,5 @@
 '''
     This file contains code for the server
-    It serves static files
-    It also accepts new/updated files
 '''
 
 from os import listdir
@@ -10,6 +8,7 @@ from flask import Flask, request, send_from_directory, render_template, url_for,
 from gameServer import *
 from levelServer import *
 from characterServer import *
+from assetsServer import *
 import random, string
 from GamesList import GamesList
 
@@ -24,6 +23,7 @@ app.secret_key = ''.join(random.SystemRandom().choice(string.ascii_uppercase + s
 app.register_blueprint(GAMES_PATH_BLUEPRINT)
 app.register_blueprint(LEVELS_PATH_BLUEPRINT)
 app.register_blueprint(CHARACTERS_PATH_BLUEPRINT)
+app.register_blueprint(ASSETS_PATH_BLUEPRINT)
 
 @app.route("/")
 def showHomepage():
@@ -38,17 +38,9 @@ def showGame():
 def sendCode(path):
     return send_from_directory("../src", path)
 
-@app.route("/img/<path:path>")
-def sendImage(path):
-    return send_from_directory("../img", path)
-
 @app.route("/games/<path:path>")
 def sendFromGames(path):
     return send_from_directory("../games", path)
-
-@app.route("/assets/editor")
-def showAssetEditor():
-    return render_template('assets/bezierEditor.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

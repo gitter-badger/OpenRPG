@@ -1,7 +1,6 @@
 tmp
 env
 img
-*.png
 *.pyc
 *.pyo
 *.mp3

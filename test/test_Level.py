@@ -42,6 +42,8 @@ class test_Level(unittest.TestCase):
 
         self.assertNotEqual(oldId, level._floorplanImageID)
 
+        level.delete()
+
 
 if __name__ == '__main__':
     if not dirExists(TEMP_DIRECTORY):
