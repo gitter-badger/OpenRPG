@@ -1,2 +1,7 @@
 # Game-Making Resources
-* Characters, tilesets - https://vxresource.wordpress.com
+
+## Images
+* Characters, tilesets - <https://vxresource.wordpress.com>
+
+## Audo
+* AI-generated music - <https://www.jukedeck.com>
