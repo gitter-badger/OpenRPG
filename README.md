@@ -28,7 +28,11 @@ This is an HTML5 web app for creating (and sharing) RPGs
 * Multiplayer gameplay
 
 ##  To install
-`$ pip install -r requirements.txt`
+`
+$ git clone https://github.com/jdsutton/OpenRPG.git
+$ cd OpenRPG
+$ pip install -r requirements.txt
+`
 
 ## To run
 `$ make`
