@@ -41,7 +41,8 @@ class Game(Saveable):
             self.getTileDir(),
             self.getAudioDir(),
             self.getMusicDir(),
-            self.getSfxDir()
+            self.getSfxDir(),
+            self.getCharacterComponentsDir()
         ]
 
         for directory in directories:
@@ -59,6 +60,9 @@ class Game(Saveable):
 
     def getCharactersDir(self):
         return os.path.join(self.getImgDir(), 'characters')
+
+    def getCharacterComponentsDir(self):
+        return os.path.join(self.getCharactersDir(), 'components')
 
     def getPropsDir(self):
         return os.path.join(self.getImgDir(), 'props')
@@ -135,6 +139,9 @@ class Game(Saveable):
             props.append(Prop(path.split(os.sep)[-1], self))
 
         return props
+
+    def getAssetList(self):
+        return AssetList()
 
     def delete(self):
         shutil.rmtree(self.getDir())

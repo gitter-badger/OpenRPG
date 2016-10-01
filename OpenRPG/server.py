@@ -23,7 +23,6 @@ app.secret_key = ''.join(random.SystemRandom().choice(string.ascii_uppercase + s
 app.register_blueprint(GAMES_PATH_BLUEPRINT)
 app.register_blueprint(LEVELS_PATH_BLUEPRINT)
 app.register_blueprint(CHARACTERS_PATH_BLUEPRINT)
-app.register_blueprint(ASSETS_PATH_BLUEPRINT)
 
 @app.route("/")
 def showHomepage():

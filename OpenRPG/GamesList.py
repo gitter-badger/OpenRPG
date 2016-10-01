@@ -12,6 +12,9 @@ class GamesList:
 
     @staticmethod
     def getID():
+        '''
+            Returns a unique ID for a Game
+        '''
         result = GamesList.currentID
         GamesList.currentID += 1
 
@@ -19,10 +22,17 @@ class GamesList:
 
     @staticmethod
     def getUniqueGameTitle():
+        '''
+            Returns a unique game title
+        '''
         return "New Game " + str(GamesList.currentID)
 
     @staticmethod
     def load(directory):
+        '''
+            Loads a game from a directory
+            Returns the Game
+        '''
         result = Game()
         result.directory = directory
         result.load()
@@ -31,11 +41,18 @@ class GamesList:
 
     @staticmethod
     def init():
+        '''
+            To be called once after creation
+            Loads a list of games
+        '''
         for directory in GamesList.gamesDirectories:
             GamesList.addGame(GamesList.load(directory))
 
     @staticmethod
     def addGame(game):
+        '''
+            Adds a Game to the list
+        '''
         if game.ID is None:
             game.setID(GamesList.getID())
         else:
