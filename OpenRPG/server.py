@@ -8,7 +8,6 @@ from flask import Flask, request, send_from_directory, render_template, url_for,
 from gameServer import *
 from levelServer import *
 from characterServer import *
-from assetsServer import *
 import random, string
 from GamesList import GamesList
 
@@ -24,22 +23,26 @@ app.register_blueprint(GAMES_PATH_BLUEPRINT)
 app.register_blueprint(LEVELS_PATH_BLUEPRINT)
 app.register_blueprint(CHARACTERS_PATH_BLUEPRINT)
 
-@app.route("/")
+@app.route('/')
 def showHomepage():
-    return render_template("index.html",
+    return render_template('index.html',
         games=GamesList.getAllGames())
 
-@app.route("/game.html")
+@app.route('/favicon.ico')
+def serveFavicon():
+    return send_from_directory('../static', 'favicon.ico')
+
+@app.route('/game.html')
 def showGame():
-    return render_template("game.html")
+    return render_template('game.html')
 
-@app.route("/src/<path:path>")
+@app.route('/src/<path:path>')
 def sendCode(path):
-    return send_from_directory("../src", path)
+    return send_from_directory('../src', path)
 
-@app.route("/games/<path:path>")
+@app.route('/games/<path:path>')
 def sendFromGames(path):
-    return send_from_directory("../games", path)
+    return send_from_directory('../games', path)
 
 if __name__ == '__main__':
     app.run(debug=True)
