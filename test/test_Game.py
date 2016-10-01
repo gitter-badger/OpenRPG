@@ -23,6 +23,7 @@ class test_Game(unittest.TestCase):
         self.assertTrue(os.path.exists(game.getAudioDir()))
         self.assertTrue(os.path.exists(game.getMusicDir()))
         self.assertTrue(os.path.exists(game.getSfxDir()))
+        self.assertTrue(os.path.exists(game.getCharacterComponentsDir()))
 
         game.delete()
 

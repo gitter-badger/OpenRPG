@@ -12,14 +12,34 @@ class Game(Saveable):
 
     @staticmethod
     def dirFromName(name):
+        '''
+            Converts a game title into a directory name
+        '''
         return os.path.join(Game.GAMES_DIRECTORY, name.strip().replace(' ', '_'))
 
-    def __init__(self, title='New Game'):
+    @staticmethod
+    def loadFromDirectory(directory):
+        '''
+            Loads game data from a directory path
+            Returns a new Game
+        '''
+        result = Game('', False)
+        result.directory = directory
+        result.load()
+
+        return result
+
+    def __init__(self, title='New Game', createFiles=True):
         self.title = title
         self.ID = None
         self.directory = Game.dirFromName(self.title)
+        if createFiles:
+            self.initFiles()
 
     def setTitle(self, title):
+        '''
+            Sets the title of the game
+        '''
         self.title = title
         oldDirectory = self.directory
         self.directory = Game.dirFromName(self.title)
@@ -27,7 +47,11 @@ class Game(Saveable):
         self.save()
 
     def initFiles(self):
-        os.makedirs(self.getDir())
+        '''
+            Initializes the files and directories of the game
+        '''
+        if not dirExists(self.getDir()):
+            os.makedirs(self.getDir())
 
         # Save metadata
         self.save()
@@ -59,7 +83,7 @@ class Game(Saveable):
         return os.path.join(self.getDir(), 'img')
 
     def getCharactersDir(self):
-        return os.path.join(self.getImgDir(), 'characters')
+        return os.path.join(self.getDir(), 'characters')
 
     def getCharacterComponentsDir(self):
         return os.path.join(self.getCharactersDir(), 'components')
@@ -83,6 +107,10 @@ class Game(Saveable):
         return os.path.join(self.getAudioDir(), 'sfx')
 
     def setID(self, ID):
+        '''
+            Sets the ID of the game
+            If the ID is already set: does nothing
+        '''
         if self.ID is not None:
             return
 
@@ -90,6 +118,9 @@ class Game(Saveable):
         self.save()
 
     def getAllTilesets(self):
+        '''
+            Returns a list of Tilesets belonging to this game
+        '''
         tilesetPaths = getAllImagesInDir(self.getTileDir())
         tilesets = []
 
@@ -100,6 +131,9 @@ class Game(Saveable):
         return tilesets
 
     def addLevel(self, name):
+        '''
+            Adds a new level to the game
+        '''
         if dirExists(os.path.join(self.getLevelsDir(), Level.nameToDir(name))):
             flash("Could not create level, directory already exists")
             return
@@ -108,6 +142,9 @@ class Game(Saveable):
         flash("New level created: " + name)
 
     def deleteLevel(self, levelID):
+        '''
+            Deletes a level by ID
+        '''
         levels = self.getAllLevels()
 
         for i in xrange(len(levels)):
@@ -116,6 +153,9 @@ class Game(Saveable):
                 break
 
     def getAllLevels(self):
+        '''
+            Returns a list of Levels in this game
+        '''
         levels = []
 
         for path in os.listdir(self.getLevelsDir()):
@@ -125,6 +165,9 @@ class Game(Saveable):
         return levels
 
     def getLevelByID(self, levelID):
+        '''
+            Returns a Level from this game by ID
+        '''
         for level in self.getAllLevels():
             if level.ID == levelID:
                 return level
@@ -132,6 +175,9 @@ class Game(Saveable):
         flash("Error: No such level")
 
     def getAllProps(self):
+        '''
+            Returns a list of all Props for this game
+        '''
         propPaths = getAllImagesInDir(self.getPropDir())
         props = []
 
@@ -140,9 +186,9 @@ class Game(Saveable):
 
         return props
 
-    def getAssetList(self):
-        return AssetList()
-
     def delete(self):
+        '''
+            Deletes the files and folders for this game
+        '''
         shutil.rmtree(self.getDir())
 

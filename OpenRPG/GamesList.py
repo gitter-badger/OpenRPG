@@ -33,12 +33,8 @@ class GamesList:
             Loads a game from a directory
             Returns the Game
         '''
-        result = Game()
-        result.directory = directory
-        result.load()
-
-        return result
-
+        return Game.loadFromDirectory(directory)
+        
     @staticmethod
     def init():
         '''
