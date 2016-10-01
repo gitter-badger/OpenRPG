@@ -1,5 +1,6 @@
 import os
 from Game import Game
+from flask import flash
 
 class GamesList:
     '''
