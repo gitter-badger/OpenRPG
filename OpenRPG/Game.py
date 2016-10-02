@@ -1,4 +1,3 @@
-from flask import flash
 from util import *
 from Level import *
 from Tileset import *
@@ -134,12 +133,10 @@ class Game(Saveable):
         '''
             Adds a new level to the game
         '''
-        if dirExists(os.path.join(self.getLevelsDir(), Level.nameToDir(name))):
-            flash("Could not create level, directory already exists")
-            return
+        if dirExists(os.path.join(self.getLevelsDir(), nameToDir(name))):
+            return None
 
-        level = Level(name, self)
-        flash("New level created: " + name)
+        return Level(name, self)
 
     def deleteLevel(self, levelID):
         '''

@@ -5,7 +5,6 @@ from flask import Flask, request, send_from_directory, render_template, url_for,
 import json
 import os
 import shutil
-from Level import Level
 from Game import *
 from GamesList import GamesList
 from util import *
