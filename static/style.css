@@ -151,6 +151,37 @@ table td a:hover {
     background-color: #AAA;
 }
 
+.ToggleList {
+    list-style: none;
+    border-left: 2px solid black;
+    padding-left: 5px;
+    margin-left: 20px;
+    margin-top: 0px;
+    padding-top: 10px;
+}
+
+.ToggleListButton {
+    min-width: 20px;
+    width: 20px;
+    height: 100%
+    font-weight: bold;
+    margin-left: auto;
+    box-shadow: none;
+}
+
+.ToggleListButton:hover {
+    box-shadow: none;
+}
+
+.ToggleListTitle {
+    padding-left: 10px;
+    background-color: #333;
+    color: #FFF;
+    width: 256px;
+    display: flex;
+    margin-bottom: 0px;
+}
+
 .ActiveTab {
     background-color: #DDD;
 }

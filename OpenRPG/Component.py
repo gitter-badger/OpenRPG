@@ -1,7 +1,11 @@
-from util import *
 
-class Component(Saveable):
-    def __init__(self):
-        self.width = 0
-        self.height = 0
-        self.json = ""
+class Component(object):
+    '''
+        Interface for a renderable component of a character
+    '''
+
+    def getCode(self):
+        '''
+            Must return JavaScript code for rendering the component
+        '''
+        raise NotImplementedError()

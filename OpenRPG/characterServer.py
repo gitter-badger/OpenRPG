@@ -18,5 +18,12 @@ def createCharacter(gameID):
     '''
         List all games
     '''
-    return render_template("newCharacter.html",
+    return render_template('newCharacter.html',
         gameID=gameID)
+
+@CHARACTERS_PATH_BLUEPRINT.route('/games/<int:gameID>/characters/components/manage')
+def manageCharacterComponents(gameID):
+    '''
+        Show the character component manager
+    '''
+    return render_template('componentManager.html')

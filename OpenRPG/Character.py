@@ -5,7 +5,7 @@ class Character(Saveable):
         def __init__(self, component, offsetX, offsetY, rotation, scale):
             self.component = component
             self.x = offsetX
-            self.x = offsetY
+            self.y = offsetY
             self.theta = rotation
             self.scale = scale
             self.children = []
