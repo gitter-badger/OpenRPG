@@ -5,11 +5,9 @@ from flask import Flask, request, send_from_directory, render_template, url_for,
 import json
 import os
 import shutil
-from Level import Level
-from Game import *
-from GamesList import GamesList
 from util import *
-import glob
+from Character import Character
+from GamesList import GamesList
 
 CHARACTERS_PATH_BLUEPRINT = Blueprint('CHARACTERS_PATH_BLUEPRINT', __name__, template_folder='../templates/characters')
 
@@ -26,4 +24,24 @@ def manageCharacterComponents(gameID):
     '''
         Show the character component manager
     '''
-    return render_template('componentManager.html')
+
+    game = GamesList.getByID(gameID)
+    bins = Character.getAllComponentBins(game)
+
+    return render_template('componentManager.html',
+        gameID=gameID,
+        bins=bins)
+
+@CHARACTERS_PATH_BLUEPRINT.route('/games/<int:gameID>/characters/components/create')
+def createCharacterComponent(gameID):
+    '''
+        Create a character component
+    '''
+
+    game = GamesList.getByID(gameID)
+    directory = game.getCharacterComponentsDir()
+    Character.createCharacterComponentBin(game)
+    flash('Created new component bin')
+
+    return redirect(url_for('CHARACTERS_PATH_BLUEPRINT.manageCharacterComponents',
+        gameID=gameID))

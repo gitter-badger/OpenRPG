@@ -1,6 +1,26 @@
 from util import *
+from ComponentBin import ComponentBin
 
 class Character(Saveable):
+    @staticmethod
+    def createCharacterComponentBin(parent):
+        '''
+            Creates a character component bin for a given parent
+        '''
+        return ComponentBin(parent)
+
+    @staticmethod
+    def getAllComponentBins(parent):
+        path = parent.getCharacterComponentsDir()
+        folders = os.listdir(path)
+        bins = []
+
+        for folder in folders:
+            bins.append(ComponentBin.loadFromDir(parent, folder))
+
+        bins.sort()
+        return bins
+
     class Node():
         def __init__(self, component, offsetX, offsetY, rotation, scale):
             self.component = component

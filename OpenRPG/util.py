@@ -112,3 +112,6 @@ def getIdentifier():
         Returns the current time as a string
     '''
     return '%.20f' % _clock.getTime()
+
+def nameToDir(name):
+    return name.replace(' ', '_')

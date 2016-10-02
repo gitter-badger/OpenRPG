@@ -9,21 +9,21 @@
     <div class="CenterDiv MainContainer">
       <h1>Character Component Manager</h1>
 
-      <div>
-        <h3 class="ToggleListTitle">Bin 1<button class="ToggleListButton">-</button></h3>
-        <ul class="ToggleList">
-          <li>Component 1</li>
-          <li>Component 2</li>
-        </ul>
-      </div>
+      {% include "messages.html" %}
 
-      <div>
-        <h3 class="ToggleListTitle">Bin 2<button class="ToggleListButton">-</button></h3>
-        <ul class="ToggleList">
-          <li>Component 3</li>
-          <li>Component 4</li>
-        </ul>
-      </div>
+      {% for bin in bins %}
+        <div>
+          <h3 class="ToggleListTitle">{{bin.name}}<button class="ToggleListButton">-</button></h3>
+          <ul class="ToggleList">
+            <li>Component 1</li>
+            <li>Component 2</li>
+          </ul>
+        </div>
+      {% endfor %}
+
+      <a class="InvisibleLink" href="/games/{{gameID}}/characters/components/create">
+        <p class="BigButton">+</p>
+      </a>
 
     </div>
 

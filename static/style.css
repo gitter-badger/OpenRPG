@@ -28,6 +28,7 @@ canvas {
 }
 
 h1 {
+    padding-left: 10px;
     margin-top: 10px;
     color: #FFF;
     background-color: #000;
@@ -81,6 +82,28 @@ table td a {
 
 table td a:hover {
     color: #DDD;
+}
+
+.BigButton {
+    background-color: #333;
+    color: #FFF;
+
+    font-family: sans-serif;
+    font-size: 32pt;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 64px;
+
+    margin: 20px;
+
+    width: 64px;
+    height: 64px;
+    cursor: pointer;   
+}
+
+.BigButton:hover {
+    background-color: #AAA;
 }
 
 .CenterDiv {
@@ -180,6 +203,7 @@ table td a:hover {
     width: 256px;
     display: flex;
     margin-bottom: 0px;
+    font-family: sans-serif;
 }
 
 .ActiveTab {

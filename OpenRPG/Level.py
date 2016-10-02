@@ -12,10 +12,6 @@ class Level(Saveable, object):
     currentID = -1
 
     @staticmethod
-    def nameToDir(name):
-        return name.replace(' ', '_')
-
-    @staticmethod
     def getUniqueLevelName():
         return 'New Level ' + str(Level.currentID + 1)
 
@@ -42,7 +38,7 @@ class Level(Saveable, object):
         png.from_array([[0, 0, 0, 0]], 'RGBA').save(self.getFloorplanPath())
 
     def getDir(self):
-        return os.path.join(self._parent.getLevelsDir(), Level.nameToDir(self.name))
+        return os.path.join(self._parent.getLevelsDir(), nameToDir(self.name))
 
     def load(self):
         super(self.__class__, self).load()
