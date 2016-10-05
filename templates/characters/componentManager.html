@@ -15,13 +15,17 @@
         <div>
           <h3 class="ToggleListTitle">{{bin.name}}<button class="ToggleListButton">-</button></h3>
           <ul class="ToggleList">
-            <li>Component 1</li>
-            <li>Component 2</li>
+            <li>Component 1</li>          
+            <li>
+              <a class="InvisibleLink" href="/games/{{gameID}}/characters/componentBins/{{bin.ID}}/components/create">
+              <p class="BigButton">+</p>
+              </a>
+            </li>
           </ul>
         </div>
       {% endfor %}
 
-      <a class="InvisibleLink" href="/games/{{gameID}}/characters/components/create">
+      <a class="InvisibleLink" href="/games/{{gameID}}/characters/componentBins/create">
         <p class="BigButton">+</p>
       </a>
 

@@ -30,28 +30,50 @@ class Level(Saveable, object):
             self.load()
 
     def updateFloorplanImageID(self):
+        '''
+            Changes the floorplan ID so the browser will update its cache
+        '''
         self._floorplanImageID = getIdentifier()
         self.save()
 
     def createEmptyFloorplan(self):
+        '''
+            Creates a blank floorplan image
+        '''
         createEmptyImage(self.getFloorplanPath())
 
     def getDir(self):
+        '''
+            Returns the path to this Level's directory
+        '''
         return os.path.join(self._parent.getLevelsDir(), nameToDir(self.name))
 
     def load(self):
+        '''
+            Overrides Saveable.load
+            Loads the level from the directory
+        '''
         super(self.__class__, self).load()
 
         if self.ID > Level.currentID:
             Level.currentID = self.ID
 
     def delete(self):
+        '''
+            Deletes the directory and files associated with this Level
+        '''
         shutil.rmtree(self.getDir())
 
     def getFloorplanPath(self):
+        '''
+            Returns the file path on the server to this Level's floorplan image
+        '''
         return os.path.join(self.getDir(), 'floorplan.png')
         
     def getFloorplanURL(self):
+        '''
+            Returns a URL to this Level's floorplan image
+        '''
         return os.path.sep + os.path.join(self.getDir(), 'floorplan.png?cacheID=' + self._floorplanImageID)
 
     @staticmethod

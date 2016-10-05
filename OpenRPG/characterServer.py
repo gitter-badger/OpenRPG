@@ -32,16 +32,29 @@ def manageCharacterComponents(gameID):
         gameID=gameID,
         bins=bins)
 
-@CHARACTERS_PATH_BLUEPRINT.route('/games/<int:gameID>/characters/components/create')
-def createCharacterComponent(gameID):
+@CHARACTERS_PATH_BLUEPRINT.route('/games/<int:gameID>/characters/componentBins/create')
+def createCharacterComponentBin(gameID):
     '''
-        Create a character component
+        Create a character component bin
     '''
 
     game = GamesList.getByID(gameID)
     directory = game.getCharacterComponentsDir()
     Character.createCharacterComponentBin(game)
     flash('Created new component bin')
+
+    return redirect(url_for('CHARACTERS_PATH_BLUEPRINT.manageCharacterComponents',
+        gameID=gameID))
+
+@CHARACTERS_PATH_BLUEPRINT.route('/games/<int:gameID>/characters/componentBins/<int:binID>/components/create')
+def createCharacterComponent(gameID, binID):
+    '''
+        Create a character component
+    '''
+
+    
+    
+    flash('Created new component')
 
     return redirect(url_for('CHARACTERS_PATH_BLUEPRINT.manageCharacterComponents',
         gameID=gameID))

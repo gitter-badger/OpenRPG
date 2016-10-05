@@ -90,12 +90,9 @@
         style="display:none;">
       </form>
       <center>
-        <img
-          class="Clickable"
-          src="/static/img/addButton.png"
-          width="64"
-          style="margin-top:20px;"
-          onclick="document.querySelector('#newLevelForm').submit();"/>
+        <p
+          class="BigButton"
+          onclick="document.querySelector('#newLevelForm').submit();">+</p>
       </center>
 
       <h2>Tilesets</h2>
@@ -122,7 +119,7 @@
           name="file" 
           onchange="uploadTilesetFile();">
       </form>
-      <img class="Clickable" src="/static/img/addButton.png" onclick="selectTilesetFile();"/>
+      <p class="BigButton" onclick="selectTilesetFile();">+</p>
 
       <h2>Props</h2>
       <!-- Show a list of all props -->
@@ -148,16 +145,18 @@
           name="file"
           onchange="uploadPropFile();">
       </form>
-      <img class="Clickable" src="/static/img/addButton.png" onclick="selectPropFile();"/>
+      <p class="BigButton" onclick="selectPropFile();"">+</p>
       
       <!-- Edit prop -->
 
       <h2>Characters</h2>
       <!-- Show the name of each character and an animation -->
-      <a href="characters/components/manage">Manage character components</a>
-      <ul>
-      </ul>
-      <a href="/games/{{game.ID}}/characters/new"><img src="/static/img/addButton.png" /></a>
+      <a class="InvisibleLink" href="characters/components/manage">
+        <p class="BigButton">&#9881;</p>
+      </a>
+      <a class="InvisibleLink" href="/games/{{game.ID}}/characters/new">
+        <p class="BigButton">+</p>
+      </a>
     </div>
   </body>
 </html>
