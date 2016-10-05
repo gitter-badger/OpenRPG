@@ -5,7 +5,6 @@
 import json
 import os
 import shutil
-import png
 from util import *
 
 class Level(Saveable, object):
