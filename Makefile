@@ -8,5 +8,5 @@ docs:
 	pydoc -w ./ > documentation/log.txt
 	mv *.html documentation
 	rm -f OpenRPG/*.pyc
-unittest:
-	./test.sh
+test:
+	./runTests.sh

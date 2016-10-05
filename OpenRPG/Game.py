@@ -138,6 +138,14 @@ class Game(Saveable):
 
         return Level(name, self)
 
+    def addTileset(self, name):
+        '''
+            Creates a new Tileset
+        '''
+        if not name.endswith('.png'):
+            name = name + '.png'
+        createEmptyImage(os.path.join(self.getTileDir(), name))
+
     def deleteLevel(self, levelID):
         '''
             Deletes a level by ID

@@ -1,7 +1,6 @@
 import unittest
 import sys
 import os
-import flask
 from shutil import rmtree
 
 sys.path.insert(0, '../OpenRPG')
@@ -12,9 +11,8 @@ Game.GAMES_DIRECTORY = './tmp'
 
 class test_Game(unittest.TestCase):
 
-    def test_initFiles(self):
+    def test_init(self):
         game = Game('_testGame')
-        game.initFiles()
 
         self.assertTrue(os.path.exists(game.getDir()))
         self.assertTrue(os.path.exists(game.getLevelsDir()))
@@ -47,14 +45,18 @@ class test_Game(unittest.TestCase):
     def test_setTitle(self):
         game = Game('_testGame')
         game.addLevel('_testLevel')
+        game.addTileset('_testTileset')
+
         game.setTitle('_testGame2')
 
         self.assertEqual(game.getDir(), os.path.join(Game.GAMES_DIRECTORY, '_testGame2'))
         self.assertTrue(os.path.exists(game.getDir()))
 
+        self.assertEqual(len(game.getAllTilesets()), 1)
         for item in game.getAllTilesets():
             self.assertTrue(item.getDir().startswith(game.getDir()))
 
+        self.assertEqual(len(game.getAllLevels()), 1)
         for item in game.getAllLevels():
             self.assertTrue(item.getDir().startswith(game.getDir()))
 

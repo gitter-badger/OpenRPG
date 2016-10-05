@@ -35,7 +35,7 @@ class Level(Saveable, object):
         self.save()
 
     def createEmptyFloorplan(self):
-        png.from_array([[0, 0, 0, 0]], 'RGBA').save(self.getFloorplanPath())
+        createEmptyImage(self.getFloorplanPath())
 
     def getDir(self):
         return os.path.join(self._parent.getLevelsDir(), nameToDir(self.name))

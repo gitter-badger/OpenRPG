@@ -1,5 +1,6 @@
 import os, json, time
 import unittest
+from PIL import Image
 
 class Clock():
     '''
@@ -103,7 +104,7 @@ def getAllImagesInDir(dirPath):
     paths = []
 
     for path in os.listdir(dirPath):
-        if path.endswith(".png"):
+        if path.endswith('.png'):
             paths.append(os.path.join(dirPath, path))
 
     return paths
@@ -115,4 +116,14 @@ def getIdentifier():
     return '%.20f' % _clock.getTime()
 
 def nameToDir(name):
+    '''
+        Takes a name string
+        Returns a valid directory name
+    '''
     return name.replace(' ', '_')
+
+def createEmptyImage(path, width=64, height=64):
+    '''
+        Creates an empty png
+    '''
+    Image.new('RGBA', (width, height)).save(path)

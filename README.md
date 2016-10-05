@@ -38,7 +38,7 @@ $ pip install -r requirements.txt
 `$ make`
 
 ## To run tests
-`$ make unittest`
+`$ make test`
 
 ## To generate documentation
 `$ make documentation`
