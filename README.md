@@ -4,7 +4,9 @@
 
 [![Build Status](https://travis-ci.org/jdsutton/OpenRPG.svg?branch=master)](https://travis-ci.org/jdsutton/OpenRPG)
 
-This is an HTML5 web app for creating (and sharing) RPGs
+This is an HTML5 app for creating, playing, and sharing RPGs.
+
+Native to Linux and Chrome.
 
 ## Info
 * This project is available under the [MIT license](https://github.com/jdsutton/OpenRPG/blob/master/LICENSE.md).
