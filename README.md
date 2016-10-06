@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/jdsutton/OpenRPG.svg?branch=master)](https://travis-ci.org/jdsutton/OpenRPG)
 
-This is an HTML5 app for creating, playing, and sharing RPGs.
+:game_die: This is an HTML5 app for creating, playing, and sharing RPGs. :game_die:
 
 Native to Linux and Chrome.
 
