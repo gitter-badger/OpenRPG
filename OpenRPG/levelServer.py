@@ -13,13 +13,14 @@ from util import *
 LEVELS_PATH_BLUEPRINT = Blueprint('LEVELS_PATH_BLUEPRINT', __name__, template_folder='../templates/levels')
 
 
-@LEVELS_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/new', methods=['POST'])
+@LEVELS_PATH_BLUEPRINT.route('/games/<int:gameID>/levels/new', methods=['GET'])
 def createLevel(gameID):
     '''
         Create a new level
     '''
     levelName = Level.getUniqueLevelName()
     GamesList.getByID(gameID).addLevel(levelName)
+    flash('New level created')
 
     return redirect(url_for('GAMES_PATH_BLUEPRINT.editGame',
         gameID=gameID))

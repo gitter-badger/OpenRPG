@@ -52,8 +52,14 @@
         <input type="submit" value="Update">
       </form>
 
-      <h2>Levels</h2>
-      <!-- Show a list of levels with an overview -->
+      <div class="Toolbar">
+        <h2 class="ToolbarTitle">Levels</h2>
+        <a class="FlexAlignRight InvisibleLink" href="/games/{{game.ID}}/levels/new">
+          <p class="ToolbarItem BigButton">+</p>
+        </a>
+      </div>
+
+      <!-- Level list -->
       <table border="1">
         <!-- Header -->
         <tr>
@@ -82,30 +88,7 @@
         {% endfor %}
       </table>
 
-      <!-- Add new level -->
-      <form
-        id="newLevelForm"
-        action="/games/{{game.ID}}/levels/new" 
-        method="POST"
-        style="display:none;">
-      </form>
-      <center>
-        <p
-          class="BigButton"
-          onclick="document.querySelector('#newLevelForm').submit();">+</p>
-      </center>
-
-      <h2>Tilesets</h2>
-      <!-- Show a list of tilesets with an option to edit -->
-      {% for tileset in tilesets %}
-        <a class="InvisibleLink" href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
-          <div class="PreviewThumbnail">
-            <img src="{{tileset.getURL()}}" />
-          </div>
-        </a>
-      {% endfor %}
-
-      <!-- Upload tileset from file -->
+      <!-- Tileset upload form -->
       <form
         id="tilesetForm"
         enctype=multipart/form-data
@@ -119,19 +102,24 @@
           name="file" 
           onchange="uploadTilesetFile();">
       </form>
-      <p class="BigButton" onclick="selectTilesetFile();">+</p>
 
-      <h2>Props</h2>
-      <!-- Show a list of all props -->
-      {% for prop in game.getAllProps() %}
-        <a class="InvisibleLink" href="/games/{{game.ID}}/props{{prop.name}}/edit">
+      <!-- Tileset toolbar -->
+      <div class="Toolbar">
+        <h2 class="ToolbarTitle">Tilesets</h2>
+        <p class="FlexAlignRight ToolbarItem BigButton" onclick="selectTilesetFile();">+</p>
+      </div>
+      
+
+      <!-- Tileset list -->
+      {% for tileset in tilesets %}
+        <a class="InvisibleLink" href="/games/{{game.ID}}/tilesets/{{tileset.name}}/edit">
           <div class="PreviewThumbnail">
-            <img src="/{{prop.getPath()}}" />
+            <img src="{{tileset.getURL()}}" />
           </div>
         </a>
       {% endfor %}
 
-      <!-- Upload prop from file -->
+      <!-- Prop upload form -->
       <form
         id="propForm"
         enctype=multipart/form-data
@@ -145,18 +133,36 @@
           name="file"
           onchange="uploadPropFile();">
       </form>
-      <p class="BigButton" onclick="selectPropFile();"">+</p>
-      
-      <!-- Edit prop -->
 
-      <h2>Characters</h2>
-      <!-- Show the name of each character and an animation -->
-      <a class="InvisibleLink" href="characters/components/manage">
-        <p class="BigButton">&#9881;</p>
-      </a>
-      <a class="InvisibleLink" href="/games/{{game.ID}}/characters/new">
-        <p class="BigButton">+</p>
-      </a>
+      <!-- Props toolbar-->
+      <div class="Toolbar">
+        <h2 class="ToolbarTitle">Props</h2>
+        <p class="FlexAlignRight ToolbarItem BigButton" onclick="selectPropFile();"">+</p>
+      </div>
+
+      <!-- Props list -->
+      {% for prop in game.getAllProps() %}
+        <a class="InvisibleLink" href="/games/{{game.ID}}/props{{prop.name}}/edit">
+          <div class="PreviewThumbnail">
+            <img src="/{{prop.getPath()}}" />
+          </div>
+        </a>
+      {% endfor %}
+
+      <!-- Characters toolbar -->
+      <div class="Toolbar">
+        <h2 class="ToolbarTitle">Characters</h2>
+        <a class="FlexAlignRight InvisibleLink" href="characters/components/manage">
+          <p class="ToolbarItem BigButton">&#9881;</p>
+        </a>
+        <a class="InvisibleLink" href="/games/{{game.ID}}/characters/new">
+          <p class="ToolbarItem BigButton">+</p>
+        </a>
+      </div>
+
+      <!-- Character list -->
+      <!-- TODO -->
+      
     </div>
   </body>
 </html>

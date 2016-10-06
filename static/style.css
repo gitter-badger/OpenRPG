@@ -45,6 +45,7 @@ a:visited {
 table {
     margin: auto;
     border: 0px;
+    margin-bottom: 32px;
 }
 
 table tr {
@@ -171,8 +172,24 @@ table td a:hover {
 }
 
 .Toolbar {
+    margin-top: 16px;
     width: 100%;
-    background-color: #AAA;
+    background-color: #777;
+    display: flex;
+}
+
+.ToolbarTitle {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.ToolbarItem {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
 }
 
 .ToggleList {
