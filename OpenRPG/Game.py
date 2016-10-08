@@ -2,6 +2,7 @@ from util import *
 from Level import *
 from Tileset import *
 from Prop import *
+from ComponentBin import ComponentBin
 
 class Game(Saveable):
     '''
@@ -30,10 +31,17 @@ class Game(Saveable):
 
     def __init__(self, title='New Game', createFiles=True):
         self.title = title
-        self.ID = None
         self.directory = Game.dirFromName(self.title)
-        if createFiles:
+
+        # To be initialized lazily
+        self.componentBins = None
+        self.componentBinsByID = None
+
+        if not dirExists(self.getDir()):
+            self.ID = Game.nextID()
             self.initFiles()
+        else:
+            self.load()
 
     def setTitle(self, title):
         '''
@@ -49,8 +57,7 @@ class Game(Saveable):
         '''
             Initializes the files and directories of the game
         '''
-        if not dirExists(self.getDir()):
-            os.makedirs(self.getDir())
+        os.makedirs(self.getDir())
 
         # Save metadata
         self.save()
@@ -65,7 +72,7 @@ class Game(Saveable):
             self.getAudioDir(),
             self.getMusicDir(),
             self.getSfxDir(),
-            self.getCharacterComponentsDir()
+            self.getComponentsDir()
         ]
 
         for directory in directories:
@@ -84,7 +91,7 @@ class Game(Saveable):
     def getCharactersDir(self):
         return os.path.join(self.getDir(), 'characters')
 
-    def getCharacterComponentsDir(self):
+    def getComponentsDir(self):
         return os.path.join(self.getCharactersDir(), 'components')
 
     def getPropsDir(self):
@@ -105,16 +112,46 @@ class Game(Saveable):
     def getSfxDir(self):
         return os.path.join(self.getAudioDir(), 'sfx')
 
-    def setID(self, ID):
-        '''
-            Sets the ID of the game
-            If the ID is already set: does nothing
-        '''
-        if self.ID is not None:
-            return
+    def _initComponentBins(self):
+        self.componentBins = []
+        self.componentBinsByID = dict()
 
-        self.ID = ID
-        self.save()
+        for directory in os.listdir(self.getComponentsDir()):
+            componentBin = ComponentBin.loadFromDir(self, directory)
+            self.componentBins.append(componentBin)
+            self.componentBinsByID[componentBin.ID] = componentBin
+
+    def createComponentBin(self):
+        '''
+            Creates a new ComponentBin
+            Returns the new bin
+        '''
+        if self.componentBins is None:
+            self._initComponentBins()
+
+        componentBin = ComponentBin(self)
+        self.componentBins.append(componentBin)
+        self.componentBinsByID[componentBin.ID] = componentBin
+
+        return componentBin
+
+    def getAllComponentBins(self):
+        '''
+            Returns a list of ComponentBins for this Game
+        '''
+        if self.componentBins is None:
+            self._initComponentBins()
+
+        self.componentBins.sort()
+
+        return self.componentBins
+
+    def getComponentBinByID(self, binID):
+        '''
+            Takes a ComponentBin ID
+            Returns a ComponentBin
+        '''
+        return self.componentBinsByID[binID]
 
     def getAllTilesets(self):
         '''

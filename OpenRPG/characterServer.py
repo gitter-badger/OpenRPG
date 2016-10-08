@@ -26,7 +26,7 @@ def manageCharacterComponents(gameID):
     '''
 
     game = GamesList.getByID(gameID)
-    bins = Character.getAllComponentBins(game)
+    bins = game.getAllComponentBins()
 
     return render_template('componentManager.html',
         gameID=gameID,
@@ -39,8 +39,7 @@ def createCharacterComponentBin(gameID):
     '''
 
     game = GamesList.getByID(gameID)
-    directory = game.getCharacterComponentsDir()
-    Character.createCharacterComponentBin(game)
+    _ = game.createComponentBin()
     flash('Created new component bin')
 
     return redirect(url_for('CHARACTERS_PATH_BLUEPRINT.manageCharacterComponents',
@@ -52,7 +51,8 @@ def createCharacterComponent(gameID, binID):
         Create a character component
     '''
 
-    
+    componentBin = GamesList.getByID(gameID).getComponentBinByID(binID)
+    componentBin.createComponent()
     
     flash('Created new component')
 

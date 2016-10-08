@@ -6,6 +6,7 @@ from shutil import rmtree
 sys.path.insert(0, '../OpenRPG')
 from OpenRPG.Game import Game
 from OpenRPG.util import dirExists
+from OpenRPG.ComponentBin import ComponentBin
 
 Game.GAMES_DIRECTORY = './tmp'
 
@@ -23,7 +24,7 @@ class test_Game(unittest.TestCase):
         self.assertTrue(os.path.exists(game.getAudioDir()))
         self.assertTrue(os.path.exists(game.getMusicDir()))
         self.assertTrue(os.path.exists(game.getSfxDir()))
-        self.assertTrue(os.path.exists(game.getCharacterComponentsDir()))
+        self.assertTrue(os.path.exists(game.getComponentsDir()))
 
         game.delete()
 
@@ -63,6 +64,31 @@ class test_Game(unittest.TestCase):
         for item in game.getAllProps():
             self.assertTrue(item.getDir().startswith(game.getDir()))
 
+        game.delete()
+
+    def test_getAllComponentBins(self):
+        game = Game('_testGame')
+
+        for i in xrange(10):
+            game.createComponentBin()
+
+        result = game.getAllComponentBins()
+        self.assertEqual(len(result), 10)
+
+        ComponentBin.currentID = 0
+        game.delete()
+
+    def test_getComponentBinByID(self):
+        game = Game('_testGame')
+        componentBins = []
+
+        for i in xrange(10):
+            componentBins.append(game.createComponentBin())
+
+        for i in xrange(10):
+            self.assertTrue(game.getComponentBinByID(i) is componentBins[i])
+
+        ComponentBin.currentID = 0
         game.delete()
 
 if __name__ == '__main__':

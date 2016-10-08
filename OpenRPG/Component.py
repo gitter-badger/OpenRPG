@@ -1,5 +1,6 @@
+from util import *
 
-class Component(object):
+class Component(Saveable):
     '''
         Interface for a renderable component of a character
     '''
@@ -9,3 +10,4 @@ class Component(object):
             Must return JavaScript code for rendering the component
         '''
         raise NotImplementedError()
+

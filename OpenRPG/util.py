@@ -33,6 +33,15 @@ class Saveable(object):
         Enables derived classes to save their __dict__s as JSON.
         Important for git compatibility.
     '''
+    currentID = 0
+
+    @classmethod
+    def nextID(cls):
+        result = cls.currentID
+        cls.currentID += 1
+
+        return result
+
     def getDir(self):
         raise NotImplementedError('Savable needs a .getDir() method')
         
@@ -66,6 +75,8 @@ class Saveable(object):
                     mustSave = True
 
             for key in values:
+                if key == 'ID':
+                    self.__class__.currentID = max(self.__class__.currentID, values['ID'])
                 self.__dict__[key] = values[key] 
 
             f.close()

@@ -1,31 +1,19 @@
 import os
 from Game import Game
-from flask import flash
 
 class GamesList:
     '''
         Manages the list of games and ensures unique IDs
     '''
-    currentID = 0
     gamesDirectories = [os.path.join(Game.GAMES_DIRECTORY, x) for x in os.listdir(Game.GAMES_DIRECTORY)]
     games = []
-
-    @staticmethod
-    def getID():
-        '''
-            Returns a unique ID for a Game
-        '''
-        result = GamesList.currentID
-        GamesList.currentID += 1
-
-        return result
 
     @staticmethod
     def getUniqueGameTitle():
         '''
             Returns a unique game title
         '''
-        return "New Game " + str(GamesList.currentID)
+        return "New Game " + str(Game.currentID)
 
     @staticmethod
     def load(directory):
@@ -49,11 +37,6 @@ class GamesList:
         '''
             Adds a Game to the list
         '''
-        if game.ID is None:
-            game.setID(GamesList.getID())
-        else:
-            if game.ID >= GamesList.currentID:
-                GamesList.currentID = game.ID + 1
         GamesList.games.append(game)
 
     @staticmethod
@@ -77,7 +60,6 @@ class GamesList:
             if game.ID == gameID:
                 game.delete()
                 del GamesList.games[i]
-                flash("Deleted Game " + game.title)
                 break
 
     @staticmethod
