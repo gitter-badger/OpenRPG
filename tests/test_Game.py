@@ -13,7 +13,7 @@ Game.GAMES_DIRECTORY = './tmp'
 class test_Game(unittest.TestCase):
 
     def test_init(self):
-        game = Game('_testGame')
+        game = Game()
 
         self.assertTrue(os.path.exists(game.getDir()))
         self.assertTrue(os.path.exists(game.getLevelsDir()))
@@ -29,11 +29,10 @@ class test_Game(unittest.TestCase):
         game.delete()
 
     def test_save_load(self):
-        game = Game('_testGame')
+        game = Game()
         d1 = game.__dict__
 
-        game2 = Game('_testGame')
-        game2.load()
+        game2 = Game(game.getDir())
         d2 = game2.__dict__
 
         for key in d1:
@@ -44,7 +43,7 @@ class test_Game(unittest.TestCase):
         game2.delete()
 
     def test_setTitle(self):
-        game = Game('_testGame')
+        game = Game()
         game.addLevel('_testLevel')
         game.addTileset('_testTileset')
 
@@ -67,7 +66,7 @@ class test_Game(unittest.TestCase):
         game.delete()
 
     def test_getAllComponentBins(self):
-        game = Game('_testGame')
+        game = Game()
 
         for i in xrange(10):
             game.createComponentBin()
@@ -79,7 +78,7 @@ class test_Game(unittest.TestCase):
         game.delete()
 
     def test_getComponentBinByID(self):
-        game = Game('_testGame')
+        game = Game()
         componentBins = []
 
         for i in xrange(10):

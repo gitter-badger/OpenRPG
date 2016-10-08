@@ -45,4 +45,5 @@ def sendFromGames(path):
     return send_from_directory('../games', path)
 
 if __name__ == '__main__':
+    GamesList.init()
     app.run(debug=True)

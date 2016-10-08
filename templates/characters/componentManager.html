@@ -15,7 +15,9 @@
         <div>
           <h3 class="ToggleListTitle">{{bin.name}}<button class="ToggleListButton">-</button></h3>
           <ul class="ToggleList">
-            <li>Component 1</li>          
+            {% for component in bin.getAllComponents() %}
+              <li>{{component.name}}</li>
+            {% endfor %}         
             <li>
               <a class="InvisibleLink" href="/games/{{gameID}}/characters/componentBins/{{bin.ID}}/components/create">
               <p class="BigButton">+</p>

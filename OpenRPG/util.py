@@ -52,6 +52,8 @@ class Saveable(object):
         '''
             Save JSON metadata
         '''
+        if not dirExists(self.getDir()):
+            os.makedirs(self.getDir())
         try:
             f = open(self.getSaveFilePath(), 'w')
             f.write(json.dumps(self, indent=3, cls=DictEncoder, sort_keys=True))
@@ -106,6 +108,12 @@ def dirExists(path):
         Returns true if a directory exists
     '''
     return os.path.exists(path) and os.path.isdir(path)
+
+def listdirs(dirPath):
+    '''
+        list all subdirectories of a directory
+    '''
+    return [x for x in os.listdir(dirPath) if os.path.isdir(os.path.join(dirPath, x))]
 
 def getAllImagesInDir(dirPath):
     '''

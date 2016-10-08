@@ -68,5 +68,3 @@ class GamesList:
             Returns a list of Games
         '''
         return GamesList.games
-
-GamesList.init()

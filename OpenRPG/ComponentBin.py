@@ -19,7 +19,6 @@ class ComponentBin(Saveable):
             self.ID = ComponentBin.nextID()
             self.name = 'New Bin ' + str(self.ID)
             self.directory = nameToDir(self.name)
-            self.components = []
 
             os.mkdir(self.getDir())
             self.save()
@@ -44,4 +43,11 @@ class ComponentBin(Saveable):
         '''
             Returns all the components in this bin
         '''
-        pass
+        components = []
+
+        for directory in listdirs(self.getDir()):
+            components.append(ImageComponent(self, directory))
+
+        components.sort()
+
+        return components

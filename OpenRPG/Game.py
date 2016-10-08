@@ -23,25 +23,21 @@ class Game(Saveable):
             Loads game data from a directory path
             Returns a new Game
         '''
-        result = Game('', False)
-        result.directory = directory
-        result.load()
+        return Game(directory)
 
-        return result
-
-    def __init__(self, title='New Game', createFiles=True):
-        self.title = title
-        self.directory = Game.dirFromName(self.title)
+    def __init__(self, directory=None):
+        if directory is None:
+            self.ID = Game.nextID()
+            self.title = 'New Game ' + str(self.ID)
+            self.directory = nameToDir(self.title)
+            self.initFiles()
+        else:
+            self.directory = directory
+            self.load()
 
         # To be initialized lazily
         self.componentBins = None
-        self.componentBinsByID = None
-
-        if not dirExists(self.getDir()):
-            self.ID = Game.nextID()
-            self.initFiles()
-        else:
-            self.load()
+        self.componentBinsByID = None            
 
     def setTitle(self, title):
         '''
@@ -151,6 +147,8 @@ class Game(Saveable):
             Takes a ComponentBin ID
             Returns a ComponentBin
         '''
+        if self.componentBins is None:
+            self._initComponentBins()
         return self.componentBinsByID[binID]
 
     def getAllTilesets(self):

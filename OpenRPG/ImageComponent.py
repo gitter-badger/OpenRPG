@@ -3,21 +3,27 @@ from util import *
 from Component import Component
 
 class ImageComponent(Component):
-    def __init__(self, parent, imagePath=None, originX=0, originY=0):
+    def __init__(self, parent, directory=None, originX=0, originY=0):
         self._parent = parent
+        self.directory = directory
 
-        if imagePath is not None:
+        if directory is not None:
             self.load()
         else:
-            self.name = 'New Image Component ' + str(ImageComponent.nextID())
+            self.ID = ImageComponent.nextID()
+            self.name = 'New Image Component ' + str(self.ID)
+            self.directory = nameToDir(self.name)
             self.originX = originX
             self.originY = originY
             self.imageURL = '' # TODO
             self.cacheID = getIdentifier()
             self.save()
 
+    def __lt__(self, other):
+        return self.ID < other.ID
+
     def getDir(self):
-        return os.path.join(self._parent.getDir(), nameToDir(self.name))
+        return os.path.join(self._parent.getDir(), self.directory)
 
     def getURL(self):
         '''

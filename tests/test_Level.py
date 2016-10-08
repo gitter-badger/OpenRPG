@@ -15,7 +15,7 @@ _clock.setMock(True)
 
 class test_Level(unittest.TestCase):
     def test_init_delete(self):
-        parentGame = Game('_testGame')
+        parentGame = Game()
         level = Level('_testLevel', parentGame)
         level2 = Level('_testLevel', parentGame)
 
@@ -33,7 +33,7 @@ class test_Level(unittest.TestCase):
         self.assertFalse(os.path.exists(level.getFloorplanPath()))
 
     def test_updateFloorplanImageId(self):
-        parentGame = Game('_testGame')
+        parentGame = Game()
         level = Level('_testLevel', parentGame)
 
         oldId = level._floorplanImageID
