@@ -15,7 +15,7 @@ class ImageComponent(Component):
             self.directory = nameToDir(self.name)
             self.originX = originX
             self.originY = originY
-            self.imageURL = '' # TODO
+            self.imageURL = None
             self.cacheID = getIdentifier()
             self.save()
 
@@ -24,6 +24,12 @@ class ImageComponent(Component):
 
     def getDir(self):
         return os.path.join(self._parent.getDir(), self.directory)
+
+    def hasImage(self):
+        '''
+            Return True if this Component has an image
+        '''
+        return self.imageURL is not None
 
     def getURL(self):
         '''

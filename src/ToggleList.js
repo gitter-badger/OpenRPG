@@ -1,4 +1,4 @@
-const _toggleButtons = document.querySelectorAll('.ToggleListButton');
+const _toggleButtons = document.querySelectorAll('.ToggleButton');
 let _initialDispay = null;
 
 _toggleButtons.forEach((button) => {

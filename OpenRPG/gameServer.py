@@ -25,18 +25,13 @@ def createGame():
     '''
         Create a new game
     '''
-    gameTitle = GamesList.getUniqueGameTitle()
-    
-    # Set up the directory structure for the game
-    # If the folder exists already, exit with an error message
-    if os.path.isdir(Game.dirFromName(gameTitle)):
-        flash("Failed to create game. Directory already exists!")
-        return redirect(url_for('GAMES_PATH_BLUEPRINT.showAllGames'))
+    try:
+        GamesList.addGame(Game())
+    except IOError as e:
+        print e
+        flash("Something went wrong!")
 
-    newGame = Game(gameTitle)
-    GamesList.addGame(newGame)
-
-    flash("Created new game: " + gameTitle)
+    flash("Created new game")
 
     return redirect(url_for('GAMES_PATH_BLUEPRINT.showAllGames'))
 

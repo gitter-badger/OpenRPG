@@ -78,7 +78,7 @@ class Saveable(object):
 
             for key in values:
                 if key == 'ID':
-                    self.__class__.currentID = max(self.__class__.currentID, values['ID'])
+                    self.__class__.currentID = max(self.__class__.currentID, values['ID'] + 1)
                 self.__dict__[key] = values[key] 
 
             f.close()

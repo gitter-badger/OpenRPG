@@ -88,6 +88,7 @@ table td a:hover {
 .BigButton {
     background-color: #333;
     color: #FFF;
+    box-shadow: none;
 
     font-family: sans-serif;
     font-size: 32pt;
@@ -98,10 +99,28 @@ table td a:hover {
 
     margin: 20px;
     margin-left: 0px;
+    margin-bottom: 0px;
 
+    min-width: 64px;
     width: 64px;
     height: 64px;
     cursor: pointer;   
+}
+
+.BigButton:focus {
+    outline: none;
+}
+
+.SmallSquare {
+    min-width: 32px;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: block;
+    float: left;
 }
 
 .BigButton:hover {
@@ -193,10 +212,14 @@ table td a:hover {
     margin-right: 0px;
 }
 
+.ToggleButton {
+    margin-left: auto;
+}
+
 .ToggleList {
     list-style: none;
     border-left: 2px solid black;
-    padding-left: 5px;
+    padding-left: 16px;
     margin-left: 20px;
     margin-top: 0px;
     padding-top: 10px;
@@ -207,7 +230,6 @@ table td a:hover {
     width: 20px;
     height: 100%
     font-weight: bold;
-    margin-left: auto;
     box-shadow: none;
 }
 
@@ -216,13 +238,18 @@ table td a:hover {
 }
 
 .ToggleListTitle {
-    padding-left: 10px;
     background-color: #333;
     color: #FFF;
     width: 256px;
     display: flex;
     margin-bottom: 0px;
     font-family: sans-serif;
+}
+
+.ToggleListTitle p {
+    padding-left: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 .ActiveTab {

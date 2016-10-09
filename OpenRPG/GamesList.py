@@ -9,13 +9,6 @@ class GamesList:
     games = []
 
     @staticmethod
-    def getUniqueGameTitle():
-        '''
-            Returns a unique game title
-        '''
-        return "New Game " + str(Game.currentID)
-
-    @staticmethod
     def load(directory):
         '''
             Loads a game from a directory
@@ -67,4 +60,5 @@ class GamesList:
         '''
             Returns a list of Games
         '''
+        GamesList.games.sort()
         return GamesList.games

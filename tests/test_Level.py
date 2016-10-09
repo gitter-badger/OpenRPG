@@ -8,7 +8,8 @@ from OpenRPG.Game import Game
 from OpenRPG.Level import Level
 from OpenRPG.util import dirExists, _clock
 
-TEMP_DIRECTORY = './tmp'
+Game.GAMES_DIRECTORY = './tmp'
+
 
 # Magically make unit tests deterministic
 _clock.setMock(True)
@@ -46,7 +47,7 @@ class test_Level(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    if not dirExists(TEMP_DIRECTORY):
-        os.mkdir(TEMP_DIRECTORY)
+    if not dirExists(Game.GAMES_DIRECTORY):
+        os.mkdir(Game.GAMES_DIRECTORY)
 
     unittest.main()

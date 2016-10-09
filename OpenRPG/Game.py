@@ -29,7 +29,7 @@ class Game(Saveable):
         if directory is None:
             self.ID = Game.nextID()
             self.title = 'New Game ' + str(self.ID)
-            self.directory = nameToDir(self.title)
+            self.directory = os.path.join(Game.GAMES_DIRECTORY, nameToDir(self.title))
             self.initFiles()
         else:
             self.directory = directory
@@ -37,7 +37,10 @@ class Game(Saveable):
 
         # To be initialized lazily
         self.componentBins = None
-        self.componentBinsByID = None            
+        self.componentBinsByID = None
+
+    def __lt__(self, other):
+        return self.title < other.title        
 
     def setTitle(self, title):
         '''
