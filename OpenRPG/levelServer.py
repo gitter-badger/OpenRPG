@@ -67,7 +67,7 @@ def saveLevelFloorplan(gameID, levelID):
         f = open(destination, 'wb')
         f.write(imgData.decode('base64'))
         f.close()
-        level.updateFloorplanImageId()
+        level.updateFloorplanImageID()
         flash('Saved level floorplan')
     except IOError as e:
         flash('Error: Failed to save floorplan')

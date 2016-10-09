@@ -114,21 +114,15 @@
         return Math.floor(value / gridSize) * gridSize;
       }
 
-      function drawTile(t, x, y) {
+      function drawTile(x, y) {
         /*
             Draws the selected tile at x, y
             If CTRL button is down, clears the tile
         */
-        // Loop
-        requestAnimationFrame(drawTile);
-
-        if (!leftMouseButton) {
-            return;
-        }
 
         // Get tile location and ensure it is in bounds
-        let dx = x || snapToGrid(mouseX - levelOverviewCanvas.offsetLeft, tileSize);
-        let dy = y || snapToGrid(mouseY - levelOverviewCanvas.offsetTop, tileSize);
+        let dx = x !== null ? x : snapToGrid(mouseX - levelOverviewCanvas.offsetLeft, tileSize);
+        let dy = y !== null ? y : snapToGrid(mouseY - levelOverviewCanvas.offsetTop, tileSize);
         if (dx < 0 || dy < 0
             || dx >= levelOverviewCanvas.width || dy >= levelOverviewCanvas.height) {
             return;
@@ -146,7 +140,17 @@
         }
         context.stroke();
       }
-      drawTile();
+
+      function drawLoop(t) {
+        requestAnimationFrame(drawLoop);
+
+        if (!leftMouseButton) {
+            return;
+        }
+
+        drawTile();
+      }
+      drawLoop();
 
       function drawSelection() {
         /*
@@ -167,7 +171,7 @@
         */
         for (let i = 0; i < levelOverviewCanvas.width; i += tileSize) {
           for (let j = 0; j < levelOverviewCanvas.height; j += tileSize) {
-            levelOverviewCanvas.onclick(null, i, j);
+            drawTile(i, j);
           }
         }
       }

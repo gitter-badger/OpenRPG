@@ -205,6 +205,8 @@ class Game(Saveable):
             level = Level(path, self)
             levels.append(level)
 
+        levels.sort()
+        
         return levels
 
     def getLevelByID(self, levelID):

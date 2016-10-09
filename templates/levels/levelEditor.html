@@ -1,61 +1,67 @@
 <!DOCTYPE html>
 <html>
-    <head>
-    </head>
-    <body oncontextmenu="return false;">
-        <!-- Toolbar -->
+  <head>
+    <link rel="stylesheet" href="/static/style.css">
+  </head>
+  <body oncontextmenu="return false;">
+      <!-- Toolbar -->
+      <div class="Toolbar">
+        <button>Select background</button>
+      </div>
 
-        <!-- Level -->
-        <script src="/src/lib/jquery.min.js"></script>
-        <script src="/src/lib/three.min.js"></script>
-        <script src="/src/Keys.js"></script>
-        <script src="/src/Prop.js"></script>
-        <script src="/src/Player.js"></script>
-        <script src="/src/Game.js"></script>
-        <script src="/src/Level.js"></script>
-        <script src="/src/ResourceManager.js"></script>
-        <script src="/src/GameStateManager.js"></script>
-        <script src="/src/CameraController.js"></script>
-        <script>
-            "use strict";
+      <img src={{level.getBackgroundURL()}} />
 
-            // Constants
-            var VIEWPORT_WIDTH = 640;
-            var VIEWPORT_HEIGHT = 480;
-            var FRAME_RATE = 60;
-            var FOV = 75;
-            var SERVER_URL = "http://127.0.0.1:5000"
+      <!-- Level -->
+      <script src="/src/lib/jquery.min.js"></script>
+      <script src="/src/lib/three.min.js"></script>
+      <script src="/src/Keys.js"></script>
+      <script src="/src/Prop.js"></script>
+      <script src="/src/Player.js"></script>
+      <script src="/src/Game.js"></script>
+      <script src="/src/Level.js"></script>
+      <script src="/src/ResourceManager.js"></script>
+      <script src="/src/GameStateManager.js"></script>
+      <script src="/src/CameraController.js"></script>
+      <script>
+          "use strict";
 
-            var renderer = new THREE.WebGLRenderer( { alpha: false } );
-            renderer.setSize(VIEWPORT_WIDTH,VIEWPORT_HEIGHT);
-            document.body.appendChild(renderer.domElement);
+          // Constants
+          var VIEWPORT_WIDTH = document.body.clientWidth;
+          var VIEWPORT_HEIGHT = Math.floor(VIEWPORT_WIDTH / 1.618);
+          var FRAME_RATE = 60;
+          var FOV = 75;
+          var SERVER_URL = "http://127.0.0.1:5000"
 
-            var camera = new THREE.PerspectiveCamera(
-                FOV, VIEWPORT_WIDTH / VIEWPORT_HEIGHT, 0.1, 1000
-            );
-            var cameraController = new CameraController(camera);
-            cameraController.setPosition(0, 50, 5);
+          var renderer = new THREE.WebGLRenderer( { alpha: true } );
+          renderer.setSize(VIEWPORT_WIDTH,VIEWPORT_HEIGHT);
+          document.body.appendChild(renderer.domElement);
 
-            var resources = {
-                'floorplan':'/{{level.getFloorplanURL()}}'
-            }
-            var level = new Level({
-                requiredResources: resources,
-                renderer: renderer
-            });
-            level.addToScene(cameraController.getObject());
+          var camera = new THREE.PerspectiveCamera(
+              FOV, VIEWPORT_WIDTH / VIEWPORT_HEIGHT, 0.1, 1000
+          );
+          var cameraController = new CameraController(camera);
+          cameraController.setPosition(0, 50, 5);
 
-            var stateManager = new GameStateManager();
+          var resources = {
+              'floorplan':'{{level.getFloorplanURL()}}'
+          }
+          var level = new Level({
+              requiredResources: resources,
+              renderer: renderer
+          });
+          level.addToScene(cameraController.getObject());
 
-            // Main game loop
-            function render() {
-                cameraController.update();
+          var stateManager = new GameStateManager();
 
-                requestAnimationFrame(render);
-                level.render();
-            }
+          // Main game loop
+          function render() {
+              cameraController.update();
+
+              requestAnimationFrame(render);
+              level.render();
+          }
 
 
-        </script>
-    </body>
+      </script>
+  </body>
 </html>

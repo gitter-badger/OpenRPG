@@ -24,10 +24,13 @@ class Level(Saveable, object):
             self.height = 480
             self.ID = Level.getID()
             os.makedirs(self.getDir())
-            self.createEmptyFloorplan()
+            self.createBlankImages()
             self.save()
         else:
             self.load()
+
+    def __lt__(self, other):
+        return self.name < other.name
 
     def updateFloorplanImageID(self):
         '''
@@ -36,11 +39,12 @@ class Level(Saveable, object):
         self._floorplanImageID = getIdentifier()
         self.save()
 
-    def createEmptyFloorplan(self):
+    def createBlankImages(self):
         '''
-            Creates a blank floorplan image
+            Creates placeholder images
         '''
         createEmptyImage(self.getFloorplanPath())
+        createEmptyImage(self.getBackgroundPath())
 
     def getDir(self):
         '''
@@ -75,6 +79,18 @@ class Level(Saveable, object):
             Returns a URL to this Level's floorplan image
         '''
         return os.path.sep + os.path.join(self.getDir(), 'floorplan.png?cacheID=' + self._floorplanImageID)
+
+    def getBackgroundPath(self):
+        '''
+            Returns the file path on the server to this Level's background image
+        '''
+        return os.path.join(self.getDir(), 'background.png')
+
+    def getBackgroundURL(self):
+        '''
+            Returns a URL to this Level's background image
+        '''
+        return os.path.sep + self.getBackgroundPath()
 
     @staticmethod
     def getID():
