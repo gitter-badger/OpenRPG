@@ -82,7 +82,12 @@
       let selectionX = 0;
       let selectionY = 0;
       let tilesetIndex = 0;
-      let tileSize = 32; // TODO: get this info from the Tileset
+      const tileSizes = [];
+      {% for tileset in tilesets %}
+        tileSizes.push({{tileset.tileSize}});
+      {% endfor %}
+      let tileSize = tileSizes[0] || 32;
+
       // TODO: offsetx
       // TODO: offsety
       const tilesetImage = document.querySelector("#tilesetImage");
@@ -221,6 +226,7 @@
         if (tilesetIndex < 0) {
           tilesetIndex = tilesetURLs.length - 1;
         }
+        tileSize = tileSizes[tilesetIndex];
         updateImage();
       }
 
@@ -232,6 +238,7 @@
         if (tilesetIndex > tilesetURLs.length - 1) {
           tilesetIndex = 0;
         }
+        tileSize = tileSizes[tilesetIndex];
         updateImage();
       }
     </script>
