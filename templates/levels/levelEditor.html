@@ -9,6 +9,15 @@
         <button>Select background</button>
       </div>
 
+      <div class="InlineDiv" id="renderContainer">
+        
+      </div><div
+        id="objectManager"
+        class="InlineDiv"
+        style="width: 200px; background-color:#777;">
+        <p>Game object list</p>
+      </div>
+
       <img src={{level.getBackgroundURL()}} />
 
       <!-- Level -->
@@ -26,15 +35,17 @@
           "use strict";
 
           // Constants
-          var VIEWPORT_WIDTH = document.body.clientWidth;
-          var VIEWPORT_HEIGHT = Math.floor(VIEWPORT_WIDTH / 1.618);
+          const renderContainer = document.getElementById('renderContainer');
+          const objectManager = document.getElementById('objectManager')
+          var VIEWPORT_WIDTH;
+          var VIEWPORT_HEIGHT;
           var FRAME_RATE = 60;
           var FOV = 75;
-          var SERVER_URL = "http://127.0.0.1:5000"
+          var SERVER_URL = 'http://127.0.0.1:5000'
 
           var renderer = new THREE.WebGLRenderer( { alpha: true } );
-          renderer.setSize(VIEWPORT_WIDTH,VIEWPORT_HEIGHT);
-          document.body.appendChild(renderer.domElement);
+          renderContainer.appendChild(renderer.domElement);
+          resize();
 
           var camera = new THREE.PerspectiveCamera(
               FOV, VIEWPORT_WIDTH / VIEWPORT_HEIGHT, 0.1, 1000
@@ -61,7 +72,14 @@
               level.render();
           }
 
+          function resize() {
+              VIEWPORT_WIDTH = document.body.clientWidth - 200;
+              VIEWPORT_HEIGHT = Math.floor(VIEWPORT_WIDTH / 1.618);
+              renderer.setSize(VIEWPORT_WIDTH,VIEWPORT_HEIGHT);
+              objectManager.style.height = VIEWPORT_HEIGHT + 'px';
+          }
 
+          document.body.onresize = resize;
       </script>
   </body>
 </html>

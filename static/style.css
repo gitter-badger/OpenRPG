@@ -158,6 +158,11 @@ table td a:hover {
     display: flex;
 }
 
+.InlineDiv {
+    display: inline-block;
+    vertical-align: top;
+}
+
 .InvisibleLink {
     text-decoration: none;
 }
