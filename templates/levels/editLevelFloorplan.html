@@ -121,8 +121,8 @@
         */
 
         // Get tile location and ensure it is in bounds
-        let dx = x !== null ? x : snapToGrid(mouseX - levelOverviewCanvas.offsetLeft, tileSize);
-        let dy = y !== null ? y : snapToGrid(mouseY - levelOverviewCanvas.offsetTop, tileSize);
+        let dx = x !== undefined ? x : snapToGrid(mouseX - levelOverviewCanvas.offsetLeft, tileSize);
+        let dy = y !== undefined ? y : snapToGrid(mouseY - levelOverviewCanvas.offsetTop, tileSize);
         if (dx < 0 || dy < 0
             || dx >= levelOverviewCanvas.width || dy >= levelOverviewCanvas.height) {
             return;
