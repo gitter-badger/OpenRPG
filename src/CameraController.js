@@ -1,3 +1,6 @@
+require('three.js');
+require('Keys.js');
+
 class CameraController {
     constructor(camera) {
         camera.rotation.set(0, 0, 0);

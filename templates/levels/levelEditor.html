@@ -4,11 +4,6 @@
     <link rel="stylesheet" href="/static/style.css">
   </head>
   <body oncontextmenu="return false;">
-      <!-- Toolbar -->
-      <div class="Toolbar">
-        <button>Select background</button>
-      </div>
-
       <div class="InlineDiv" id="renderContainer">
         
       </div><div
@@ -21,44 +16,50 @@
       <img src={{level.getBackgroundURL()}} />
 
       <!-- Level -->
+      <script src="/src/Dependencies.js"></script>
       <script src="/src/lib/jquery.min.js"></script>
+      <script>provide('jquery.js');</script>
       <script src="/src/lib/three.min.js"></script>
+      <script>provide('three.js');</script>
       <script src="/src/Keys.js"></script>
       <script src="/src/Prop.js"></script>
       <script src="/src/Player.js"></script>
       <script src="/src/Game.js"></script>
       <script src="/src/Level.js"></script>
-      <script src="/src/ResourceManager.js"></script>
       <script src="/src/GameStateManager.js"></script>
       <script src="/src/CameraController.js"></script>
+      <script src="/src/GameObject.js"></script>
       <script>
-          "use strict";
+          'use strict';
 
           // Constants
           const renderContainer = document.getElementById('renderContainer');
-          const objectManager = document.getElementById('objectManager')
-          var VIEWPORT_WIDTH;
-          var VIEWPORT_HEIGHT;
-          var FRAME_RATE = 60;
-          var FOV = 75;
-          var SERVER_URL = 'http://127.0.0.1:5000'
+          const objectManager = document.getElementById('objectManager');
+          const FRAME_RATE = 60;
+          const FOV = 75;
+          const SERVER_URL = 'http://127.0.0.1:5000';
+          const RENDERER = new THREE.WebGLRenderer({alpha: true});
 
-          var renderer = new THREE.WebGLRenderer( { alpha: true } );
-          renderContainer.appendChild(renderer.domElement);
+          let viewportWidth, viewportHeight;
+
+          // Set up viewport
+          renderContainer.appendChild(RENDERER.domElement);
           resize();
 
+          // Create camera
           var camera = new THREE.PerspectiveCamera(
-              FOV, VIEWPORT_WIDTH / VIEWPORT_HEIGHT, 0.1, 1000
+              FOV, viewportWidth / viewportHeight, 0.1, 1000
           );
           var cameraController = new CameraController(camera);
           cameraController.setPosition(0, 50, 5);
 
+          // Load resources
           var resources = {
-              'floorplan':'{{level.getFloorplanURL()}}'
+              'floorplan': '{{level.getFloorplanURL()}}'
           }
           var level = new Level({
               requiredResources: resources,
-              renderer: renderer
+              renderer: RENDERER
           });
           level.addToScene(cameraController.getObject());
 
@@ -73,10 +74,10 @@
           }
 
           function resize() {
-              VIEWPORT_WIDTH = document.body.clientWidth - 200;
-              VIEWPORT_HEIGHT = Math.floor(VIEWPORT_WIDTH / 1.618);
-              renderer.setSize(VIEWPORT_WIDTH,VIEWPORT_HEIGHT);
-              objectManager.style.height = VIEWPORT_HEIGHT + 'px';
+              viewportWidth = document.body.clientWidth - 200;
+              viewportHeight = Math.floor(viewportWidth / 1.618);
+              RENDERER.setSize(viewportWidth,viewportHeight);
+              objectManager.style.height = viewportHeight + 'px';
           }
 
           document.body.onresize = resize;

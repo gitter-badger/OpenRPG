@@ -44,7 +44,7 @@ class test_Game(unittest.TestCase):
 
     def test_setTitle(self):
         game = Game()
-        game.addLevel('_testLevel')
+        game.addLevel()
         game.addTileset('_testTileset')
 
         game.setTitle('_testGame2')

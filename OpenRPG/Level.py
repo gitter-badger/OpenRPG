@@ -1,28 +1,23 @@
-'''
-    
-'''
-
 import json
 import os
 import shutil
 from util import *
 
 class Level(Saveable, object):
-    currentID = -1
-
-    @staticmethod
-    def getUniqueLevelName():
-        return 'New Level ' + str(Level.currentID + 1)
+    '''
+        This class represents one level within a game.
+    '''
 
     def __init__(self, name, parent):
         self.name = name
         self._floorplanImageID = getIdentifier()
         self._parent = parent
 
-        if not dirExists(self.getDir()):
+        if self.name is None:
             self.width = 640
             self.height = 480
-            self.ID = Level.getID()
+            self.ID = Level.nextID()
+            self.name = 'New Level ' + str(self.ID)
             os.makedirs(self.getDir())
             self.createBlankImages()
             self.save()
@@ -51,16 +46,6 @@ class Level(Saveable, object):
             Returns the path to this Level's directory
         '''
         return os.path.join(self._parent.getLevelsDir(), nameToDir(self.name))
-
-    def load(self):
-        '''
-            Overrides Saveable.load
-            Loads the level from the directory
-        '''
-        super(self.__class__, self).load()
-
-        if self.ID > Level.currentID:
-            Level.currentID = self.ID
 
     def delete(self):
         '''
@@ -92,7 +77,10 @@ class Level(Saveable, object):
         '''
         return os.path.sep + self.getBackgroundPath()
 
-    @staticmethod
-    def getID():
-        Level.currentID += 1
-        return Level.currentID
+    def getWorldObjectJSON(self):
+        '''
+            Returns a JSON string describing the World object for this Level
+        '''
+        world = GameObject('World')
+
+        return json.dumps(word)

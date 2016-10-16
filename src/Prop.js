@@ -1,3 +1,7 @@
+'use strict';
+
+provide('Prop.js');
+
 function Prop(x, z, texture) {
 	/**
 		A vertical prop

@@ -1,3 +1,5 @@
+provide('Keys.js');
+
 const W_KEY = 87;
 const A_KEY = 65;
 const S_KEY = 83;

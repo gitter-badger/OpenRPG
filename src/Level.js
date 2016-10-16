@@ -1,4 +1,9 @@
-"use strict";
+'use strict';
+
+require('three.js');
+require('Prop.js');
+
+provide('Level.js');
 
 class Level {
     constructor(config) {

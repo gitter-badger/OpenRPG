@@ -167,14 +167,11 @@ class Game(Saveable):
 
         return tilesets
 
-    def addLevel(self, name):
+    def addLevel(self):
         '''
             Adds a new level to the game
         '''
-        if dirExists(os.path.join(self.getLevelsDir(), nameToDir(name))):
-            return None
-
-        return Level(name, self)
+        return Level(None, self)
 
     def addTileset(self, name):
         '''

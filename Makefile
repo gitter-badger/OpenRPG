@@ -10,3 +10,4 @@ docs:
 	rm -f OpenRPG/*.pyc
 test:
 	./runTests.sh
+	rm -rf tmp
