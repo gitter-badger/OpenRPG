@@ -19,12 +19,9 @@ Native to Linux and Chrome.
 * Native Linux support
 * Development is user-friendly and git-friendly
 * 2.5d gameplay
-* Dynamic resource handling
-* Tilemap creator
-* Level editor
-* Prop builder (TODO)
-* NPC creator (TODO)
-* Easy game publishing (TODO)
+* Easy game publishing
+* Games are 100% hackable and moddable
+* Build games with zero programming knowledge, or use programming to add features and functionality
 
 ## Possible future features. . .
 * Multiplayer gameplay
