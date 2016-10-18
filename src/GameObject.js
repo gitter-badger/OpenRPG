@@ -15,20 +15,21 @@ class GameObject {
         if (title in this.fields) {
             return;
         }
+        const field = document.createElement('input');
 
         this.fields[title] = {
             value: null,
-            options:options || []
+            options: options || [],
+            element: field
         };
 
-        const field = document.createElement('input');
         field.setAttribute('type', 'text');
         field.setAttribute('name', title);
     }
 
     setField(title, value) {
         this.fields[title].value = value;
-        // TODO: Update form
+        this.fields[title].element.setAttribute('value', value);
         this.update();
     }
 

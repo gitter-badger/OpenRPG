@@ -1,10 +1,13 @@
 import os
 from Game import Game
+from util import dirExists
 
 class GamesList:
     '''
         Manages the list of games and ensures unique IDs
     '''
+    if not dirExists(Game.GAMES_DIRECTORY):
+        os.makedirs(Game.GAMES_DIRECTORY)
     gamesDirectories = [os.path.join(Game.GAMES_DIRECTORY, x) for x in os.listdir(Game.GAMES_DIRECTORY)]
     games = []
 
